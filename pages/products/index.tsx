@@ -7,12 +7,37 @@ import {
     TeamOutlined,
     UploadOutlined,
     UserOutlined,
+    PlusOutlined,
     VideoCameraOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Layout, Menu, theme, Button, Modal } from 'antd';
+import {
+    Layout,
+    Menu,
+    message,
+    theme,
+    Button,
+    Steps,
+    Modal,
+    Form,
+    Checkbox,
+    Radio,
+    Input,
+    Select,
+    TreeSelect,
+    Cascader,
+    DatePicker,
+    InputNumber,
+    Switch,
+    Upload,
+    Slider
+} from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
+const { RangePicker } = DatePicker;
+const { TextArea } = Input;
+
+
 
 const items: MenuProps['items'] = [
     UserOutlined,
@@ -30,7 +55,9 @@ const items: MenuProps['items'] = [
 }));
 
 const Products = () => {
+    const [componentDisabled, setComponentDisabled] = useState<boolean>(true);
     const [open, setOpen] = useState(false);
+    const [current, setCurrent] = useState(0);
     const [modalText, setModalText] = useState('Content of the modal');
     const [confirmLoading, setConfirmLoading] = useState(false);
     const {
@@ -53,6 +80,51 @@ const Products = () => {
         setOpen(false);
     };
 
+    const normFile = (e: any) => {
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e?.fileList;
+    };
+
+    const steps = [
+        {
+            title: 'First',
+            content: 'First-content',
+        },
+        {
+            title: 'Second',
+            content: 'Second-content',
+        },
+        {
+            title: 'Last',
+            content: 'Last-content',
+        },
+    ];
+
+    const next = () => {
+        setCurrent(current + 1);
+    };
+
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+
+    const { token } = theme.useToken();
+
+
+    const itemsss = steps.map((item) => ({ key: item.title, title: item.title }));
+
+    const contentStyle: React.CSSProperties = {
+        lineHeight: '260px',
+        textAlign: 'center',
+        color: token.colorTextTertiary,
+        backgroundColor: token.colorFillAlter,
+        borderRadius: token.borderRadiusLG,
+        border: `1px dashed ${token.colorBorder}`,
+        marginTop: 16,
+    };
+
     return (
         <Layout hasSider>
             {open && (
@@ -63,7 +135,108 @@ const Products = () => {
                     confirmLoading={confirmLoading}
                     onCancel={handleCancel}
                 >
-                    <p>{modalText}</p>
+                    <Steps current={current} items={itemsss} />
+                    <div style={contentStyle}>{steps[current].content}</div>
+                    <div style={{ marginTop: 24 }}>
+                        {current < steps.length - 1 && (
+                            <Button type="primary" onClick={() => next()}>
+                                Next
+                            </Button>
+                        )}
+                        {current === steps.length - 1 && (
+                            <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                                Done
+                            </Button>
+                        )}
+                        {current > 0 && (
+                            <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                                Previous
+                            </Button>
+                        )}
+                    </div>
+                    {/* <Checkbox
+                        checked={componentDisabled}
+                        onChange={(e) => setComponentDisabled(e.target.checked)}
+                    >
+                        Form disabled
+                    </Checkbox>
+                    <Form
+                        labelCol={{ span: 4 }}
+                        wrapperCol={{ span: 14 }}
+                        layout="horizontal"
+                        disabled={componentDisabled}
+                        style={{ maxWidth: 600 }}
+                    >
+                        <Form.Item label="Checkbox" name="disabled" valuePropName="checked">
+                            <Checkbox>Checkbox</Checkbox>
+                        </Form.Item>
+                        <Form.Item label="Radio">
+                            <Radio.Group>
+                                <Radio value="apple"> Apple </Radio>
+                                <Radio value="pear"> Pear </Radio>
+                            </Radio.Group>
+                        </Form.Item>
+                        <Form.Item label="Input">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Select">
+                            <Select>
+                                <Select.Option value="demo">Demo</Select.Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item label="TreeSelect">
+                            <TreeSelect
+                                treeData={[
+                                    { title: 'Light', value: 'light', children: [{ title: 'Bamboo', value: 'bamboo' }] },
+                                ]}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Cascader">
+                            <Cascader
+                                options={[
+                                    {
+                                        value: 'zhejiang',
+                                        label: 'Zhejiang',
+                                        children: [
+                                            {
+                                                value: 'hangzhou',
+                                                label: 'Hangzhou',
+                                            },
+                                        ],
+                                    },
+                                ]}
+                            />
+                        </Form.Item>
+                        <Form.Item label="DatePicker">
+                            <DatePicker />
+                        </Form.Item>
+                        <Form.Item label="RangePicker">
+                            <RangePicker />
+                        </Form.Item>
+                        <Form.Item label="InputNumber">
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item label="TextArea">
+                            <TextArea rows={4} />
+                        </Form.Item>
+                        <Form.Item label="Switch" valuePropName="checked">
+                            <Switch />
+                        </Form.Item>
+                        <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
+                            <Upload action="/upload.do" listType="picture-card">
+                                <div>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                </div>
+                            </Upload>
+                        </Form.Item>
+                        <Form.Item label="Button">
+                            <Button>Button</Button>
+                        </Form.Item>
+                        <Form.Item label="Slider">
+                            <Slider />
+                        </Form.Item>
+                    </Form> */}
                 </Modal>
             )}
             <Sider
