@@ -32,7 +32,7 @@ export default function Layout({
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <header className={styles.header}>
-        {home ? (
+        {false ? (
           <>
             <Image
               priority
