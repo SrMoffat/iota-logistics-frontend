@@ -23,6 +23,126 @@ const infoBlockStyle = {
     color: "white",
 };
 
+const formItems = [
+    {
+        name: "username",
+        type: "text",
+        rules: [
+            {
+                type: "string",
+                message: "Username is required",
+                required: true,
+            },
+        ],
+        placeholder: "Jane Doe",
+        icon: <AccountBookOutlined />,
+    },
+    {
+        name: "email",
+        type: "text",
+        rules: [
+            {
+                type: "email",
+                message: "Email is required",
+                required: true,
+            },
+        ],
+        placeholder: "someone@example.com",
+        icon: <MailOutlined />,
+    },
+    {
+        name: "password",
+        type: "text",
+        rules: [
+            {
+                type: "string",
+                message: "Password is required",
+                required: true,
+            },
+        ],
+        placeholder: "*********",
+        icon: <LockOutlined />,
+    },
+];
+
+const Header = (props) => {
+    const { title } = props;
+    return (
+        <Head>
+            <title>{title}</title>
+        </Head>
+    );
+};
+
+const Logo = (props) => {
+    const { logo } = props;
+    return (
+        <Col span={24} style={{ display: "flex", justifyContent: "center" }}>
+            <section>
+                <Link href="/">
+                    {logo}
+                </Link>
+            </section>
+        </Col>
+    );
+};
+
+const LoginSection = (props) => {
+    const { title, description, cta } = props;
+    return (
+        <Col xs={{ span: 0 }} md={{ span: 12 }} className="blue-linear-bg-gradient">
+            <section style={{ ...infoBlockStyle, flexDirection: "column" }}>
+                <Typography.Title level={1} className="text-white">
+                    {title}
+                </Typography.Title>
+                <p>{description}</p>
+                <Button type="primary" shape="round" size="large">
+                    <Link href="/signin" passHref>
+                        {cta}
+                    </Link>
+                </Button>
+            </section>
+        </Col>
+    );
+};
+
+const FormFields = (props) => {
+    const { formItems } = props;
+    return formItems.map(entry => {
+        const { name, rules, placeholder, icon, type } = entry;
+
+        return (
+            <Form.Item
+                name={name}
+                rules={rules}
+            >
+                <Input type={type} placeholder={placeholder} prefix={icon} />
+            </Form.Item>
+        )
+    })
+};
+
+const Footer = (props) => {
+    const { text, cta, cta2 } = props;
+    return (
+        <Row align="middle">
+            <Col sm={{ span: 24 }} md={{ span: 15 }}>
+                {text} &nbsp;
+                <Link href="/signin" passHref>
+                    {cta}
+                </Link>
+            </Col>
+            <Col sm={{ span: 24 }} md={{ span: 7 }}>
+                <Form.Item>
+                    <Button htmlType="submit" size="large" type="primary" shape="round">
+                        {cta2}
+                    </Button>
+                </Form.Item>
+            </Col>
+        </Row>
+    )
+};
+
 const SignUp = () => {
     const router = useRouter();
     const [FormInstance] = Form.useForm();
@@ -34,41 +154,24 @@ const SignUp = () => {
     const onFinishFailed = error => {
         console.log(error);
     };
-
-
     return (
         <Layout>
-            <Head>
-                <title>Sign Up</title>
-            </Head>
+            <Header title="Sign Up" />
             <Layout.Content
                 style={{
                     margin: 0,
                 }}
             >
                 <Row justify="space-around" align="middle" style={{ minHeight: "100vh" }}>
-                    <Col span={24} style={{ display: "flex", justifyContent: "center" }}>
-                        <section>
-                            <Link href="/">
-                                Logo
-                            </Link>
-                        </section>
-                    </Col>
+                    <Logo />
                     <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
                         <Row style={formParentStyle} className="hoverable">
-                            <Col xs={{ span: 0 }} md={{ span: 12 }} className="blue-linear-bg-gradient">
-                                <section style={{ ...infoBlockStyle, flexDirection: "column" }}>
-                                    <Typography.Title level={1} className="text-white">
-                                        Welcome Back!
-                                    </Typography.Title>
-                                    <p>To keep connected with us, sign in with your personal info</p>
-                                    <Button type="primary" shape="round" size="large">
-                                        <Link href="/signin" passHref>
-                                           Login
-                                        </Link>
-                                    </Button>
-                                </section>
-                            </Col>
+                            <LoginSection
+                                cta="Login"
+                                title="Welcome Back!"
+                                description="To keep connected with us, sign in with your personal info<"
+                            />
+
                             <Col xs={{ span: 20 }} md={{ span: 12 }} style={{ minHeight: "60vh" }}>
                                 <section style={{ padding: 60 }}>
                                     <Divider orientation="left">Request access to create your Account</Divider>
@@ -103,57 +206,8 @@ const SignUp = () => {
                                         }}
                                         autoComplete="off"
                                     >
-                                        <Form.Item
-                                            name="username"
-                                            rules={[
-                                                {
-                                                    type: "string",
-                                                    message: "Username is required",
-                                                    required: true,
-                                                },
-                                            ]}
-                                        >
-                                            <Input placeholder="Jane Doe" prefix={<AccountBookOutlined />} />
-                                        </Form.Item>
-                                        <Form.Item
-                                            name="email"
-                                            rules={[
-                                                {
-                                                    type: "email",
-                                                    message: "Email is required",
-                                                    required: true,
-                                                },
-                                            ]}
-                                        >
-                                            <Input type="email" placeholder="someone@example.com" prefix={<MailOutlined />} />
-                                        </Form.Item>
-                                        <Form.Item
-                                            name="password"
-                                            rules={[
-                                                {
-                                                    type: "string",
-                                                    message: "Password is required",
-                                                    required: true,
-                                                },
-                                            ]}
-                                        >
-                                            <Input type="password" placeholder="*********" prefix={<LockOutlined />} />
-                                        </Form.Item>
-                                        <Row align="middle">
-                                            <Col sm={{ span: 24 }} md={{ span: 15 }}>
-                                                Have an account? &nbsp;
-                                                <Link href="/signin" passHref>
-                                                    Login
-                                                </Link>
-                                            </Col>
-                                            <Col sm={{ span: 24 }} md={{ span: 7 }}>
-                                                <Form.Item>
-                                                    <Button htmlType="submit" size="large" type="primary" shape="round">
-                                                        Request Access
-                                                    </Button>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
+                                        <FormFields formItems={formItems} />
+                                        <Footer text="Have an account?" cta="Login" cta2="Request Access" />
                                     </Form>
                                 </section>
                             </Col>
