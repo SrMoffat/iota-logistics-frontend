@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import {
     AppstoreOutlined,
-    BarChartOutlined,
-    CloudOutlined,
-    ShopOutlined,
-    TeamOutlined,
-    UploadOutlined,
+    DeploymentUnitOutlined,
     UserOutlined,
-    PlusOutlined,
-    VideoCameraOutlined,
+    BellOutlined,
+    NodeCollapseOutlined,
+    CodeSandboxOutlined,
+    LikeOutlined,
+    MessageOutlined,
+    StarOutlined 
 } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
 import {
     Layout,
     Menu,
@@ -19,43 +18,58 @@ import {
     Button,
     Steps,
     Modal,
-    Form,
-    Checkbox,
-    Radio,
-    Input,
-    Select,
-    TreeSelect,
-    Cascader,
-    DatePicker,
-    InputNumber,
-    Switch,
-    Upload,
-    Slider
+    List,
+    Avatar,
+    Space
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
 
+const siderOptions = [
+    {
+        icon: <AppstoreOutlined />,
+        label: 'Dashboard'
+    },
+    {
+        icon: <CodeSandboxOutlined />,
+        label: 'Products'
+    },
+    {
+        icon: <DeploymentUnitOutlined />,
+        label: 'Shippments'
+    },
+    {
+        icon: <BellOutlined />,
+        label: 'Notifications'
+    },
+    {
+        icon: <NodeCollapseOutlined />,
+        label: 'Returns'
+    },
+    {
+        icon: <UserOutlined />,
+        label: 'Profile'
+    }
+];
 
+const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
+    <Space>
+      {React.createElement(icon)}
+      {text}
+    </Space>
+  );
+  
 
-const items: MenuProps['items'] = [
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    BarChartOutlined,
-    CloudOutlined,
-    AppstoreOutlined,
-    TeamOutlined,
-    ShopOutlined,
-].map((icon, index) => ({
-    key: String(index + 1),
-    icon: React.createElement(icon),
-    label: `nav ${index + 1}`,
-}));
+const items = siderOptions.map((entry, index) => {
+    const key = index + 1;
+    return {
+        key,
+        icon: entry.icon,
+        label: entry.label,
+    };
+});
 
 const Products = () => {
-    const [componentDisabled, setComponentDisabled] = useState<boolean>(true);
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
     const [modalText, setModalText] = useState('Content of the modal');
@@ -124,6 +138,16 @@ const Products = () => {
         border: `1px dashed ${token.colorBorder}`,
         marginTop: 16,
     };
+
+    const data = Array.from({ length: 23 }).map((_, i) => ({
+        href: 'https://ant.design',
+        title: `ant design part ${i}`,
+        avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
+        description:
+          'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+        content:
+          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      }));
 
     return (
         <Layout hasSider>
@@ -250,7 +274,7 @@ const Products = () => {
                 }}
             >
                 <div className="demo-logo-vertical" />
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={items} />
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
                 <Header style={{ padding: 0, background: colorBgContainer }}>
@@ -259,7 +283,47 @@ const Products = () => {
                     </Button>
                 </Header>
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                    <div style={{ padding: 24, textAlign: 'center', background: colorBgContainer }}>
+                    <List
+                        itemLayout="vertical"
+                        size="large"
+                        pagination={{
+                            onChange: (page) => {
+                                console.log(page);
+                            },
+                            pageSize: 3,
+                        }}
+                        dataSource={data}
+                        footer={
+                            <div>
+                                <b>ant design</b> footer part
+                            </div>
+                        }
+                        renderItem={(item) => (
+                            <List.Item
+                                key={item.title}
+                                actions={[
+                                    <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+                                    <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+                                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                                ]}
+                                extra={
+                                    <img
+                                        width={272}
+                                        alt="logo"
+                                        src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                                    />
+                                }
+                            >
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item.avatar} />}
+                                    title={<a href={item.href}>{item.title}</a>}
+                                    description={item.description}
+                                />
+                                {item.content}
+                            </List.Item>
+                        )}
+                    />
+                    {/* <div style={{ padding: 24, textAlign: 'center', background: colorBgContainer }}>
                         <p>long content</p>
                         {
                             // indicates very long content
@@ -270,9 +334,9 @@ const Products = () => {
                                 </React.Fragment>
                             ))
                         }
-                    </div>
+                    </div> */}
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center' }}>IOTA - Logistics</Footer>
             </Layout>
         </Layout>
     );
