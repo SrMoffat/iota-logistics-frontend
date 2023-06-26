@@ -1,5 +1,4 @@
 import { Layout, Row } from 'antd';
-import { useRouter } from "next/router";
 
 import Logo from '../components/Signup/Logo';
 import Header from '../components/Signup/Header';
