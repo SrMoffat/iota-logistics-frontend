@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import {
-    AppstoreOutlined,
-    DeploymentUnitOutlined,
     UserOutlined,
     BellOutlined,
-    NodeCollapseOutlined,
-    CodeSandboxOutlined,
-    ArrowDownOutlined,
     ArrowUpOutlined,
+    AppstoreOutlined,
+    ArrowDownOutlined,
+    CodeSandboxOutlined,
+    NodeCollapseOutlined,
+    DeploymentUnitOutlined,
 } from '@ant-design/icons';
 import {
-    Layout,
-    Menu,
-    theme,
-    Button,
     Col,
     Card,
-    Statistic,
     Row,
-    Space
+    Menu,
+    theme,
+    Space,
+    Layout,
+    Button,
+    Statistic,
 } from 'antd';
+
 const Dashboard = () => {
     const { Header, Content, Footer, Sider } = Layout;
-
     const siderOptions = [
         {
             icon: <AppstoreOutlined />,
@@ -49,9 +49,6 @@ const Dashboard = () => {
             label: 'Profile'
         }
     ];
-
-
-
     const items = siderOptions.map((entry, index) => {
         const key = index + 1;
         return {
@@ -60,14 +57,12 @@ const Dashboard = () => {
             label: entry.label,
         };
     });
-
     const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
         <Space>
             {React.createElement(icon)}
             {text}
         </Space>
     );
-
     const data = Array.from({ length: 23 }).map((_, i) => ({
         href: 'https://ant.design',
         title: `ant design part ${i}`,
@@ -77,18 +72,13 @@ const Dashboard = () => {
         content:
             'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
     }));
-
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
     const [open, setOpen] = useState(false);
-
-
     const handleShowCreateItemModal = () => {
         setOpen(true);
     };
-
     return (
         <Layout hasSider>
             <Sider

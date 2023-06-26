@@ -1,27 +1,20 @@
 import React, { useState } from 'react';
 import {
-    AppstoreOutlined,
-    DeploymentUnitOutlined,
     UserOutlined,
     BellOutlined,
-    NodeCollapseOutlined,
+    AppstoreOutlined,
     CodeSandboxOutlined,
-    ArrowDownOutlined,
-    ArrowUpOutlined,
+    NodeCollapseOutlined,
+    DeploymentUnitOutlined,
 } from '@ant-design/icons';
 import {
-    Layout,
+    Tag,
     Menu,
     theme,
     Button,
-    Col,
-    Card,
-    Statistic,
-    Row,
     Space,
-    List,
-    Avatar,
-    Table, Tag 
+    Layout,
+    Table,
 } from 'antd';
 
 import type { ColumnsType } from 'antd/es/table';
@@ -34,92 +27,86 @@ interface DataType {
     age: number;
     address: string;
     tags: string[];
-  }
-
+}
 const Shippment = () => {
     const data: DataType[] = [
         {
-          key: '1',
-          name: 'John Brown',
-          age: 32,
-          address: 'New York No. 1 Lake Park',
-          tags: ['nice', 'developer'],
+            key: '1',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+            tags: ['nice', 'developer'],
         },
         {
-          key: '2',
-          name: 'Jim Green',
-          age: 42,
-          address: 'London No. 1 Lake Park',
-          tags: ['loser'],
+            key: '2',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+            tags: ['loser'],
         },
         {
-          key: '3',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sydney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
+            key: '3',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sydney No. 1 Lake Park',
+            tags: ['cool', 'teacher'],
         },
-      ];
-
+    ];
     const columns: ColumnsType<DataType> = [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
-          render: (text) => <a>{text}</a>,
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            render: (text) => <a>{text}</a>,
         },
         {
-          title: 'Age',
-          dataIndex: 'age',
-          key: 'age',
+            title: 'Age',
+            dataIndex: 'age',
+            key: 'age',
         },
         {
-          title: 'Address',
-          dataIndex: 'address',
-          key: 'address',
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
         },
         {
-          title: 'Tags',
-          key: 'tags',
-          dataIndex: 'tags',
-          render: (_, { tags }) => (
-            <>
-              {tags.map((tag) => {
-                let color = tag.length > 5 ? 'geekblue' : 'green';
-                if (tag === 'loser') {
-                  color = 'volcano';
-                }
-                return (
-                  <Tag color={color} key={tag}>
-                    {tag.toUpperCase()}
-                  </Tag>
-                );
-              })}
-            </>
-          ),
+            title: 'Tags',
+            key: 'tags',
+            dataIndex: 'tags',
+            render: (_, { tags }) => (
+                <>
+                    {tags.map((tag) => {
+                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        if (tag === 'loser') {
+                            color = 'volcano';
+                        }
+                        return (
+                            <Tag color={color} key={tag}>
+                                {tag.toUpperCase()}
+                            </Tag>
+                        );
+                    })}
+                </>
+            ),
         },
         {
-          title: 'Action',
-          key: 'action',
-          render: (_, record) => (
-            <Space size="middle">
-              <a>Invite {record.name}</a>
-              <a>Delete</a>
-            </Space>
-          ),
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <a>Invite {record.name}</a>
+                    <a>Delete</a>
+                </Space>
+            ),
         },
-      ];
+    ];
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
     const [open, setOpen] = useState(false);
-
-
     const handleShowCreateItemModal = () => {
         setOpen(true);
     };
-
     const siderOptions = [
         {
             icon: <AppstoreOutlined />,
@@ -146,9 +133,6 @@ const Shippment = () => {
             label: 'Profile'
         }
     ];
-
-
-
     const items = siderOptions.map((entry, index) => {
         const key = index + 1;
         return {
@@ -179,20 +163,7 @@ const Shippment = () => {
                     </Button>
                 </Header>
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                <Table columns={columns} dataSource={data} />
-                    {/* <List
-                        itemLayout="horizontal"
-                        dataSource={data}
-                        renderItem={(item, index) => (
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
-                                    title={<a href="https://ant.design">{item.title}</a>}
-                                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                                />
-                            </List.Item>
-                        )}
-                    /> */}
+                    <Table columns={columns} dataSource={data} />
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>IOTA - Logistics</Footer>
             </Layout>

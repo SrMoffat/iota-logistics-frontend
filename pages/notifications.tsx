@@ -1,25 +1,18 @@
 import React, { useState } from 'react';
 import {
-    AppstoreOutlined,
-    DeploymentUnitOutlined,
     UserOutlined,
     BellOutlined,
-    NodeCollapseOutlined,
+    AppstoreOutlined,
     CodeSandboxOutlined,
-    ArrowDownOutlined,
-    ArrowUpOutlined,
+    NodeCollapseOutlined,
+    DeploymentUnitOutlined,
 } from '@ant-design/icons';
 import {
-    Layout,
     Menu,
+    List,
     theme,
     Button,
-    Col,
-    Card,
-    Statistic,
-    Row,
-    Space,
-    List,
+    Layout,
     Avatar
 } from 'antd';
 
@@ -66,9 +59,6 @@ const Notifications = () => {
             label: 'Profile'
         }
     ];
-
-
-
     const items = siderOptions.map((entry, index) => {
         const key = index + 1;
         return {
@@ -77,14 +67,10 @@ const Notifications = () => {
             label: entry.label,
         };
     });
-
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
     const [open, setOpen] = useState(false);
-
-
     const handleShowCreateItemModal = () => {
         setOpen(true);
     };
