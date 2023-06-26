@@ -1,43 +1,31 @@
 import React, { useState } from 'react';
 import {
-    AppstoreOutlined,
-    DeploymentUnitOutlined,
     UserOutlined,
     BellOutlined,
-    NodeCollapseOutlined,
+    AppstoreOutlined,
     CodeSandboxOutlined,
-    ArrowDownOutlined,
-    ArrowUpOutlined,
+    NodeCollapseOutlined,
+    DeploymentUnitOutlined,
 } from '@ant-design/icons';
 import {
-    Layout,
     Menu,
+    Card,
+    List,
     theme,
     Button,
-    Col,
-    Card,
-    Statistic,
-    Row,
-    Space,
-    List
+    Layout,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-
 const Returns = () => {
-
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     const [open, setOpen] = useState(false);
-
-
     const handleShowCreateItemModal = () => {
         setOpen(true);
     };
-
-
     const siderOptions = [
         {
             icon: <AppstoreOutlined />,
@@ -64,9 +52,6 @@ const Returns = () => {
             label: 'Profile'
         }
     ];
-
-
-
     const items = siderOptions.map((entry, index) => {
         const key = index + 1;
         return {
@@ -75,28 +60,26 @@ const Returns = () => {
             label: entry.label,
         };
     });
-
     const data = [
         {
-          title: 'Title 1',
+            title: 'Title 1',
         },
         {
-          title: 'Title 2',
+            title: 'Title 2',
         },
         {
-          title: 'Title 3',
+            title: 'Title 3',
         },
         {
-          title: 'Title 4',
+            title: 'Title 4',
         },
         {
-          title: 'Title 5',
+            title: 'Title 5',
         },
         {
-          title: 'Title 6',
+            title: 'Title 6',
         },
-      ];
-
+    ];
     return (
         <Layout hasSider>
             <Sider

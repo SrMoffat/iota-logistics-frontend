@@ -1,9 +1,11 @@
-import Layout from '../../components/layout'
-import { getAllPostIds, getPostData } from '../../lib/posts'
 import Head from 'next/head'
-import Date from '../../components/date'
-import utilStyles from '../../styles/utils.module.css'
+
 import { GetStaticProps, GetStaticPaths } from 'next'
+
+import Date from '../../components/date'
+import Layout from '../../components/layout'
+import utilStyles from '../../styles/utils.module.css'
+import { getAllPostIds, getPostData } from '../../lib/posts'
 
 export default function Post({
   postData
@@ -29,7 +31,6 @@ export default function Post({
     </Layout>
   )
 }
-
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllPostIds()
   return {
@@ -37,7 +38,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: false
   }
 }
-
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const postData = await getPostData(params?.id as string)
   return {

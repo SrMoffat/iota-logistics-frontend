@@ -1,19 +1,18 @@
 import React from 'react';
 import type { MenuProps } from 'antd';
 import {
-    AppstoreOutlined,
-    BarChartOutlined,
-    CloudOutlined,
     ShopOutlined,
     TeamOutlined,
-    UploadOutlined,
     UserOutlined,
+    CloudOutlined,
+    UploadOutlined,
+    AppstoreOutlined,
+    BarChartOutlined,
     VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Divider, Steps, Layout, Menu, theme } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
-
 
 const items: MenuProps['items'] = [
     UserOutlined,

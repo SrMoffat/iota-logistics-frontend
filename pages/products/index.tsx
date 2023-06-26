@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import {
-    AppstoreOutlined,
-    DeploymentUnitOutlined,
     UserOutlined,
     BellOutlined,
-    NodeCollapseOutlined,
-    CodeSandboxOutlined,
     LikeOutlined,
+    StarOutlined,
     MessageOutlined,
-    StarOutlined 
+    AppstoreOutlined,
+    CodeSandboxOutlined,
+    NodeCollapseOutlined,
+    DeploymentUnitOutlined,
 } from '@ant-design/icons';
 import {
-    Layout,
     Menu,
-    message,
+    List,
     theme,
-    Button,
+    Space,
     Steps,
     Modal,
-    List,
+    Layout,
+    Button,
     Avatar,
-    Space
+    message,
 } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -51,15 +51,12 @@ const siderOptions = [
         label: 'Profile'
     }
 ];
-
 const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
     <Space>
-      {React.createElement(icon)}
-      {text}
+        {React.createElement(icon)}
+        {text}
     </Space>
-  );
-  
-
+);
 const items = siderOptions.map((entry, index) => {
     const key = index + 1;
     return {
@@ -68,7 +65,6 @@ const items = siderOptions.map((entry, index) => {
         label: entry.label,
     };
 });
-
 const Products = () => {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
@@ -88,19 +84,16 @@ const Products = () => {
             setConfirmLoading(false);
         }, 2000);
     };
-
     const handleCancel = () => {
         console.log('Clicked cancel button');
         setOpen(false);
     };
-
     const normFile = (e: any) => {
         if (Array.isArray(e)) {
             return e;
         }
         return e?.fileList;
     };
-
     const steps = [
         {
             title: 'First',
@@ -115,20 +108,14 @@ const Products = () => {
             content: 'Last-content',
         },
     ];
-
     const next = () => {
         setCurrent(current + 1);
     };
-
     const prev = () => {
         setCurrent(current - 1);
     };
-
     const { token } = theme.useToken();
-
-
     const itemsss = steps.map((item) => ({ key: item.title, title: item.title }));
-
     const contentStyle: React.CSSProperties = {
         lineHeight: '260px',
         textAlign: 'center',
@@ -138,17 +125,15 @@ const Products = () => {
         border: `1px dashed ${token.colorBorder}`,
         marginTop: 16,
     };
-
     const data = Array.from({ length: 23 }).map((_, i) => ({
         href: 'https://ant.design',
         title: `ant design part ${i}`,
         avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
         description:
-          'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+            'Ant Design, a design language for background applications, is refined by Ant UED Team.',
         content:
-          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      }));
-
+            'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+    }));
     return (
         <Layout hasSider>
             {open && (
@@ -178,89 +163,6 @@ const Products = () => {
                             </Button>
                         )}
                     </div>
-                    {/* <Checkbox
-                        checked={componentDisabled}
-                        onChange={(e) => setComponentDisabled(e.target.checked)}
-                    >
-                        Form disabled
-                    </Checkbox>
-                    <Form
-                        labelCol={{ span: 4 }}
-                        wrapperCol={{ span: 14 }}
-                        layout="horizontal"
-                        disabled={componentDisabled}
-                        style={{ maxWidth: 600 }}
-                    >
-                        <Form.Item label="Checkbox" name="disabled" valuePropName="checked">
-                            <Checkbox>Checkbox</Checkbox>
-                        </Form.Item>
-                        <Form.Item label="Radio">
-                            <Radio.Group>
-                                <Radio value="apple"> Apple </Radio>
-                                <Radio value="pear"> Pear </Radio>
-                            </Radio.Group>
-                        </Form.Item>
-                        <Form.Item label="Input">
-                            <Input />
-                        </Form.Item>
-                        <Form.Item label="Select">
-                            <Select>
-                                <Select.Option value="demo">Demo</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item label="TreeSelect">
-                            <TreeSelect
-                                treeData={[
-                                    { title: 'Light', value: 'light', children: [{ title: 'Bamboo', value: 'bamboo' }] },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item label="Cascader">
-                            <Cascader
-                                options={[
-                                    {
-                                        value: 'zhejiang',
-                                        label: 'Zhejiang',
-                                        children: [
-                                            {
-                                                value: 'hangzhou',
-                                                label: 'Hangzhou',
-                                            },
-                                        ],
-                                    },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item label="DatePicker">
-                            <DatePicker />
-                        </Form.Item>
-                        <Form.Item label="RangePicker">
-                            <RangePicker />
-                        </Form.Item>
-                        <Form.Item label="InputNumber">
-                            <InputNumber />
-                        </Form.Item>
-                        <Form.Item label="TextArea">
-                            <TextArea rows={4} />
-                        </Form.Item>
-                        <Form.Item label="Switch" valuePropName="checked">
-                            <Switch />
-                        </Form.Item>
-                        <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
-                            <Upload action="/upload.do" listType="picture-card">
-                                <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Upload</div>
-                                </div>
-                            </Upload>
-                        </Form.Item>
-                        <Form.Item label="Button">
-                            <Button>Button</Button>
-                        </Form.Item>
-                        <Form.Item label="Slider">
-                            <Slider />
-                        </Form.Item>
-                    </Form> */}
                 </Modal>
             )}
             <Sider
@@ -323,18 +225,6 @@ const Products = () => {
                             </List.Item>
                         )}
                     />
-                    {/* <div style={{ padding: 24, textAlign: 'center', background: colorBgContainer }}>
-                        <p>long content</p>
-                        {
-                            // indicates very long content
-                            Array.from({ length: 100 }, (_, index) => (
-                                <React.Fragment key={index}>
-                                    {index % 20 === 0 && index ? 'more' : '...'}
-                                    <br />
-                                </React.Fragment>
-                            ))
-                        }
-                    </div> */}
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>IOTA - Logistics</Footer>
             </Layout>
