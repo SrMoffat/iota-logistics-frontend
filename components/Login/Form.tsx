@@ -1,25 +1,12 @@
 import { AccountBookOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Form, Row, Col, Divider, Input } from 'antd';
 
-import { signupUser } from '../../lib/users';
+import { loginUser } from '../../lib/users';
 
-import LoginSection from './Login';
-import Footer from './Footer';
+import LoginSection from '../Signup/Login';
+import Footer from '../Signup/Footer';
 
 const formItems = [
-    {
-        name: "username",
-        type: "text",
-        rules: [
-            {
-                type: "string",
-                message: "Username is required",
-                required: true,
-            },
-        ],
-        placeholder: "Jane Doe",
-        icon: <AccountBookOutlined />,
-    },
     {
         name: "email",
         type: "text",
@@ -75,7 +62,7 @@ const FormContainer = () => {
     const [FormInstance] = Form.useForm();
 
     const signUp = async (details) => {
-        await signupUser();
+        await loginUser();
     };
 
     const onFinishFailed = error => {
@@ -87,14 +74,14 @@ const FormContainer = () => {
         <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
             <Row style={formParentStyle} className="hoverable">
                 <LoginSection
-                    cta="Login"
-                    title="Welcome Back!"
-                    description="To keep connected with us, sign in with your personal info<"
+                    cta="Sign Up"
+                    title="No Account?"
+                    description="To keep connected with us, sign up with your info for an account"
                 />
 
                 <Col xs={{ span: 20 }} md={{ span: 12 }} style={{ minHeight: "60vh" }}>
                     <section style={{ padding: 60 }}>
-                        <Divider orientation="left">Sign Up to Create Account</Divider>
+                        <Divider orientation="left">Login to Your Account</Divider>
                         <section style={{ padding: "20px 0px", display: "flex", justifyContent: "space-around" }}>
                             {/* {loading && <Spin />}
                                         {errors && <section>Server unreachable </section>}
@@ -124,7 +111,7 @@ const FormContainer = () => {
                             autoComplete="off"
                         >
                             <FormFields formItems={formItems} />
-                            <Footer text="Have an account?" cta="Login" cta2="Sign Up" />
+                            <Footer text="Don't have an account?" cta="Signup" cta2="Login" />
                         </Form>
                     </section>
                 </Col>
