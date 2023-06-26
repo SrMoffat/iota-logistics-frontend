@@ -8,12 +8,7 @@ import { useRouter } from 'next/router';
 
 import { signupUser } from '../lib/users';
 
-const formParentStyle = {
-    border: "0.1px solid rgba(0,0,0,0.1)",
-    borderRadius: 15,
-    backgroundColor: "white",
-    overflow: "hidden",
-};
+
 
 const infoBlockStyle = {
     height: "100%",
@@ -143,8 +138,14 @@ const Footer = (props) => {
     )
 };
 
-const SignUp = () => {
-    const router = useRouter();
+const FormContainer = () => {
+    const formParentStyle = {
+        border: "0.1px solid rgba(0,0,0,0.1)",
+        borderRadius: 15,
+        backgroundColor: "white",
+        overflow: "hidden",
+    };
+
     const [FormInstance] = Form.useForm();
 
     const signUp = async (details) => {
@@ -154,6 +155,61 @@ const SignUp = () => {
     const onFinishFailed = error => {
         console.log(error);
     };
+
+
+    return (
+        <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
+            <Row style={formParentStyle} className="hoverable">
+                <LoginSection
+                    cta="Login"
+                    title="Welcome Back!"
+                    description="To keep connected with us, sign in with your personal info<"
+                />
+
+                <Col xs={{ span: 20 }} md={{ span: 12 }} style={{ minHeight: "60vh" }}>
+                    <section style={{ padding: 60 }}>
+                        <Divider orientation="left">Sign Up to Create Account</Divider>
+                        <section style={{ padding: "20px 0px", display: "flex", justifyContent: "space-around" }}>
+                            {/* {loading && <Spin />}
+                                        {errors && <section>Server unreachable </section>}
+                                        {authError && <Alert type="error" showIcon message={authError} />}
+                                        {requestMessage && <Alert type="success" showIcon message={requestMessage} />} */}
+                        </section>
+                        <Form
+                            form={FormInstance}
+                            layout="vertical"
+                            name="signupform"
+                            initialValues={{ remember: true }}
+                            onFinishFailed={onFinishFailed}
+                            onFinish={async values => {
+                                const res = await signUp(values);
+                                console.log('res==>', res)
+                                // if (errors) {
+                                //     return false;
+                                // }
+                                // if (error?.field) {
+                                //     return setAuthError(error?.message);
+                                // }
+                                // // on successfull account request, inform user to check their email
+                                // if (message) {
+                                //     return router.push("/instructions?message=Verify your email");
+                                // }
+                            }}
+                            autoComplete="off"
+                        >
+                            <FormFields formItems={formItems} />
+                            <Footer text="Have an account?" cta="Login" cta2="Request Access" />
+                        </Form>
+                    </section>
+                </Col>
+            </Row>
+        </Col>
+    )
+
+};
+
+const SignUp = () => {
+    const router = useRouter();
     return (
         <Layout>
             <Header title="Sign Up" />
@@ -164,55 +220,7 @@ const SignUp = () => {
             >
                 <Row justify="space-around" align="middle" style={{ minHeight: "100vh" }}>
                     <Logo />
-                    <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
-                        <Row style={formParentStyle} className="hoverable">
-                            <LoginSection
-                                cta="Login"
-                                title="Welcome Back!"
-                                description="To keep connected with us, sign in with your personal info<"
-                            />
-
-                            <Col xs={{ span: 20 }} md={{ span: 12 }} style={{ minHeight: "60vh" }}>
-                                <section style={{ padding: 60 }}>
-                                    <Divider orientation="left">Request access to create your Account</Divider>
-                                    <section style={{ padding: "20px 0px", display: "flex", justifyContent: "space-around" }}>
-                                        {/* {loading && <Spin />}
-                                        {errors && <section>Server unreachable </section>}
-                                        {authError && <Alert type="error" showIcon message={authError} />}
-                                        {requestMessage && <Alert type="success" showIcon message={requestMessage} />} */}
-                                    </section>
-                                    <Form
-                                        form={FormInstance}
-                                        layout="vertical"
-                                        name="signupform"
-                                        initialValues={{ remember: true }}
-                                        onFinishFailed={onFinishFailed}
-                                        onFinish={async values => {
-                                            const res = await signUp(values);
-                                            console.log('res==>', res)
-
-                                            // if (errors) {
-                                            //     return false;
-                                            // }
-
-                                            // if (error?.field) {
-                                            //     return setAuthError(error?.message);
-                                            // }
-
-                                            // // on successfull account request, inform user to check their email
-                                            // if (message) {
-                                            //     return router.push("/instructions?message=Verify your email");
-                                            // }
-                                        }}
-                                        autoComplete="off"
-                                    >
-                                        <FormFields formItems={formItems} />
-                                        <Footer text="Have an account?" cta="Login" cta2="Request Access" />
-                                    </Form>
-                                </section>
-                            </Col>
-                        </Row>
-                    </Col>
+                    <FormContainer />
                 </Row>
             </Layout.Content>
         </Layout>
