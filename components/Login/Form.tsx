@@ -1,4 +1,4 @@
-import { AccountBookOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Form, Row, Col, Divider, Input } from 'antd';
 
 import { loginUser } from '../../lib/users';
