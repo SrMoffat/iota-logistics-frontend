@@ -3,12 +3,12 @@ import Link from "next/link";
 import { Form, Row, Col, Button } from 'antd';
 
 const Footer = (props) => {
-    const { text, cta, cta2 } = props;
+    const { text, cta, cta2, ctaHref } = props;
     return (
         <Row align="middle">
             <Col sm={{ span: 24 }} md={{ span: 15 }}>
                 {text} &nbsp;
-                <Link href="/signin" passHref>
+                <Link href={ctaHref} passHref>
                     {cta}
                 </Link>
             </Col>

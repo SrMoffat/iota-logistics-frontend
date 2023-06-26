@@ -88,6 +88,7 @@ const FormContainer = () => {
             <Row style={formParentStyle} className="hoverable">
                 <LoginSection
                     cta="Login"
+                    ctaHref="/signin"
                     title="Welcome Back!"
                     description="To keep connected with us, sign in with your personal info<"
                 />
@@ -124,7 +125,7 @@ const FormContainer = () => {
                             autoComplete="off"
                         >
                             <FormFields formItems={formItems} />
-                            <Footer text="Have an account?" cta="Login" cta2="Sign Up" />
+                            <Footer text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
                         </Form>
                     </section>
                 </Col>

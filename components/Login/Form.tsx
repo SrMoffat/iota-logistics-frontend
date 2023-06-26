@@ -75,6 +75,7 @@ const FormContainer = () => {
             <Row style={formParentStyle} className="hoverable">
                 <LoginSection
                     cta="Sign Up"
+                    ctaHref="/signup"
                     title="No Account?"
                     description="To keep connected with us, sign up with your info for an account"
                 />
@@ -111,7 +112,7 @@ const FormContainer = () => {
                             autoComplete="off"
                         >
                             <FormFields formItems={formItems} />
-                            <Footer text="Don't have an account?" cta="Signup" cta2="Login" />
+                            <Footer text="Don't have an account?" cta="Signup" cta2="Login" ctaHref="/signup" />
                         </Form>
                     </section>
                 </Col>
