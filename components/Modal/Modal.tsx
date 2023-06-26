@@ -3,9 +3,6 @@ import { Button, Modal } from 'antd';
 
 const CModal = (props) => {
     const { open, setOpen, confirmLoading, setConfirmLoading, modalText, setModalText } = props;
-
-    
-
     return (
         <>
             <Modal
