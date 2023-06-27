@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Form,
     Input,
@@ -12,21 +12,31 @@ import {
 import FormComponent from '../Form/Form';
 import FormFields from '../Form/Fields';
 import { FORM_ITEMS } from '../../lib/constants';
+import { ItemDetails } from '../../contexts/ItemProvider';
+
 
 const { TextArea } = Input;
 const { Title } = Typography;
 
-export const StepOne = () => {
+export interface StepProps {
+    updateItemDetails: (details: ItemDetails) => void
+}
+
+export const StepOne = (props: StepProps) => {
+    const { updateItemDetails } = props;
     const [name, setItemName] = useState<string>();
     const [colour, setItemColour] = useState<string>();
     const [quantity, setItemQuantity] = useState<number>();
     const [description, setItemDescription] = useState<string>();
-    console.log({
-        name,
-        description,
-        quantity,
-        colour
-    })
+    useEffect(() => {
+        console.log("Changed");
+        updateItemDetails({
+            name,
+            description,
+            quantity,
+            colour
+        })
+    }, [name, description, quantity, colour])
     return (
         <Form
             layout="vertical"
@@ -49,19 +59,25 @@ export const StepOne = () => {
         </Form>
     )
 }
-export const StepTwo = () => {
+export const StepTwo = (props: StepProps) => {
+    const { updateItemDetails } = props;
     const [handling, setItemHandling] = useState<string>();
     const [supplier, setItemSupplier] = useState<string>();
     const [manufacturer, setItemManufacturer] = useState<string>();
     const [category, setItemCategory] = useState<string | number>();
     const [instructions, setItemHandlingInstructions] = useState<string>();
-    console.log({
-        category,
-        handling,
-        manufacturer,
-        supplier,
-        instructions
-    })
+    useEffect(() => {
+        console.log("Changed");
+        updateItemDetails({
+            category,
+            handling: {
+                type: handling,
+                instructions
+            },
+            manufacturer,
+            supplier
+        })
+    }, [handling, supplier, manufacturer, category, instructions])
     return (
         <Form
             layout="vertical"
@@ -96,17 +112,22 @@ export const StepTwo = () => {
         </Form>
     )
 }
-export const StepThree = () => {
+export const StepThree = (props: StepProps) => {
+    const { updateItemDetails } = props;
     const [height, setItemHeight] = useState<number>();
     const [length, setItemLength] = useState<number>();
     const [width, setItemWidth] = useState<number>();
     const [units, setUnits] = useState<string>();
-    console.log({
-        height,
-        length,
-        width,
-        units
-    })
+    useEffect(() => {
+        updateItemDetails({
+            dimensions: {
+                height,
+                length,
+                width,
+                units
+            }
+        })
+    }, [height, length, width, units])
     return (
         <Form
             labelCol={{ span: 6 }}
@@ -115,7 +136,7 @@ export const StepThree = () => {
             style={{ maxWidth: 600 }}
         >
             <Form.Item label="Height">
-                <InputNumber onChange={e => setItemHeight(Number(e))}/>
+                <InputNumber onChange={e => setItemHeight(Number(e))} />
             </Form.Item>
             <Form.Item label="Width">
                 <InputNumber onChange={e => setItemWidth(Number(e))} />
@@ -133,7 +154,7 @@ export const StepThree = () => {
         </Form>
     )
 }
-export const StepFour = () => {
+export const StepFour = (props: StepProps) => {
     return (
         <>
             <Title level={5}>

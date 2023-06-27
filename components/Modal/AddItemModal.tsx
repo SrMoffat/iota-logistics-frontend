@@ -3,12 +3,12 @@ import { omit } from 'lodash';
 import { Button, Modal, Steps, theme, message } from 'antd';
 
 import { ITEM_CREATION_STEPS } from '../../lib/constants';
+import { useItemContext } from '../../contexts/ItemProvider';
 import { StepOne, StepTwo, StepThree, StepFour } from './steps';
 
 const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
 const AddItemModal = (props) => {
-    const { token } = theme.useToken();
     const {
         open,
         prev,
@@ -18,6 +18,9 @@ const AddItemModal = (props) => {
         handleCancel,
         confirmLoading
     } = props;
+    const { token } = theme.useToken();
+    const { updateItemDetails } = useItemContext();
+    const isLastStep = steps.length - 1 == current;
     const contentStyle: React.CSSProperties = {
         color: token.colorTextTertiary,
         backgroundColor: token.colorFillAlter,
@@ -27,18 +30,24 @@ const AddItemModal = (props) => {
         padding: 16,
     };
     const renderSteps = (current: number) => {
+        const stepProps = {
+            updateItemDetails
+        };
         switch (current) {
             case 0:
-                return <StepOne />
+                return <StepOne {...stepProps} />
             case 1:
-                return <StepTwo />
+                return <StepTwo {...stepProps} />
             case 2:
-                return <StepThree />
+                return <StepThree {...stepProps} />
             case 3:
-                return <StepFour />
+                return <StepFour {...stepProps} />
         }
     }
-    const isLastStep = steps.length - 1 == current;
+    const updateItem = (event: React.SyntheticEvent) => {
+        next()
+
+    }
     return (
         <Modal
             title="Create Item"
@@ -56,7 +65,7 @@ const AddItemModal = (props) => {
             </div>
             <div style={{ marginTop: 24 }}>
                 {current < steps.length - 1 && (
-                    <Button type="primary" onClick={() => next()}>
+                    <Button type="primary" onClick={updateItem}>
                         Next
                     </Button>
                 )}
