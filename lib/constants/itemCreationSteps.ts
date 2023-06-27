@@ -1,3 +1,31 @@
+const NAME_FIELD = {
+    name: "name",
+    type: "text",
+    rules: [
+        {
+            type: "string",
+            message: "Item name is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "Laptop",
+    // icon: AccountBookOutlined,
+}
+const DESCRIPTION_FIELD = {
+    name: "description",
+    type: "textarea",
+    rules: [],
+    placeholder: "Apple MacBook Pro 2022 M1 Chip",
+    // icon: AccountBookOutlined,
+}
+const CATEGORY_FIELD = {
+    name: "category",
+    type: "textarea",
+    rules: [],
+    placeholder: "Apple MacBook Pro 2022 M1 Chip",
+    // icon: AccountBookOutlined,
+}
+
 export default [
     {
         title: 'General',
@@ -17,11 +45,11 @@ export default [
  * 1. General Information
  * name - text input
  * description - text input
- * category - dropdwon select
  * quantity - number input
  * colour - color picker
  * 
  * 2. Logistics Information
+ * category - dropdwon select
  * supplier - text input
  * manufacturer - text input
  * handling - dropdwon select

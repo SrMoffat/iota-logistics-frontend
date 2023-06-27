@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Modal, Steps, theme, message } from 'antd';
 
 import { ITEM_CREATION_STEPS } from '../../lib/constants';
+import { StepOne, StepTwo, StepThree } from './steps';
 
 const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
@@ -22,6 +23,16 @@ const AddItemModal = (props) => {
         border: `1px dashed ${token.colorBorder}`,
         marginTop: 16,
     };
+    const renderSteps = (current: number) => {
+        switch (current) {
+            case 0:
+                return <StepOne />
+            case 1:
+                return  <StepTwo />
+            case 2:
+                return  <StepThree />
+        }
+    }
     return (
         <Modal
             title="Title"
@@ -29,7 +40,9 @@ const AddItemModal = (props) => {
             footer={null}
         >
             <Steps current={current} items={steps} />
-            <div style={contentStyle}>{steps[current].content}</div>
+            <div style={contentStyle}>
+                {renderSteps(current)}
+            </div>
             <div style={{ marginTop: 24 }}>
                 {current < steps.length - 1 && (
                     <Button type="primary" onClick={() => next()}>
