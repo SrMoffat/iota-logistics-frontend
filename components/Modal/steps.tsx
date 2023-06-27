@@ -125,9 +125,9 @@ export const StepThree = () => {
             </Form.Item>
             <Form.Item label="Units">
                 <Select onChange={e => setUnits(e)}>
-                    <Select.Option value="demo">Centimeters</Select.Option>
-                    <Select.Option value="demo">Milimieters</Select.Option>
-                    <Select.Option value="demo">Meters</Select.Option>
+                    <Select.Option value="Centimeters">Centimeters</Select.Option>
+                    <Select.Option value="Milimieters">Milimieters</Select.Option>
+                    <Select.Option value="Meters">Meters</Select.Option>
                 </Select>
             </Form.Item>
         </Form>
