@@ -265,6 +265,14 @@ const Dashboard = () => {
                             </span>
                         }
                     />
+                ) : !milestoneItems?.length ? (
+                    <Empty
+                        description={
+                            <span>
+                                Select a milestone above to view items
+                            </span>
+                        }
+                    />
                 ) : (
                     <CustomTable
                         columns={columns}
