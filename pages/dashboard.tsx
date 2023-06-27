@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { useQuery } from '@tanstack/react-query';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import {
     Col,
@@ -12,20 +13,17 @@ import {
     Avatar,
     Statistic,
     Segmented,
+    message
 } from 'antd';
+
 
 import GeneralLayout from '../components/Layout/General';
 import AddItemModal from '../components/Modal/AddItemModal';
 
 import { ItemProvider } from '../contexts'
+import { DataType } from '../lib/types';
+import { fetchCategories, fetchCurrencies, fetchEvents, fetchItems, fetchMilestones, fetchUsers } from '../lib/statistics';
 
-interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-    tags: string[];
-}
 
 const data: DataType[] = [
     {
@@ -104,6 +102,60 @@ const Dashboard = () => {
     const [current, setCurrent] = useState(0);
     const [confirmLoading, setConfirmLoading] = useState(false);
 
+    const { isLoading: categoriesLoading, data: categories, error: categoryError } = useQuery({
+        queryKey: ['categories'],
+        queryFn: async () => {
+            const res = await fetchCategories()
+            return {
+                categories: res
+            }
+        },
+    })
+    const { isLoading: currenciesLoading, data: currencies, error: currencyError } = useQuery({
+        queryKey: ['currencies'],
+        queryFn: async () => {
+            const res = await fetchCurrencies()
+            return {
+                currencies: res
+            }
+        },
+    })
+    const { isLoading: eventsLoading, data: events, error: eventsError } = useQuery({
+        queryKey: ['events'],
+        queryFn: async () => {
+            const res = await fetchEvents()
+            return {
+                events: res
+            }
+        },
+    })
+    const { isLoading: itemsLoading, data: items, error: itemsError } = useQuery({
+        queryKey: ['items'],
+        queryFn: async () => {
+            const res = await fetchItems()
+            return {
+                items: res
+            }
+        },
+    })
+    const { isLoading: milestonesLoading, data: milestones, error: milestonesError } = useQuery({
+        queryKey: ['milestones'],
+        queryFn: async () => {
+            const res = await fetchMilestones()
+            return {
+                milestones: res
+            }
+        },
+    })
+    const { isLoading: usersLoading, data: usersData, error: usersError } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await fetchUsers()
+            return {
+                users: res
+            }
+        },
+    })
     const handleShowCreateItemModal = () => {
         setOpen(true);
     };
@@ -125,6 +177,37 @@ const Dashboard = () => {
         setCurrent(current - 1);
     };
 
+    console.log("Datcategoriesa==>", categories);
+    console.log("Datacurrencies==>", currencies);
+    console.log("Dataevents==>", events);
+    console.log("Dataitems==>", items);
+    console.log("Datamilestoness==>", milestones);
+    console.log("Datamiusers==>", usersData);
+
+    useEffect(() => {
+        const error = categoryError as Error
+        error && message.error(error?.message)
+    }, [categoryError])
+    useEffect(() => {
+        const error = currencyError as Error
+        error && message.error(error?.message)
+    }, [currencyError])
+    useEffect(() => {
+        const error = eventsError as Error
+        error && message.error(error?.message)
+    }, [eventsError])
+    useEffect(() => {
+        const error = itemsError as Error
+        error && message.error(error?.message)
+    }, [itemsError])
+    useEffect(() => {
+        const error = milestonesError as Error
+        error && message.error(error?.message)
+    }, [milestonesError])
+    useEffect(() => {
+        const error = usersError as Error
+        error && message.error(error?.message)
+    }, [usersError])
     return (
         <ItemProvider>
             <AddItemModal
@@ -139,7 +222,7 @@ const Dashboard = () => {
             <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">
                 <Row gutter={16}>
                     <Col span={4}>
-                        <Card bordered={false}>
+                        <Card bordered={true} loading={categoriesLoading}>
                             <Statistic
                                 title="Categories"
                                 value={11.28}
@@ -151,9 +234,10 @@ const Dashboard = () => {
                         </Card>
                     </Col>
                     <Col span={4}>
-                        <Card bordered={false}>
+                        <Card bordered={true}>
                             <Statistic
                                 title="Currencies"
+                                loading={currenciesLoading}
                                 value={9.3}
                                 precision={2}
                                 valueStyle={{ color: '#cf1322' }}
@@ -163,9 +247,10 @@ const Dashboard = () => {
                         </Card>
                     </Col>
                     <Col span={4}>
-                        <Card bordered={false}>
+                        <Card bordered={true}>
                             <Statistic
                                 title="Events"
+                                loading={eventsLoading}
                                 value={11.28}
                                 precision={2}
                                 valueStyle={{ color: '#3f8600' }}
@@ -175,10 +260,11 @@ const Dashboard = () => {
                         </Card>
                     </Col>
                     <Col span={4}>
-                        <Card bordered={false}>
+                        <Card bordered={true}>
                             <Statistic
                                 title="Items"
                                 value={9.3}
+                                loading={itemsLoading}
                                 precision={2}
                                 valueStyle={{ color: '#cf1322' }}
                                 prefix={<ArrowDownOutlined />}
@@ -187,9 +273,10 @@ const Dashboard = () => {
                         </Card>
                     </Col>
                     <Col span={4}>
-                        <Card bordered={false}>
+                        <Card bordered={true}>
                             <Statistic
                                 title="Milestones"
+                                loading={milestonesLoading}
                                 value={11.28}
                                 precision={2}
                                 valueStyle={{ color: '#3f8600' }}
@@ -199,9 +286,10 @@ const Dashboard = () => {
                         </Card>
                     </Col>
                     <Col span={4}>
-                        <Card bordered={false}>
+                        <Card bordered={true}>
                             <Statistic
                                 title="Users"
+                                loading={usersLoading}
                                 value={9.3}
                                 precision={2}
                                 valueStyle={{ color: '#cf1322' }}

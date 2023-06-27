@@ -44,3 +44,12 @@ export async function loginUser(details: UserLoginDetails): Promise<LoggedInUser
         throw new Error(error)
     }
 }
+
+export const fetchJwt = (): string | null => {
+    const localUser = localStorage.getItem(GENERAL_CONSTANTS.USER_STORAGE_KEY)
+    const sessionUser = sessionStorage.getItem(GENERAL_CONSTANTS.USER_STORAGE_KEY)
+    const user = sessionUser || localUser
+  
+    return user ? JSON.parse(user).jwt : null
+  }
+  
