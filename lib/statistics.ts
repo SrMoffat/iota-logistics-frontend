@@ -10,7 +10,7 @@ interface RequestDetails {
     method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET';
     body?: Object;
 }
-const makeRequest = async (details: RequestDetails) => {
+export const makeRequest = async (details: RequestDetails) => {
     const { url, method } = details;
     const res = await fetch(`${url}`, {
         method,
@@ -21,7 +21,7 @@ const makeRequest = async (details: RequestDetails) => {
     });
     return await res.json();
 };
-const handleResponse = (data: Object) => {
+export const handleResponse = (data: Object) => {
     const hasErrors = get(data, 'error');
     if (hasErrors) {
         const status = get(hasErrors, 'status');
