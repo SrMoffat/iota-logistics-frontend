@@ -163,7 +163,8 @@ export const StepFour = (props: ItemDetails) => {
         manufacturer,
         handling,
         supplier,
-        category
+        category,
+        colour
     } = props;
     const { height, width, length, units } = dimensions;
     const { type, instructions } = handling;
@@ -185,7 +186,7 @@ export const StepFour = (props: ItemDetails) => {
                     </Tag>
                 </Descriptions.Item>
                 <Descriptions.Item label="Color" span={2}>
-                    <ColorPicker disabled />
+                    <ColorPicker disabled value={colour} />
                 </Descriptions.Item>
             </Descriptions>
             <Title level={5}>
