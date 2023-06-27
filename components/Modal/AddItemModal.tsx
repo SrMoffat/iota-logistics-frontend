@@ -19,13 +19,13 @@ const AddItemModal = (props) => {
         confirmLoading
     } = props;
     const contentStyle: React.CSSProperties = {
-        lineHeight: '260px',
-        textAlign: 'center',
+        // lineHeight: '260px',
+        // textAlign: 'center',
         color: token.colorTextTertiary,
         backgroundColor: token.colorFillAlter,
         borderRadius: token.borderRadiusLG,
         border: `1px dashed ${token.colorBorder}`,
-        marginTop: 16,
+        marginTop: 10,
         padding: 16,
     };
     const renderSteps = (current: number) => {
@@ -45,6 +45,7 @@ const AddItemModal = (props) => {
         <Modal
             title="Create Item"
             open={open}
+            width={600}
             footer={null}
             onOk={handleOk}
             onCancel={handleCancel}

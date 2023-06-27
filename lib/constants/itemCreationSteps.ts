@@ -33,4 +33,7 @@ export default [
  * 3. Specific Information
  * dimensions - number inputs then dropdown for units
  * weight - number inputs then dropdown for units
+ * 
+ * 
+ * 
  */
