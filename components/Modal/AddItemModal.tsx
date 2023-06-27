@@ -1,8 +1,9 @@
 import React from 'react';
+import { omit } from 'lodash';
 import { Button, Modal, Steps, theme, message } from 'antd';
 
 import { ITEM_CREATION_STEPS } from '../../lib/constants';
-import { StepOne, StepTwo, StepThree } from './steps';
+import { StepOne, StepTwo, StepThree, StepFour } from './steps';
 
 const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
@@ -36,9 +37,10 @@ const AddItemModal = (props) => {
             case 2:
                 return <StepThree />
             case 3:
-                return <StepThree />
+                return <StepFour />
         }
     }
+    const isLastStep = steps.length - 1 == current;
     return (
         <Modal
             title="Create Item"
@@ -47,9 +49,10 @@ const AddItemModal = (props) => {
             onOk={handleOk}
             onCancel={handleCancel}
             confirmLoading={confirmLoading}
+            style={{ padding: 20 }}
         >
             <Steps current={current} items={steps} />
-            <div style={contentStyle}>
+            <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
                 {renderSteps(current)}
             </div>
             <div style={{ marginTop: 24 }}>
@@ -58,7 +61,7 @@ const AddItemModal = (props) => {
                         Next
                     </Button>
                 )}
-                {current === steps.length - 1 && (
+                {isLastStep && (
                     <Button type="primary" onClick={() => message.success('Processing complete!')}>
                         Done
                     </Button>

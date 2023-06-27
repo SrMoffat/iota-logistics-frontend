@@ -1,14 +1,19 @@
 import React from 'react';
-import { ColorPicker } from 'antd';
+import { ColorPicker, Descriptions } from 'antd';
 
 import {
     Form,
     Input,
     InputNumber,
     Select,
+    Tag,
+    Popconfirm,
+    Button,
+    Typography
 } from 'antd';
 
 const { TextArea } = Input;
+const { Title, Text } = Typography;
 
 export const StepOne = () => {
     return (
@@ -89,6 +94,63 @@ export const StepThree = () => {
                     <Select.Option value="demo">Meters</Select.Option>
                 </Select>
             </Form.Item>
+        </Form>
+    )
+}
+export const StepFour = () => {
+    return (
+        <Form>
+            <Title>
+                General Information
+            </Title>
+            <Descriptions bordered size="middle" column={2} style={{ margin: -24 }}>
+                <Descriptions.Item label="Status" span={1}>
+                    {true ? (
+                        <Tag color="green">
+                            OPEN
+                        </Tag>
+                    ) : (
+                        <Tag color="red">
+                            CLOSED
+                        </Tag>
+                    )}
+                </Descriptions.Item>
+                <Descriptions.Item span={1} label="Update">
+                    {true ? (
+                        <Popconfirm
+                            trigger="click"
+                            title="Closing will make operation readonly"
+                            onConfirm={() => {
+                                console.log("here")
+                            }}
+                            placement="bottom"
+                        >
+                            <Button size="middle" type="primary" shape="round">
+                                Close
+                            </Button>
+                        </Popconfirm>
+                    ) : (
+                        <Popconfirm
+                            trigger="click"
+                            title="Related entities will be reactivated"
+                            onConfirm={() => {
+                                console.log("here")
+                            }}
+                            placement="bottom"
+                        >
+                            <Button size="middle" shape="round">
+                                Reopen
+                            </Button>
+                        </Popconfirm>
+                    )}
+                </Descriptions.Item>
+                <Descriptions.Item label="Description" span={2}>
+                    Descrojnscnkjscnksdcnkncjsnkjnsdc
+                </Descriptions.Item>
+                <Descriptions.Item label="Targets" span={2}>
+                    The team identified 10suspects
+                </Descriptions.Item>
+            </Descriptions>
         </Form>
     )
 }
