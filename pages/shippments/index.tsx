@@ -1,26 +1,8 @@
-import React, { useState } from 'react';
-import {
-    UserOutlined,
-    BellOutlined,
-    AppstoreOutlined,
-    CodeSandboxOutlined,
-    NodeCollapseOutlined,
-    DeploymentUnitOutlined,
-} from '@ant-design/icons';
-import {
-    Tag,
-    Menu,
-    theme,
-    Button,
-    Space,
-    Layout,
-    Table,
-} from 'antd';
-
+import React from 'react';
+import { Tag, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
-const { Header, Content, Footer, Sider } = Layout;
-
+import GeneralLayout from '../../components/Layout/General';
 interface DataType {
     key: string;
     name: string;
@@ -100,74 +82,10 @@ const Shippment = () => {
             ),
         },
     ];
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
-    const [open, setOpen] = useState(false);
-    const handleShowCreateItemModal = () => {
-        setOpen(true);
-    };
-    const siderOptions = [
-        {
-            icon: <AppstoreOutlined />,
-            label: 'Dashboard'
-        },
-        {
-            icon: <CodeSandboxOutlined />,
-            label: 'Products'
-        },
-        {
-            icon: <DeploymentUnitOutlined />,
-            label: 'Shippments'
-        },
-        {
-            icon: <BellOutlined />,
-            label: 'Notifications'
-        },
-        {
-            icon: <NodeCollapseOutlined />,
-            label: 'Returns'
-        },
-        {
-            icon: <UserOutlined />,
-            label: 'Profile'
-        }
-    ];
-    const items = siderOptions.map((entry, index) => {
-        const key = index + 1;
-        return {
-            key,
-            icon: entry.icon,
-            label: entry.label,
-        };
-    });
     return (
-        <Layout hasSider>
-            <Sider
-                style={{
-                    overflow: 'auto',
-                    height: '100vh',
-                    position: 'fixed',
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                }}
-            >
-                <div className="demo-logo-vertical" />
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={items} />
-            </Sider>
-            <Layout className="site-layout" style={{ marginLeft: 200 }}>
-                <Header style={{ padding: 0, background: colorBgContainer }}>
-                    <Button size="large" type="primary" shape="round" onClick={handleShowCreateItemModal}>
-                        Create Item
-                    </Button>
-                </Header>
-                <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                    <Table columns={columns} dataSource={data} />
-                </Content>
-                <Footer style={{ textAlign: 'center' }}>IOTA - Logistics</Footer>
-            </Layout>
-        </Layout>
+        <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
+            <Table columns={columns} dataSource={data} />
+        </GeneralLayout>
     )
 };
 

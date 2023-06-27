@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-
-import { isEqual, get } from 'lodash';
+import { isEqual } from 'lodash';
 
 import { useBrowserStorage } from '../../lib/hooks';
-import { USER_STORAGE_KEY, API_BASE_URL, HTTP_ERRORS } from '../../lib/constants';
-import { UserData, UserDetails, LoggedInUserDetails, UserLoginDetails } from '../../lib/types';
+import { USER_STORAGE_KEY } from '../../lib/constants';
 import { signupUser, loginUser } from '../../lib/users';
+import { UserData, UserDetails, LoggedInUserDetails, UserLoginDetails } from '../../lib/types';
 
 type AuthProviderProps = {
   user: UserData;
@@ -51,7 +50,7 @@ const AuthProvider = ({ children }) => {
   const login = async (details: UserLoginDetails) => {
     try {
       const response = await loginUser(details);
-      // persistUser(response, rememberMe)
+      persistUser(response, true);
     } catch (error) {
       throw error
     }

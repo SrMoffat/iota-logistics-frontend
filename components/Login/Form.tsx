@@ -1,123 +1,95 @@
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Form, Row, Col, Divider, Input } from 'antd';
+import React, { useState } from 'react';
 
-import { loginUser } from '../../lib/users';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import type { NotificationPlacement } from 'antd/es/notification/interface';
+import { Row, Col, Divider, notification, Spin, Alert } from 'antd';
 
-import LoginSection from '../Signup/Login';
 import Footer from '../Signup/Footer';
+import FormFields from '../Form/Fields';
+import FormComponent from '../Form/Form';
+import LoginSection from '../Signup/Login';
+
+import { UserLoginDetails } from '../../lib/types';
+import { useAuthContext } from '../../contexts/AuthProvider';
+import { FORM_PARENT_STYLES, EMAIL_FIELD, PASSWORD_FIELD } from '../../lib/constants';
 
 const formItems = [
     {
-        name: "email",
-        type: "text",
-        rules: [
-            {
-                type: "email",
-                message: "Email is required",
-                required: true,
-            },
-        ],
-        placeholder: "someone@example.com",
-        icon: <MailOutlined />,
+        ...EMAIL_FIELD,
+        name: 'identifier'
     },
-    {
-        name: "password",
-        type: "text",
-        rules: [
-            {
-                type: "string",
-                message: "Password is required",
-                required: true,
-            },
-        ],
-        placeholder: "*********",
-        icon: <LockOutlined />,
-    },
+    PASSWORD_FIELD
 ];
 
-const FormFields = (props) => {
-    const { formItems } = props;
-    return formItems.map(entry => {
-        const { name, rules, placeholder, icon, type } = entry;
-
-        return (
-            <Form.Item
-                name={name}
-                rules={rules}
-            >
-                <Input type={type} placeholder={placeholder} prefix={icon} />
-            </Form.Item>
-        )
-    })
-};
-
 const FormContainer = () => {
-    const formParentStyle = {
-        border: "0.1px solid rgba(0,0,0,0.1)",
-        borderRadius: 15,
-        backgroundColor: "white",
-        overflow: "hidden",
+    const { push } = useRouter();
+    const [error, setError] = useState('');
+    const { login, user } = useAuthContext();
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement: NotificationPlacement) => {
+        api.success({
+            message: 'Successfully Logged In',
+            description: `Congrats ${user?.username}! Your account has been regsitered.`,
+            placement,
+        });
     };
-
-    const [FormInstance] = Form.useForm();
-
-    const signUp = async (details) => {
-        await loginUser();
-    };
-
+    const { mutateAsync, isError, isLoading, isSuccess } = useMutation({
+        mutationFn: async (details: UserLoginDetails) => {
+            return await login(details);
+        },
+        onError: (error: Error) => {
+            setError(error.message)
+        },
+        onSuccess: () => {
+            openNotification('top')
+            setTimeout(() => {
+                push('/dashboard');
+            }, 500);
+        },
+    })
     const onFinishFailed = error => {
         console.log(error);
     };
-
-
+    const onFinish = async (values: UserLoginDetails) => {
+        await mutateAsync(values)
+    };
     return (
-        <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
-            <Row style={formParentStyle} className="hoverable">
-                <LoginSection
-                    cta="Sign Up"
-                    ctaHref="/signup"
-                    title="No Account?"
-                    description="To keep connected with us, sign up with your info for an account"
-                />
+        <>
+            {contextHolder}
+            <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
+                <Row style={FORM_PARENT_STYLES} className="hoverable">
+                    <LoginSection
+                        cta="Sign Up"
+                        ctaHref="/signup"
+                        title="No Account?"
+                        description="To keep connected with us, sign up with your info for an account"
+                    />
 
-                <Col xs={{ span: 20 }} md={{ span: 12 }} style={{ minHeight: "60vh" }}>
-                    <section style={{ padding: 60 }}>
-                        <Divider orientation="left">Login to Your Account</Divider>
-                        <section style={{ padding: "20px 0px", display: "flex", justifyContent: "space-around" }}>
-                            {/* {loading && <Spin />}
-                                        {errors && <section>Server unreachable </section>}
-                                        {authError && <Alert type="error" showIcon message={authError} />}
-                                        {requestMessage && <Alert type="success" showIcon message={requestMessage} />} */}
+                    <Col xs={{ span: 20 }} md={{ span: 12 }} style={{ minHeight: "60vh" }}>
+                        <section style={{ padding: 60 }}>
+                            <Divider orientation="left">Login to Your Account</Divider>
+                            <section style={{ padding: "20px 0px", display: "flex", justifyContent: "space-around" }}>
+                                {isLoading && <Spin />}
+                                {isError && <Alert type="error" showIcon message={error} />}
+                                {isSuccess && <Alert type="success" showIcon message="Successfully logged in!" />}
+                            </section>
+                            <FormComponent
+                                name="loginForm"
+                                layout="vertical"
+                                autoComplete="off"
+                                onFinish={onFinish}
+                                onFinishFailed={onFinishFailed}
+                                initialValues={{ remember: true }}
+                            >
+                                <FormFields formItems={formItems} />
+                                <Footer loading={isLoading} text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
+                            </FormComponent>
                         </section>
-                        <Form
-                            form={FormInstance}
-                            layout="vertical"
-                            name="signupform"
-                            initialValues={{ remember: true }}
-                            onFinishFailed={onFinishFailed}
-                            onFinish={async values => {
-                                const res = await signUp(values);
-                                console.log('res==>', res)
-                                // if (errors) {
-                                //     return false;
-                                // }
-                                // if (error?.field) {
-                                //     return setAuthError(error?.message);
-                                // }
-                                // // on successfull account request, inform user to check their email
-                                // if (message) {
-                                //     return router.push("/instructions?message=Verify your email");
-                                // }
-                            }}
-                            autoComplete="off"
-                        >
-                            <FormFields formItems={formItems} />
-                            <Footer text="Don't have an account?" cta="Signup" cta2="Login" ctaHref="/signup" />
-                        </Form>
-                    </section>
-                </Col>
-            </Row>
-        </Col>
+                    </Col>
+                </Row>
+            </Col>
+        </>
     )
 };
 

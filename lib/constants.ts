@@ -1,6 +1,55 @@
-import { AccountBookOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import {
+    LockOutlined,
+    BellOutlined,
+    UserOutlined,
+    LogoutOutlined,
+    AppstoreOutlined,
+    CodeSandboxOutlined,
+    AccountBookOutlined,
+    NodeCollapseOutlined,
+    DeploymentUnitOutlined
+} from "@ant-design/icons";
+import type { MenuProps } from 'antd';
 
 export const USER_STORAGE_KEY = 'iota-user'
+
+const SIDE_MENU_ITEMS = [
+    {
+      href: '/dashboard',
+      title: 'Dashboard',
+      icon: AppstoreOutlined,
+    },
+    {
+      href: '/products',
+      title: 'Products',
+      icon: CodeSandboxOutlined,
+    },
+    {
+      href: '/shippments',
+      title: 'Shippments',
+      icon: DeploymentUnitOutlined,
+    },
+    {
+      href: '/notifications',
+      title: 'Notifications',
+      icon: BellOutlined,
+    },
+    {
+      href: '/returns',
+      title: 'Returns',
+      icon: NodeCollapseOutlined,
+    },
+    {
+      href: '/profile',
+      title: 'Profile',
+      icon: UserOutlined,
+    },
+    {
+      href: '/signin',
+      title: 'Logout',
+      icon: LogoutOutlined,
+    },
+  ];
 
 const HTTP_ERRORS = {
     400: {
@@ -43,46 +92,50 @@ const HTTP_ERRORS = {
 
 const API_BASE_URL = "http://localhost:1337/api";
 
+const USERNAME_FIELD = {
+    name: "username",
+    type: "text",
+    rules: [
+        {
+            type: "string",
+            message: "Username is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "Jane Doe",
+    icon: AccountBookOutlined,
+}
+const EMAIL_FIELD = {
+    name: "email",
+    type: "email",
+    rules: [
+        {
+            type: "string",
+            message: "Email is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "jane@doe.com",
+    icon: AccountBookOutlined,
+}
+const PASSWORD_FIELD = {
+    name: "password",
+    type: "password",
+    rules: [
+        {
+            type: "string",
+            message: "Password is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "***************",
+    icon: LockOutlined,
+}
+
 const FORM_ITEMS = [
-    {
-        name: "username",
-        type: "text",
-        rules: [
-            {
-                type: "string",
-                message: "Username is a required field",
-                required: true,
-            },
-        ],
-        placeholder: "Jane Doe",
-        icon: AccountBookOutlined,
-    },
-    {
-        name: "email",
-        type: "text",
-        rules: [
-            {
-                type: "email",
-                message: "Email is a required field",
-                required: true,
-            },
-        ],
-        placeholder: "someone@example.com",
-        icon: MailOutlined,
-    },
-    {
-        name: "password",
-        type: "password",
-        rules: [
-            {
-                type: "string",
-                message: "Password is a required field",
-                required: true,
-            },
-        ],
-        placeholder: "*********",
-        icon: LockOutlined,
-    },
+    USERNAME_FIELD,
+    EMAIL_FIELD,
+    PASSWORD_FIELD,
 ];
 
 const FORM_PARENT_STYLES = {
@@ -92,9 +145,29 @@ const FORM_PARENT_STYLES = {
     overflow: "hidden",
 };
 
+const CREATE_ITEM_STEPS = [
+    {
+        title: 'First',
+        content: 'First-content',
+    },
+    {
+        title: 'Second',
+        content: 'Second-content',
+    },
+    {
+        title: 'Last',
+        content: 'Last-content',
+    },
+];
+
 export {
     FORM_ITEMS,
-    API_BASE_URL,
     HTTP_ERRORS,
+    EMAIL_FIELD,
+    API_BASE_URL,
+    USERNAME_FIELD,
+    PASSWORD_FIELD,
+    SIDE_MENU_ITEMS,
+    CREATE_ITEM_STEPS,
     FORM_PARENT_STYLES
 }

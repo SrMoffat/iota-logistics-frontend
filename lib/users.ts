@@ -1,9 +1,9 @@
 import { get } from 'lodash';
 
-import { UserDetails, UserLoginDetails } from '../lib/types';
 import { API_BASE_URL, HTTP_ERRORS } from '../lib/constants';
+import { UserDetails, UserLoginDetails, LoggedInUserDetails } from '../lib/types';
 
-export async function signupUser(values: UserDetails) {
+export async function signupUser(values: UserDetails): Promise<LoggedInUserDetails> {
     try {
         const res = await fetch(`${API_BASE_URL}/auth/local/register`, {
             method: 'POST',
@@ -24,11 +24,23 @@ export async function signupUser(values: UserDetails) {
     }
 }
 
-export async function loginUser(details: UserLoginDetails) {
+export async function loginUser(details: UserLoginDetails): Promise<LoggedInUserDetails> {
     try {
-        console.log('Login User');
-
+        const res = await fetch(`${API_BASE_URL}/auth/local`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(details)
+        });
+        const data = await res.json();
+        const hasErrors = get(data, 'error');
+        if (hasErrors) {
+            const status = get(hasErrors, 'status');
+            const errorMessage = get(hasErrors, 'message') || get(HTTP_ERRORS[Number(status)], 'message')
+            throw new Error(errorMessage)
+        } else {
+            return data
+        }
     } catch (error) {
-        throw new Error(`Something went wrong: loginUser`, error)
+        throw new Error(error)
     }
 }

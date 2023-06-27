@@ -37,7 +37,7 @@ const FormContainer = () => {
             openNotification('top')
             setTimeout(() => {
                 push('/dashboard');
-            }, 1000)
+            }, 500)
         },
     })
     const onFinishFailed = error => {
