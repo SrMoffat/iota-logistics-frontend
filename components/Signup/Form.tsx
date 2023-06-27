@@ -1,132 +1,83 @@
-import { AccountBookOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Form, Row, Col, Divider, Input } from 'antd';
+import React, { useState } from 'react';
+
+import { useMutation } from '@tanstack/react-query';
+import { Row, Col, Divider, Spin, Alert } from 'antd';
+
+import Footer from './Footer';
+import LoginSection from './Login';
+import FormFields from '../Form/Fields';
+import FormComponent from '../Form/Form';
 
 import { signupUser } from '../../lib/users';
-
-import LoginSection from './Login';
-import Footer from './Footer';
-
-const formItems = [
-    {
-        name: "username",
-        type: "text",
-        rules: [
-            {
-                type: "string",
-                message: "Username is required",
-                required: true,
-            },
-        ],
-        placeholder: "Jane Doe",
-        icon: <AccountBookOutlined />,
-    },
-    {
-        name: "email",
-        type: "text",
-        rules: [
-            {
-                type: "email",
-                message: "Email is required",
-                required: true,
-            },
-        ],
-        placeholder: "someone@example.com",
-        icon: <MailOutlined />,
-    },
-    {
-        name: "password",
-        type: "text",
-        rules: [
-            {
-                type: "string",
-                message: "Password is required",
-                required: true,
-            },
-        ],
-        placeholder: "*********",
-        icon: <LockOutlined />,
-    },
-];
-
-const FormFields = (props) => {
-    const { formItems } = props;
-    return formItems.map(entry => {
-        const { name, rules, placeholder, icon, type } = entry;
-
-        return (
-            <Form.Item
-                name={name}
-                rules={rules}
-            >
-                <Input type={type} placeholder={placeholder} prefix={icon} />
-            </Form.Item>
-        )
-    })
-};
+import { UserDetails } from '../../lib/types';
+import { useAuthContext } from '../../contexts/AuthProvider';
+import { FORM_ITEMS, FORM_PARENT_STYLES } from '../../lib/constants';
 
 const FormContainer = () => {
-    const formParentStyle = {
-        border: "0.1px solid rgba(0,0,0,0.1)",
-        borderRadius: 15,
-        backgroundColor: "white",
-        overflow: "hidden",
-    };
-
-    const [FormInstance] = Form.useForm();
-
-    const signUp = async (details) => {
-        await signupUser();
-    };
-
+    const { signup, user, logout } = useAuthContext()
+    const [error, setError] = useState('');
+    const { mutateAsync, isError, isLoading, isSuccess } = useMutation({
+        mutationFn: async (details: UserDetails) => {
+            return await signup(details);
+        },
+        onError: (error: Error) => {
+            setError(error.message)
+        },
+        onSuccess(data, variables, context) {
+            // Show toast and redirect to dashboard
+            console.log({
+                data,
+                variables,
+                context
+            })
+        },
+    })
     const onFinishFailed = error => {
-        console.log(error);
+        console.log("error===>", error);
     };
-
-
+    const onFinish = async (values: UserDetails) => {
+        const res = await mutateAsync(values)
+        console.log('res==>', res)
+        // const res = await signUp(values);
+        // if (errors) {
+        //     return false;
+        // }
+        // if (error?.field) {
+        //     return setAuthError(error?.message);
+        // }
+        // // on successfull account request, inform user to check their email
+        // if (message) {
+        //     return router.push("/instructions?message=Verify your email");
+        // }
+    };
     return (
         <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
-            <Row style={formParentStyle} className="hoverable">
+            <Row style={FORM_PARENT_STYLES} className="hoverable">
                 <LoginSection
                     cta="Login"
                     ctaHref="/signin"
                     title="Welcome Back!"
                     description="To keep connected with us, sign in with your personal info<"
                 />
-
                 <Col xs={{ span: 20 }} md={{ span: 12 }} style={{ minHeight: "60vh" }}>
                     <section style={{ padding: 60 }}>
                         <Divider orientation="left">Sign Up to Create Account</Divider>
                         <section style={{ padding: "20px 0px", display: "flex", justifyContent: "space-around" }}>
-                            {/* {loading && <Spin />}
-                                        {errors && <section>Server unreachable </section>}
-                                        {authError && <Alert type="error" showIcon message={authError} />}
-                                        {requestMessage && <Alert type="success" showIcon message={requestMessage} />} */}
+                            {isLoading && <Spin />}
+                            {isError && <Alert type="error" showIcon message={error} />}
+                            {isSuccess && <Alert type="success" showIcon message="Successfully signed up!" />}
                         </section>
-                        <Form
-                            form={FormInstance}
+                        <FormComponent
+                            name="signupForm"
                             layout="vertical"
-                            name="signupform"
-                            initialValues={{ remember: true }}
-                            onFinishFailed={onFinishFailed}
-                            onFinish={async values => {
-                                const res = await signUp(values);
-                                console.log('res==>', res)
-                                // if (errors) {
-                                //     return false;
-                                // }
-                                // if (error?.field) {
-                                //     return setAuthError(error?.message);
-                                // }
-                                // // on successfull account request, inform user to check their email
-                                // if (message) {
-                                //     return router.push("/instructions?message=Verify your email");
-                                // }
-                            }}
                             autoComplete="off"
+                            onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
+                            initialValues={{ remember: true }}
                         >
-                            <FormFields formItems={formItems} />
-                            <Footer text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
-                        </Form>
+                            <FormFields formItems={FORM_ITEMS} />
+                            <Footer loading={isLoading} text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
+                        </FormComponent>
                     </section>
                 </Col>
             </Row>
