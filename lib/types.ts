@@ -65,6 +65,6 @@ export interface DataType {
 export type ItemProviderProps = {
     item: ItemDetails;
     updateItemDetails: (details: ItemDetails) => void;
-    createSupplyChainItem: () => void;
+    createSupplyChainItem: (details: ItemDetails) => Promise<void>;
     setItem: React.Dispatch<React.SetStateAction<ItemDetails | undefined>>
 }

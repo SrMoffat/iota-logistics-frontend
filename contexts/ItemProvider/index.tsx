@@ -14,8 +14,9 @@ const ItemProvider = ({ children }) => {
             ...details
         })
     }
-    const createSupplyChainItem = async () => {
+    const createSupplyChainItem = async (details: ItemDetails) => {
         try {
+            console.log("Details", details);
         } catch (error) {
             throw error
         }
