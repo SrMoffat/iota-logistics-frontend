@@ -43,46 +43,50 @@ const HTTP_ERRORS = {
 
 const API_BASE_URL = "http://localhost:1337/api";
 
+const USERNAME_FIELD =  {
+    name: "username",
+    type: "text",
+    rules: [
+        {
+            type: "string",
+            message: "Username is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "Jane Doe",
+    icon: AccountBookOutlined,
+}
+const EMAIL_FIELD =  {
+    name: "email",
+    type: "email",
+    rules: [
+        {
+            type: "string",
+            message: "Email is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "jane@doe.com",
+    icon: AccountBookOutlined,
+}
+const PASSWORD_FIELD =  {
+    name: "password",
+    type: "password",
+    rules: [
+        {
+            type: "string",
+            message: "Password is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "***************",
+    icon: LockOutlined,
+}
+
 const FORM_ITEMS = [
-    {
-        name: "username",
-        type: "text",
-        rules: [
-            {
-                type: "string",
-                message: "Username is a required field",
-                required: true,
-            },
-        ],
-        placeholder: "Jane Doe",
-        icon: AccountBookOutlined,
-    },
-    {
-        name: "email",
-        type: "text",
-        rules: [
-            {
-                type: "email",
-                message: "Email is a required field",
-                required: true,
-            },
-        ],
-        placeholder: "someone@example.com",
-        icon: MailOutlined,
-    },
-    {
-        name: "password",
-        type: "password",
-        rules: [
-            {
-                type: "string",
-                message: "Password is a required field",
-                required: true,
-            },
-        ],
-        placeholder: "*********",
-        icon: LockOutlined,
-    },
+    USERNAME_FIELD,
+    EMAIL_FIELD,
+    PASSWORD_FIELD,
 ];
 
 const FORM_PARENT_STYLES = {
@@ -94,7 +98,10 @@ const FORM_PARENT_STYLES = {
 
 export {
     FORM_ITEMS,
-    API_BASE_URL,
     HTTP_ERRORS,
+    EMAIL_FIELD,
+    API_BASE_URL,
+    USERNAME_FIELD,
+    PASSWORD_FIELD,
     FORM_PARENT_STYLES
 }

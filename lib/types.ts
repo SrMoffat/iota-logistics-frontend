@@ -19,7 +19,7 @@ export interface LoggedInUserDetails {
     user: UserData
 }
 export type UserLoginDetails =  {
-    email: string;
+    identifier: string;
     password: string;
     rememberMe?: boolean;
 }

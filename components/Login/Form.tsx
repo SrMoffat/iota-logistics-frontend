@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { remove } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import type { NotificationPlacement } from 'antd/es/notification/interface';
@@ -11,13 +10,17 @@ import FormFields from '../Form/Fields';
 import FormComponent from '../Form/Form';
 import LoginSection from '../Signup/Login';
 
-import { loginUser } from '../../lib/users';
-import { UserDetails } from '../../lib/types';
+import { UserLoginDetails } from '../../lib/types';
 import { useAuthContext } from '../../contexts/AuthProvider';
-import { FORM_ITEMS, FORM_PARENT_STYLES } from '../../lib/constants';
+import { FORM_PARENT_STYLES, EMAIL_FIELD, PASSWORD_FIELD } from '../../lib/constants';
 
-const formItems = remove(FORM_ITEMS, (item) => `${item?.name}` === 'username');
-
+const formItems = [
+    {
+        ...EMAIL_FIELD,
+        name: 'identifier'
+    },
+    PASSWORD_FIELD
+];
 
 const FormContainer = () => {
     const { push } = useRouter();
@@ -34,8 +37,8 @@ const FormContainer = () => {
     };
 
     const { mutateAsync, isError, isLoading, isSuccess } = useMutation({
-        mutationFn: async (details: UserDetails) => {
-            return await loginUser(details);
+        mutationFn: async (details: UserLoginDetails) => {
+            return await login(details);
         },
         onError: (error: Error) => {
             setError(error.message)
@@ -44,7 +47,7 @@ const FormContainer = () => {
             openNotification('top')
             setTimeout(() => {
                 push('/dashboard');
-            }, 1000)
+            }, 1000);
         },
     })
 
@@ -52,7 +55,7 @@ const FormContainer = () => {
         console.log(error);
     };
 
-    const onFinish = async (values: UserDetails) => {
+    const onFinish = async (values: UserLoginDetails) => {
         await mutateAsync(values)
     };
     return (
