@@ -212,7 +212,7 @@ const Dashboard = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Row style={{ marginTop: 10 }}>
+                <Row style={{ marginTop: 20 }}>
                     <Col span={24}>
                         <Segmented
                             block
@@ -284,7 +284,7 @@ const Dashboard = () => {
                         />
                     </Col>
                 </Row>
-                <Row>
+                <Row style={{ marginTop: 20 }}>
                     <Col span={24}>
                         <Table columns={columns} dataSource={data} />
                     </Col>
