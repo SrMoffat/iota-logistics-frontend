@@ -1,44 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-export interface Weight {
-    value: number;
-    unit: string;
-}
-export interface Dimensions {
-    length: number;
-    width: number;
-    height: number;
-    units: string;
-}
-export interface Handling {
-    type: string;
-    instructions: string;
-}
-export interface Compliance {
-    customs: string;
-    regulatory: string;
-    certificates: string[];
-}
-export interface ItemDetails {
-    name?: string;
-    quantity?: number;
-    supplier?: string;
-    description?: string;
-    manufacturer?: string;
-    colour?: string;
-    category?: string | number;
-    weight?: Weight;
-    dimensions?: Dimensions;
-    handling?: Handling;
-    compliance?: Compliance;
-}
-
-type ItemProviderProps = {
-    item: ItemDetails;
-    updateItemDetails: (details: ItemDetails) => void;
-    createSupplyChainItem: () => void;
-    setItem: React.Dispatch<React.SetStateAction<ItemDetails | undefined>>
-}
+import { ItemProviderProps,  ItemDetails} from '../../lib/types';
 
 const ItemContext = createContext<Partial<ItemProviderProps>>({})
 
@@ -58,14 +20,10 @@ const ItemProvider = ({ children }) => {
     }
     const createSupplyChainItem = async () => {
         try {
-
         } catch (error) {
             throw error
         }
     }
-    // useEffect(() => {
-    //     console.log("Updat====>", item);
-    // }, [item])
     return (
         <ItemContext.Provider
             value={{

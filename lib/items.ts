@@ -1,5 +1,3 @@
-import { get } from 'lodash';
-
 import { UserDetails, UserLoginDetails } from '../lib/types';
 
 export async function createSupplyChainItem(values: UserDetails): Promise<void> {

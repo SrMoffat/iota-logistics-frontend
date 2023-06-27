@@ -9,7 +9,7 @@ import {
     ColorPicker,
     Descriptions
 } from 'antd';
-import { ItemDetails } from '../../contexts/ItemProvider';
+import { ItemDetails } from '../../lib/types';
 
 const { TextArea } = Input;
 const { Title } = Typography;

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { UserOutlined } from '@ant-design/icons';
+import type { ColumnsType } from 'antd/es/table';
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import {
     Col,
     Row,
@@ -10,15 +13,11 @@ import {
     Statistic,
     Segmented,
 } from 'antd';
-import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
 import GeneralLayout from '../components/Layout/General';
 import AddItemModal from '../components/Modal/AddItemModal';
 
-import { UserOutlined } from '@ant-design/icons';
 import { ItemProvider } from '../contexts'
-
-import type { ColumnsType } from 'antd/es/table';
 
 interface DataType {
     key: string;
@@ -121,7 +120,6 @@ const Dashboard = () => {
     };
 
     const next = () => {
-        // Update context with step details
         setCurrent(current + 1);
     };
     const prev = () => {
