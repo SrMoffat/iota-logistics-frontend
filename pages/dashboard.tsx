@@ -43,7 +43,7 @@ const Dashboard = () => {
                 handleCancel={handleCancel}
                 confirmLoading={confirmLoading}
             />
-            <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Order">
+            <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">
                 <Row gutter={16}>
                     <Col span={12}>
                         <Card bordered={false}>

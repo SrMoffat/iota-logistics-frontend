@@ -1,31 +1,3 @@
-const NAME_FIELD = {
-    name: "name",
-    type: "text",
-    rules: [
-        {
-            type: "string",
-            message: "Item name is a required field",
-            required: true,
-        },
-    ],
-    placeholder: "Laptop",
-    // icon: AccountBookOutlined,
-}
-const DESCRIPTION_FIELD = {
-    name: "description",
-    type: "textarea",
-    rules: [],
-    placeholder: "Apple MacBook Pro 2022 M1 Chip",
-    // icon: AccountBookOutlined,
-}
-const CATEGORY_FIELD = {
-    name: "category",
-    type: "textarea",
-    rules: [],
-    placeholder: "Apple MacBook Pro 2022 M1 Chip",
-    // icon: AccountBookOutlined,
-}
-
 export default [
     {
         title: 'General',
@@ -38,6 +10,10 @@ export default [
     {
         title: 'Logistics',
         content: 'Last-content',
+    },
+    {
+        title: 'Confirm',
+        content: 'Confirm Details',
     },
 ];
 

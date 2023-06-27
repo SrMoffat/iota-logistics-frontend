@@ -13,6 +13,9 @@ const AddItemModal = (props) => {
         prev,
         next,
         current,
+        handleOk,
+        handleCancel,
+        confirmLoading
     } = props;
     const contentStyle: React.CSSProperties = {
         lineHeight: '260px',
@@ -22,22 +25,28 @@ const AddItemModal = (props) => {
         borderRadius: token.borderRadiusLG,
         border: `1px dashed ${token.colorBorder}`,
         marginTop: 16,
+        padding: 16,
     };
     const renderSteps = (current: number) => {
         switch (current) {
             case 0:
                 return <StepOne />
             case 1:
-                return  <StepTwo />
+                return <StepTwo />
             case 2:
-                return  <StepThree />
+                return <StepThree />
+            case 3:
+                return <StepThree />
         }
     }
     return (
         <Modal
-            title="Title"
+            title="Create Item"
             open={open}
             footer={null}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            confirmLoading={confirmLoading}
         >
             <Steps current={current} items={steps} />
             <div style={contentStyle}>
