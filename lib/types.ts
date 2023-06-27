@@ -1,37 +1,37 @@
 export interface UserDetails {
-    username: string;
     email: string;
+    username: string;
     password: string;
 }
 export interface UserData {
     id: number;
-    username: string;
     email: string;
+    username: string;
     provider: string;
-    confirmed: boolean;
     blocked: boolean;
     clearance: string;
     createdAt: string;
     updatedAt: string;
+    confirmed: boolean;
 } 
 export interface LoggedInUserDetails {
     jwt: string;
     user: UserData
 }
 export type UserLoginDetails =  {
-    identifier: string;
     password: string;
+    identifier: string;
     rememberMe?: boolean;
 }
 export interface Weight {
-    value: number;
     unit: string;
+    value: number;
 }
 export interface Dimensions {
-    length: number;
     width: number;
-    height: number;
     units: string;
+    length: number;
+    height: number;
 }
 export interface Handling {
     type: string;
@@ -44,23 +44,28 @@ export interface Compliance {
 }
 export interface ItemDetails {
     name?: string;
+    colour?: string;
+    weight?: Weight;
     quantity?: number;
     supplier?: string;
+    handling?: Handling;
     description?: string;
     manufacturer?: string;
-    colour?: string;
-    category?: string | number;
-    weight?: Weight;
     dimensions?: Dimensions;
-    handling?: Handling;
     compliance?: Compliance;
+    category?: string | number;
 }
 export interface DataType {
     key: string;
     name: string;
-    age: number;
-    address: string;
-    tags: string[];
+    stage: string;
+    status: string;
+    supplier: string;
+    category: string;
+    colour: string;
+    quantity: number;
+    description: string;
+    manufacturer: string;
 }
 export type ItemProviderProps = {
     item: ItemDetails;

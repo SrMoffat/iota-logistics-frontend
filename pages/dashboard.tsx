@@ -6,6 +6,7 @@ import {
     Space,
     Empty,
     message,
+    ColorPicker
 } from 'antd';
 
 import CustomTable from '../components/Table';
@@ -29,73 +30,125 @@ import { fetchItemsByMilestone } from '../lib/items';
 const data: DataType[] = [
     {
         key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
+        quantity: 2,
+        name: 'BMW X6',
+        colour: '#000000',
+        status: 'Stocked',
+        manufacturer: 'BMW',
+        stage: 'Warehousing',
+        category: 'Automobile',
+        supplier: 'Awesome Automobile',
+        description: 'Modern BMW model',
     },
     {
         key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
+        quantity: 3,
+        name: 'Mac Book Pro',
+        colour: '#dadefa',
+        status: 'Stocked',
+        manufacturer: 'BMW',
+        stage: 'Warehousing',
+        category: 'Automobile',
+        supplier: 'Awesome Automobile',
+        description: 'Mac Book Pro 2023 with m2 chip',
     },
     {
         key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
+        quantity: 10,
+        name: 'BMW X6',
+        colour: '#ff0000',
+        status: 'Stocked',
+        manufacturer: 'BMW',
+        stage: 'Warehousing',
+        category: 'Automobile',
+        supplier: 'Awesome Automobile',
+        description: 'Modern BMW model',
     },
+    // {
+    //     key: '2',
+    //     name: 'Jim Green',
+    //     age: 42,
+    //     address: 'London No. 1 Lake Park',
+    //     tags: ['loser'],
+    // },
+    // {
+    //     key: '3',
+    //     name: 'Joe Black',
+    //     age: 32,
+    //     address: 'Sydney No. 1 Lake Park',
+    //     tags: ['cool', 'teacher'],
+    // },
 ];
 const columns: ColumnsType<DataType> = [
     {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        render: (text) => <a>{text}</a>,
+        // render: (text) => <a>{text}</a>,
     },
     {
-        title: 'Age',
-        dataIndex: 'age',
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
+    },
+    {
+        title: 'Category',
+        dataIndex: 'category',
+        key: 'category',
+    },
+    {
+        title: 'Supplier',
+        dataIndex: 'supplier',
+        key: 'supplier',
+    },
+    {
+        title: 'Manufacturer',
+        dataIndex: 'manufacturer',
+        key: 'manufacturer',
+    },
+    {
+        title: 'Stage',
+        dataIndex: 'stage',
+        key: 'stage',
+        render: (_, { stage }) => (
+            <Tag color='geekblue' key={stage}>
+                {stage.toUpperCase()}
+            </Tag>
+        ),
+    },
+    {
+        title: 'Status',
+        key: 'status',
+        dataIndex: 'status',
+        render: (_, { status }) => (
+            <Tag color='green' key={status}>
+                {status.toUpperCase()}
+            </Tag>
+        ),
+    },
+    {
+        title: 'Colour',
+        dataIndex: 'colour',
+        key: 'colour',
+        render: (_, { colour }) => (
+            <ColorPicker value={colour} disabled />
+        ),
+    },
+    {
+        title: 'Quantity',
+        dataIndex: 'quantity',
         key: 'age',
     },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-    },
-    {
-        title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-            <Space size="middle">
-                <a>Invite {record.name}</a>
-                <a>Delete</a>
-            </Space>
-        ),
-    },
+    // {
+    //     title: 'Action',
+    //     key: 'action',
+    //     render: (_, record) => (
+    //         <Space size="middle">
+    //             <a>Invite {record.name}</a>
+    //             <a>Delete</a>
+    //         </Space>
+    //     ),
+    // },
 ];
 const Dashboard = () => {
     const [open, setOpen] = useState(false);
@@ -234,10 +287,27 @@ const Dashboard = () => {
         if (milestone) {
             fetchItemsData(milestone);
         }
-    }, [milestone])
+    }, [milestone]);
+
+    const milestonesMutated = milestoneItems?.map(({ stage, status, data }) => ({ stage, status, data }));
 
     console.log({
-        milestoneItems
+        milestonesMutated
+    })
+
+    const itemsData = milestonesMutated?.map(({ stage, status, data }) => {
+        return {
+            key: data.uuid,
+            name: data.name,
+            colour: data.colour,
+            status: status.name,
+            manufacturer: data.manufacturer,
+            supplier: data.supplier,
+            category: data.category.name,
+            stage: stage.name,
+            description: data.description,
+            quantity: data.quantity,
+        }
     })
     return (
         <ItemProvider>
@@ -263,12 +333,12 @@ const Dashboard = () => {
                     />
                 ) : !milestoneItems?.length ? (
                     <Empty
-                        description="No items exists for thids milestone"
+                        description="No items exists for this milestone"
                     />
                 ) : (
                     <CustomTable
                         columns={columns}
-                        data={data}
+                        data={itemsData}
                     />
                 )}
             </GeneralLayout>
