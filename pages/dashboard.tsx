@@ -16,6 +16,7 @@ import GeneralLayout from '../components/Layout/General';
 import AddItemModal from '../components/Modal/AddItemModal';
 
 import { UserOutlined } from '@ant-design/icons';
+import { ItemProvider } from '../contexts'
 
 import type { ColumnsType } from 'antd/es/table';
 
@@ -128,7 +129,7 @@ const Dashboard = () => {
     };
 
     return (
-        <>
+        <ItemProvider>
             <AddItemModal
                 open={open}
                 next={next}
@@ -291,7 +292,7 @@ const Dashboard = () => {
                     </Col>
                 </Row>
             </GeneralLayout>
-        </>
+        </ItemProvider>
     );
 };
 
