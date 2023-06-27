@@ -24,8 +24,6 @@ interface StatsProps {
 
 const StatisticsCards = (props: StatsProps) => {
     const { mapping } = props;
-
-    // 
     const statisticsCards = [
         {
             title: 'Categories',
