@@ -51,10 +51,10 @@ const ItemProvider = ({ children }) => {
             ...item,
             ...details
         });
-        // setItem({
-        //     ...item,
-        //     ...details
-        // })
+        setItem({
+            ...item,
+            ...details
+        })
     }
     const createSupplyChainItem = async () => {
         try {
@@ -63,9 +63,9 @@ const ItemProvider = ({ children }) => {
             throw error
         }
     }
-    useEffect(() => {
-        console.log("Updat====>", item);
-    }, [item])
+    // useEffect(() => {
+    //     console.log("Updat====>", item);
+    // }, [item])
     return (
         <ItemContext.Provider
             value={{

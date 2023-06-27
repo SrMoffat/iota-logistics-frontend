@@ -19,7 +19,7 @@ const AddItemModal = (props) => {
         confirmLoading
     } = props;
     const { token } = theme.useToken();
-    const { updateItemDetails } = useItemContext();
+    const { updateItemDetails, item } = useItemContext();
     const isLastStep = steps.length - 1 == current;
     const contentStyle: React.CSSProperties = {
         color: token.colorTextTertiary,
@@ -31,7 +31,8 @@ const AddItemModal = (props) => {
     };
     const renderSteps = (current: number) => {
         const stepProps = {
-            updateItemDetails
+            updateItemDetails,
+            item
         };
         switch (current) {
             case 0:
@@ -41,7 +42,7 @@ const AddItemModal = (props) => {
             case 2:
                 return <StepThree {...stepProps} />
             case 3:
-                return <StepFour {...stepProps} />
+                return <StepFour {...item} />
         }
     }
     const updateItem = (event: React.SyntheticEvent) => {
