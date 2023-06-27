@@ -6,7 +6,7 @@ import {
     Empty,
     Tag,
     message,
-    Button
+    Spin
 } from 'antd';
 
 import CustomTable from '../components/Table';
@@ -25,6 +25,7 @@ import {
     fetchMilestones,
     fetchCategories,
 } from '../lib/statistics';
+import { fetchItemsByMilestone } from '../lib/items';
 
 const data: DataType[] = [
     {
@@ -156,6 +157,16 @@ const Dashboard = () => {
             }
         },
     })
+    // const { isLoading: milestoneEventsLoading, data: milestoneEventsData, error: milestoneEventsError, refetch: fetchItems } = useQuery({
+    //     queryKey: ['milestoneItems'],
+    //     queryFn: async () => {
+    //         const res = await fetchItemsByMilestone(milestone)
+    //         return {
+    //             milestoneItems: res
+    //         }
+    //     },
+    //     enabled: !milestone,
+    // })
     const mapping = {
         'Categories': {
             value: categories?.categories?.length,
@@ -225,9 +236,14 @@ const Dashboard = () => {
         const error = usersError as Error
         error && message.error(error?.message)
     }, [usersError])
+    // useEffect(() => {
+    //     const error = milestoneEventsError as Error
+    //     error && message.error(error?.message)
+    // }, [milestoneEventsError])
     useEffect(() => {
         console.log('Call new endpoint with', milestone)
     }, [milestone])
+    // console.log('Call new endpoint with', milestoneEventsData)
     return (
         <ItemProvider>
             <AddItemModal
@@ -260,6 +276,22 @@ const Dashboard = () => {
                         data={data}
                     />
                 )}
+                {/* {!milestone ? (
+                    <Empty
+                        description={
+                            <span>
+                                Select a milestone above to view items
+                            </span>
+                        }
+                    />
+                ) : milestoneEventsLoading
+                    ? <Spin /> :
+                    (
+                        <CustomTable
+                            columns={columns}
+                            data={data}
+                        />
+                    )} */}
             </GeneralLayout>
         </ItemProvider>
     );
