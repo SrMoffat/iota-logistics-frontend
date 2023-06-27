@@ -4,12 +4,13 @@ import {
     Row,
     Table,
 } from 'antd';
+import columns from './ItemColumns';
 
 const CustomTable = (props) => {
     return (
         <Row style={{ marginTop: 20 }}>
         <Col span={24}>
-            <Table columns={props.columns} dataSource={props.data} />
+            <Table columns={columns} dataSource={props.data} />
         </Col>
     </Row>
     )

@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import type { ColumnsType } from 'antd/es/table';
-import { useQuery } from '@tanstack/react-query';
-import {
-    Tag,
-    Space,
-    Empty,
-    message,
-    ColorPicker
-} from 'antd';
 
-import CustomTable from '../components/Table';
+import { Empty, message } from 'antd';
+import { useQuery } from '@tanstack/react-query';
+
+import CustomTable from '../components/Table/ItemTable';
 import StatisticsCards from '../components/Statistics';
 import MilestoneCards from '../components/Milestones';
 import GeneralLayout from '../components/Layout/General';
 import AddItemModal from '../components/Modal/AddItemModal';
 
 import { ItemProvider } from '../contexts'
-import { DataType } from '../lib/types';
 import {
     fetchItems,
     fetchUsers,
@@ -27,129 +20,6 @@ import {
 } from '../lib/statistics';
 import { fetchItemsByMilestone } from '../lib/items';
 
-const data: DataType[] = [
-    {
-        key: '1',
-        quantity: 2,
-        name: 'BMW X6',
-        colour: '#000000',
-        status: 'Stocked',
-        manufacturer: 'BMW',
-        stage: 'Warehousing',
-        category: 'Automobile',
-        supplier: 'Awesome Automobile',
-        description: 'Modern BMW model',
-    },
-    {
-        key: '2',
-        quantity: 3,
-        name: 'Mac Book Pro',
-        colour: '#dadefa',
-        status: 'Stocked',
-        manufacturer: 'BMW',
-        stage: 'Warehousing',
-        category: 'Automobile',
-        supplier: 'Awesome Automobile',
-        description: 'Mac Book Pro 2023 with m2 chip',
-    },
-    {
-        key: '3',
-        quantity: 10,
-        name: 'BMW X6',
-        colour: '#ff0000',
-        status: 'Stocked',
-        manufacturer: 'BMW',
-        stage: 'Warehousing',
-        category: 'Automobile',
-        supplier: 'Awesome Automobile',
-        description: 'Modern BMW model',
-    },
-    // {
-    //     key: '2',
-    //     name: 'Jim Green',
-    //     age: 42,
-    //     address: 'London No. 1 Lake Park',
-    //     tags: ['loser'],
-    // },
-    // {
-    //     key: '3',
-    //     name: 'Joe Black',
-    //     age: 32,
-    //     address: 'Sydney No. 1 Lake Park',
-    //     tags: ['cool', 'teacher'],
-    // },
-];
-const columns: ColumnsType<DataType> = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        // render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-    },
-    {
-        title: 'Category',
-        dataIndex: 'category',
-        key: 'category',
-    },
-    {
-        title: 'Supplier',
-        dataIndex: 'supplier',
-        key: 'supplier',
-    },
-    {
-        title: 'Manufacturer',
-        dataIndex: 'manufacturer',
-        key: 'manufacturer',
-    },
-    {
-        title: 'Stage',
-        dataIndex: 'stage',
-        key: 'stage',
-        render: (_, { stage }) => (
-            <Tag color='geekblue' key={stage}>
-                {stage.toUpperCase()}
-            </Tag>
-        ),
-    },
-    {
-        title: 'Status',
-        key: 'status',
-        dataIndex: 'status',
-        render: (_, { status }) => (
-            <Tag color='green' key={status}>
-                {status.toUpperCase()}
-            </Tag>
-        ),
-    },
-    {
-        title: 'Colour',
-        dataIndex: 'colour',
-        key: 'colour',
-        render: (_, { colour }) => (
-            <ColorPicker value={colour} disabled />
-        ),
-    },
-    {
-        title: 'Quantity',
-        dataIndex: 'quantity',
-        key: 'age',
-    },
-    // {
-    //     title: 'Action',
-    //     key: 'action',
-    //     render: (_, record) => (
-    //         <Space size="middle">
-    //             <a>Invite {record.name}</a>
-    //             <a>Delete</a>
-    //         </Space>
-    //     ),
-    // },
-];
 const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
@@ -288,16 +158,10 @@ const Dashboard = () => {
             fetchItemsData(milestone);
         }
     }, [milestone]);
-
     const milestonesMutated = milestoneItems?.map(({ stage, status, data }) => ({ stage, status, data }));
-
-    console.log({
-        milestonesMutated
-    })
-
     const itemsData = milestonesMutated?.map(({ stage, status, data }) => {
         return {
-            key: data.uuid,
+            key: `${data.uuid}:${Math.random()}`,
             name: data.name,
             colour: data.colour,
             status: status.name,
@@ -327,20 +191,13 @@ const Dashboard = () => {
                     setMilestone={setMilestone}
                     milestones={milestones?.milestones}
                 />
-                {!milestone ? (
-                    <Empty
-                        description="Select a milestone above to view items"
-                    />
-                ) : !milestoneItems?.length ? (
-                    <Empty
-                        description="No items exists for this milestone"
-                    />
-                ) : (
-                    <CustomTable
-                        columns={columns}
-                        data={itemsData}
-                    />
-                )}
+                {
+                    !milestone
+                        ? <Empty description="Select a milestone above to view items" />
+                        : !milestoneItems?.length
+                            ? <Empty description="No items exists for this milestone" />
+                            : <CustomTable data={itemsData} />
+                }
             </GeneralLayout>
         </ItemProvider>
     );
