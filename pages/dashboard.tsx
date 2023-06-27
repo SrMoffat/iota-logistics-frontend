@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import { useQuery } from '@tanstack/react-query';
 import {
-    Col,
-    Row,
     Space,
-    Table,
+    Empty,
     Tag,
-    message
+    message,
+    Button
 } from 'antd';
 
+import CustomTable from '../components/Table';
 import StatisticsCards from '../components/Statistics';
 import MilestoneCards from '../components/Milestones';
 import GeneralLayout from '../components/Layout/General';
@@ -100,6 +100,7 @@ const columns: ColumnsType<DataType> = [
 const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
+    const [milestone, setMilestone] = useState();
     const [confirmLoading, setConfirmLoading] = useState(false);
     const { isLoading: categoriesLoading, data: categories, error: categoryError } = useQuery({
         queryKey: ['categories'],
@@ -224,6 +225,9 @@ const Dashboard = () => {
         const error = usersError as Error
         error && message.error(error?.message)
     }, [usersError])
+    useEffect(() => {
+        console.log('Call new endpoint with', milestone)
+    }, [milestone])
     return (
         <ItemProvider>
             <AddItemModal
@@ -236,13 +240,26 @@ const Dashboard = () => {
                 confirmLoading={confirmLoading}
             />
             <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">
-                <StatisticsCards mapping={mapping}/>
-                <MilestoneCards milestones={milestones?.milestones} />
-                <Row style={{ marginTop: 20 }}>
-                    <Col span={24}>
-                        <Table columns={columns} dataSource={data} />
-                    </Col>
-                </Row>
+                <StatisticsCards mapping={mapping} />
+                <MilestoneCards
+                    milestone={milestone}
+                    setMilestone={setMilestone}
+                    milestones={milestones?.milestones}
+                />
+                {!milestone ? (
+                    <Empty
+                        description={
+                            <span>
+                                Select a milestone above to view items
+                            </span>
+                        }
+                    />
+                ) : (
+                    <CustomTable
+                        columns={columns}
+                        data={data}
+                    />
+                )}
             </GeneralLayout>
         </ItemProvider>
     );

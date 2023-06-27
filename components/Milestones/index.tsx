@@ -17,6 +17,8 @@ import {
 
 interface MilestoneProps {
     milestones
+    milestone: string | number;
+    setMilestone: React.Dispatch<React.SetStateAction<string | number>>
 }
 
 const getIcon = (name: string) => {
@@ -57,6 +59,7 @@ const MilestoneCards = (props: MilestoneProps) => {
             <Col span={24}>
                 <Segmented
                     block
+                    onChange={props.setMilestone}
                     options={options}
                 />
             </Col>
