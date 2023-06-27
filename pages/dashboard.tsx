@@ -269,7 +269,7 @@ const Dashboard = () => {
                     <Empty
                         description={
                             <span>
-                                Select a milestone above to view items
+                                No items exists for thids milestone
                             </span>
                         }
                     />
