@@ -1,12 +1,14 @@
 import React from 'react';
+import { omit } from 'lodash';
 import { Button, Modal, Steps, theme, message } from 'antd';
 
-import { CREATE_ITEM_STEPS } from '../../lib/constants';
+import { ITEM_CREATION_STEPS } from '../../lib/constants';
+import { useItemContext } from '../../contexts/ItemProvider';
+import { StepOne, StepTwo, StepThree, StepFour } from './steps';
 
-const steps = CREATE_ITEM_STEPS.map(({ title, content }) => ({ key: title, title, content }));
+const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
 const AddItemModal = (props) => {
-    const { token } = theme.useToken();
     const {
         open,
         prev,
@@ -14,34 +16,61 @@ const AddItemModal = (props) => {
         current,
         handleOk,
         handleCancel,
-        confirmLoading,
+        confirmLoading
     } = props;
+    const { token } = theme.useToken();
+    const { updateItemDetails, item } = useItemContext();
+    const isLastStep = steps.length - 1 == current;
     const contentStyle: React.CSSProperties = {
-        lineHeight: '260px',
-        textAlign: 'center',
         color: token.colorTextTertiary,
         backgroundColor: token.colorFillAlter,
         borderRadius: token.borderRadiusLG,
         border: `1px dashed ${token.colorBorder}`,
-        marginTop: 16,
+        marginTop: 10,
+        padding: 16,
     };
+    const renderSteps = (current: number) => {
+        const stepProps = {
+            updateItemDetails,
+            item
+        };
+        switch (current) {
+            case 0:
+                return <StepOne {...stepProps} />
+            case 1:
+                return <StepTwo {...stepProps} />
+            case 2:
+                return <StepThree {...stepProps} />
+            case 3:
+                return <StepFour {...item} />
+        }
+    }
+    const updateItem = (event: React.SyntheticEvent) => {
+        next()
+
+    }
     return (
         <Modal
-            title="Title"
+            title="Create Item"
             open={open}
+            width={600}
+            footer={null}
             onOk={handleOk}
-            confirmLoading={confirmLoading}
             onCancel={handleCancel}
+            confirmLoading={confirmLoading}
+            style={{ padding: 20 }}
         >
             <Steps current={current} items={steps} />
-            <div style={contentStyle}>{steps[current].content}</div>
+            <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
+                {renderSteps(current)}
+            </div>
             <div style={{ marginTop: 24 }}>
                 {current < steps.length - 1 && (
-                    <Button type="primary" onClick={() => next()}>
+                    <Button type="primary" onClick={updateItem}>
                         Next
                     </Button>
                 )}
-                {current === steps.length - 1 && (
+                {isLastStep && (
                     <Button type="primary" onClick={() => message.success('Processing complete!')}>
                         Done
                     </Button>

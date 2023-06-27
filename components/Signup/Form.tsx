@@ -12,7 +12,7 @@ import FormComponent from '../Form/Form';
 
 import { UserDetails } from '../../lib/types';
 import { useAuthContext } from '../../contexts/AuthProvider';
-import { FORM_ITEMS, FORM_PARENT_STYLES } from '../../lib/constants';
+import { FORM_ITEMS, GENERAL_CONSTANTS } from '../../lib/constants';
 
 const FormContainer = () => {
     const { push } = useRouter();
@@ -50,7 +50,7 @@ const FormContainer = () => {
         <>
             {contextHolder}
             <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
-                <Row style={FORM_PARENT_STYLES} className="hoverable">
+                <Row style={GENERAL_CONSTANTS.FORM_PARENT_STYLES } className="hoverable">
                     <LoginSection
                         cta="Login"
                         ctaHref="/signin"
@@ -73,7 +73,7 @@ const FormContainer = () => {
                                 onFinishFailed={onFinishFailed}
                                 initialValues={{ remember: true }}
                             >
-                                <FormFields formItems={FORM_ITEMS} />
+                                <FormFields formItems={FORM_ITEMS.FORM_ITEMS} />
                                 <Footer loading={isLoading} text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
                             </FormComponent>
                         </section>

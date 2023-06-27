@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import { Menu, Layout } from 'antd';
 import type { MenuProps } from 'antd';
 import { useRouter } from 'next/navigation';
+import { useRouter as router } from 'next/router';
 
 import { SIDE_MENU_ITEMS } from '../../lib/constants';
 import { useAuthContext } from '../../contexts/AuthProvider';
@@ -13,8 +14,9 @@ const { Sider } = Layout;
 
 const SideBar = () => {
     const { push } = useRouter();
+    const { pathname } = router();
     const { logout } = useAuthContext();
-    const [current, setCurrent] = useState('Dashboard');
+    const [current, setCurrent] = useState<string | undefined>(pathname);
 
     const onClickMenu: MenuProps['onClick'] = (e) => {
         const itemKey = get(e, 'key');
@@ -48,7 +50,7 @@ const SideBar = () => {
             }}
         >
             <div className="demo-logo-vertical" />
-            <Menu onClick={onClickMenu} theme="dark" mode="inline" selectedKeys={[current]} defaultSelectedKeys={['Dashboard']}>
+            <Menu onClick={onClickMenu} theme="dark" mode="inline" selectedKeys={[current]}>
                 {menuOptions}
             </Menu>
         </Sider>

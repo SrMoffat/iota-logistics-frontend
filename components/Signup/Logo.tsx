@@ -1,8 +1,5 @@
 import Link from "next/link";
-
-
 import { Col } from 'antd';
-
 
 const Logo = (props) => {
     const { logo } = props;

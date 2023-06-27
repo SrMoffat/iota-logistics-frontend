@@ -12,14 +12,14 @@ import LoginSection from '../Signup/Login';
 
 import { UserLoginDetails } from '../../lib/types';
 import { useAuthContext } from '../../contexts/AuthProvider';
-import { FORM_PARENT_STYLES, EMAIL_FIELD, PASSWORD_FIELD } from '../../lib/constants';
+import { FORM_ITEMS, GENERAL_CONSTANTS } from '../../lib/constants';
 
 const formItems = [
     {
-        ...EMAIL_FIELD,
+        ...FORM_ITEMS.EMAIL_FIELD,
         name: 'identifier'
     },
-    PASSWORD_FIELD
+    FORM_ITEMS.PASSWORD_FIELD
 ];
 
 const FormContainer = () => {
@@ -58,7 +58,7 @@ const FormContainer = () => {
         <>
             {contextHolder}
             <Col sm={{ span: 22 }} md={{ span: 18 }} lg={{ span: 14 }}>
-                <Row style={FORM_PARENT_STYLES} className="hoverable">
+                <Row style={GENERAL_CONSTANTS.FORM_PARENT_STYLES} className="hoverable">
                     <LoginSection
                         cta="Sign Up"
                         ctaHref="/signup"
@@ -83,7 +83,7 @@ const FormContainer = () => {
                                 initialValues={{ remember: true }}
                             >
                                 <FormFields formItems={formItems} />
-                                <Footer loading={isLoading} text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
+                                <Footer loading={isLoading} text="Don't have an account?" cta="Sign Up" cta2="Login" ctaHref="/signup" />
                             </FormComponent>
                         </section>
                     </Col>

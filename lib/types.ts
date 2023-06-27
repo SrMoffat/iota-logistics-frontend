@@ -23,3 +23,48 @@ export type UserLoginDetails =  {
     password: string;
     rememberMe?: boolean;
 }
+export interface Weight {
+    value: number;
+    unit: string;
+}
+export interface Dimensions {
+    length: number;
+    width: number;
+    height: number;
+    units: string;
+}
+export interface Handling {
+    type: string;
+    instructions: string;
+}
+export interface Compliance {
+    customs: string;
+    regulatory: string;
+    certificates: string[];
+}
+export interface ItemDetails {
+    name?: string;
+    quantity?: number;
+    supplier?: string;
+    description?: string;
+    manufacturer?: string;
+    colour?: string;
+    category?: string | number;
+    weight?: Weight;
+    dimensions?: Dimensions;
+    handling?: Handling;
+    compliance?: Compliance;
+}
+export interface DataType {
+    key: string;
+    name: string;
+    age: number;
+    address: string;
+    tags: string[];
+}
+export type ItemProviderProps = {
+    item: ItemDetails;
+    updateItemDetails: (details: ItemDetails) => void;
+    createSupplyChainItem: () => void;
+    setItem: React.Dispatch<React.SetStateAction<ItemDetails | undefined>>
+}

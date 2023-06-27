@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import { Col, Typography, Button } from 'antd';
 
 const LoginSection = (props) => {
