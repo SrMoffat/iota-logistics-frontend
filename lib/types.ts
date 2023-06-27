@@ -68,3 +68,7 @@ export type ItemProviderProps = {
     createSupplyChainItem: (details: ItemDetails) => Promise<void>;
     setItem: React.Dispatch<React.SetStateAction<ItemDetails | undefined>>
 }
+export interface StepProps {
+    item: ItemDetails;
+    updateItemDetails: (details: ItemDetails) => void
+}
