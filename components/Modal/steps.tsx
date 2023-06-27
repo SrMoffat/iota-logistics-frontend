@@ -1,19 +1,17 @@
 import React from 'react';
-import { ColorPicker, Descriptions } from 'antd';
-
 import {
     Form,
     Input,
     InputNumber,
     Select,
     Tag,
-    Popconfirm,
-    Button,
-    Typography
+    Typography,
+    ColorPicker,
+    Descriptions
 } from 'antd';
 
 const { TextArea } = Input;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 export const StepOne = () => {
     return (
