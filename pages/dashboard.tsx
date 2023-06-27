@@ -10,7 +10,6 @@ import {
     message
 } from 'antd';
 
-
 import StatisticsCards from '../components/Statistics';
 import MilestoneCards from '../components/Milestones';
 import GeneralLayout from '../components/Layout/General';
@@ -26,7 +25,6 @@ import {
     fetchMilestones,
     fetchCategories,
 } from '../lib/statistics';
-
 
 const data: DataType[] = [
     {
@@ -99,12 +97,10 @@ const columns: ColumnsType<DataType> = [
         ),
     },
 ];
-
 const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
     const [confirmLoading, setConfirmLoading] = useState(false);
-
     const { isLoading: categoriesLoading, data: categories, error: categoryError } = useQuery({
         queryKey: ['categories'],
         queryFn: async () => {
@@ -159,6 +155,32 @@ const Dashboard = () => {
             }
         },
     })
+    const mapping = {
+        'Categories': {
+            value: categories?.categories?.length,
+            loading: currenciesLoading,
+        },
+        'Currencies': {
+            value: currencies?.currencies?.length,
+            loading: categoriesLoading,
+        },
+        'Events': {
+            value: events?.events?.length,
+            loading: eventsLoading,
+        },
+        'Items': {
+            value: items?.items?.length,
+            loading: itemsLoading,
+        },
+        'Milestones': {
+            value: milestones?.milestones?.length,
+            loading: milestonesLoading,
+        },
+        'Users': {
+            value: usersData?.users?.length,
+            loading: usersLoading,
+        },
+    }
     const handleShowCreateItemModal = () => {
         setOpen(true);
     };
@@ -202,32 +224,6 @@ const Dashboard = () => {
         const error = usersError as Error
         error && message.error(error?.message)
     }, [usersError])
-    const mapping = {
-        'Categories': {
-            value: categories?.categories?.length,
-            loading: currenciesLoading,
-        },
-        'Currencies': {
-            value: currencies?.currencies?.length,
-            loading: categoriesLoading,
-        },
-        'Events': {
-            value: events?.events?.length,
-            loading: eventsLoading,
-        },
-        'Items': {
-            value: items?.items?.length,
-            loading: itemsLoading,
-        },
-        'Milestones': {
-            value: milestones?.milestones?.length,
-            loading: milestonesLoading,
-        },
-        'Users': {
-            value: usersData?.users?.length,
-            loading: usersLoading,
-        },
-    }
     return (
         <ItemProvider>
             <AddItemModal
@@ -241,7 +237,7 @@ const Dashboard = () => {
             />
             <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">
                 <StatisticsCards mapping={mapping}/>
-                <MilestoneCards />
+                <MilestoneCards milestones={milestones?.milestones} />
                 <Row style={{ marginTop: 20 }}>
                     <Col span={24}>
                         <Table columns={columns} dataSource={data} />

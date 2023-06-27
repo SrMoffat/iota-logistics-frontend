@@ -15,77 +15,49 @@ import {
     WalletFilled,
 } from '@ant-design/icons';
 
-const MilestoneCards = () => {
+interface MilestoneProps {
+    milestones
+}
+
+const getIcon = (name: string) => {
+    switch (true) {
+        case name?.includes('Warehousing'):
+            return <ShopFilled />;
+        case name?.includes('Processing'):
+            return <FolderOpenFilled />;
+        case name?.includes('Transit'):
+            return <CarFilled />;
+        case name?.includes('Delivery'):
+            return <GiftFilled />;
+        case name?.includes('Returned'):
+            return <InteractionFilled />;
+        case name?.includes('Recovery'):
+            return <NodeExpandOutlined />;
+        case name?.includes('Termination'):
+            return <WalletFilled />;
+        default:
+            return <ShopFilled />;
+    }
+};
+
+const MilestoneCards = (props: MilestoneProps) => {
+    const options = props.milestones?.map(entry => {
+        return {
+            label: (
+                <div style={{ padding: 4 }}>
+                    <Avatar icon={getIcon(entry?.attributes?.name)} />
+                    <div>{entry?.attributes?.name}</div>
+                </div>
+            ),
+            value: entry?.id,
+        }
+    })
     return (
         <Row style={{ marginTop: 20 }}>
             <Col span={24}>
                 <Segmented
                     block
-                    options={[
-                        {
-                            label: (
-                                <div style={{ padding: 4 }}>
-                                    <Avatar icon={<ShopFilled />} />
-                                    <div>Warehousing</div>
-                                </div>
-                            ),
-                            value: 'user1',
-                        },
-                        {
-                            label: (
-                                <div style={{ padding: 4 }}>
-                                    <Avatar icon={<FolderOpenFilled />} />
-                                    <div>Processing</div>
-                                </div>
-                            ),
-                            value: 'user2',
-                        },
-                        {
-                            label: (
-                                <div style={{ padding: 4 }}>
-                                    <Avatar icon={<CarFilled />} />
-                                    <div>Transit</div>
-                                </div>
-                            ),
-                            value: 'user3',
-                        },
-                        {
-                            label: (
-                                <div style={{ padding: 4 }}>
-                                    <Avatar icon={<GiftFilled />} />
-                                    <div>Delivery</div>
-                                </div>
-                            ),
-                            value: 'user4',
-                        },
-                        {
-                            label: (
-                                <div style={{ padding: 4 }}>
-                                    <Avatar icon={<InteractionFilled />} />
-                                    <div>Returned</div>
-                                </div>
-                            ),
-                            value: 'user7',
-                        },
-                        {
-                            label: (
-                                <div style={{ padding: 4 }}>
-                                    <Avatar icon={<NodeExpandOutlined />} />
-                                    <div>Recovery</div>
-                                </div>
-                            ),
-                            value: 'user5',
-                        },
-                        {
-                            label: (
-                                <div style={{ padding: 4 }}>
-                                    <Avatar icon={<WalletFilled />} />
-                                    <div>Termination</div>
-                                </div>
-                            ),
-                            value: 'user6',
-                        },
-                    ]}
+                    options={options}
                 />
             </Col>
         </Row>
