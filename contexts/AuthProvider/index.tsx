@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { isEqual } from 'lodash';
 
 import { useBrowserStorage } from '../../lib/hooks';
-import { USER_STORAGE_KEY } from '../../lib/constants';
+import { GENERAL_CONSTANTS } from '../../lib/constants';
 import { signupUser, loginUser } from '../../lib/users';
 import { UserData, UserDetails, LoggedInUserDetails, UserLoginDetails } from '../../lib/types';
 
@@ -24,11 +24,11 @@ type UserStorage = LoggedInUserDetails | null
 
 const AuthProvider = ({ children }) => {
   const [localUser, setLocalUser, removeLocalUser] = useBrowserStorage<UserStorage>(
-    USER_STORAGE_KEY,
+    GENERAL_CONSTANTS.USER_STORAGE_KEY,
     'local'
   )
   const [sessionUser, setSessionUser, removeSessionUser] = useBrowserStorage<UserStorage>(
-    USER_STORAGE_KEY,
+    GENERAL_CONSTANTS.USER_STORAGE_KEY,
     'session'
   )
   const [isAuthenticated, setIsAuthenticated] = useState(false)

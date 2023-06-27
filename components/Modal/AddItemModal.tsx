@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Modal, Steps, theme, message } from 'antd';
 
-import { CREATE_ITEM_STEPS } from '../../lib/constants';
+import { ITEM_CREATION_STEPS } from '../../lib/constants';
 
-const steps = CREATE_ITEM_STEPS.map(({ title, content }) => ({ key: title, title, content }));
+const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
 const AddItemModal = (props) => {
     const { token } = theme.useToken();
@@ -12,9 +12,6 @@ const AddItemModal = (props) => {
         prev,
         next,
         current,
-        handleOk,
-        handleCancel,
-        confirmLoading,
     } = props;
     const contentStyle: React.CSSProperties = {
         lineHeight: '260px',
@@ -29,9 +26,7 @@ const AddItemModal = (props) => {
         <Modal
             title="Title"
             open={open}
-            onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
+            footer={null}
         >
             <Steps current={current} items={steps} />
             <div style={contentStyle}>{steps[current].content}</div>
