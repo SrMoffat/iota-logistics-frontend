@@ -9,16 +9,6 @@ type parserOptions<T> =
         serializer: (value: T) => string
         deserializer: (value: string) => T
     }
-// type parserOptions<T> =
-//   | {
-//       raw: true
-//     }
-//   | {
-//       raw: false
-//       serializer: (value: T) => string
-//       deserializer: (value: string) => T
-//     }
-
 const noop = () => { }
 
 const useBrowserStorage = <T>(

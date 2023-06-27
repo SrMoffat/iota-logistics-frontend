@@ -9,7 +9,6 @@ import {
     NodeCollapseOutlined,
     DeploymentUnitOutlined
 } from "@ant-design/icons";
-import type { MenuProps } from 'antd';
 
 export const USER_STORAGE_KEY = 'iota-user'
 

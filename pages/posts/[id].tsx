@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
 
 import Date from '../../components/date'
-import Layout from '../../components/layout'
+import Layout from '../../components/Layout/General'
 import utilStyles from '../../styles/utils.module.css'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 
