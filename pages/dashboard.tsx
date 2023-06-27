@@ -259,19 +259,11 @@ const Dashboard = () => {
                 />
                 {!milestone ? (
                     <Empty
-                        description={
-                            <span>
-                                Select a milestone above to view items
-                            </span>
-                        }
+                        description="Select a milestone above to view items"
                     />
                 ) : !milestoneItems?.length ? (
                     <Empty
-                        description={
-                            <span>
-                                No items exists for thids milestone
-                            </span>
-                        }
+                        description="No items exists for thids milestone"
                     />
                 ) : (
                     <CustomTable
@@ -279,22 +271,6 @@ const Dashboard = () => {
                         data={data}
                     />
                 )}
-                {/* {!milestone ? (
-                    <Empty
-                        description={
-                            <span>
-                                Select a milestone above to view items
-                            </span>
-                        }
-                    />
-                ) : milestoneEventsLoading
-                    ? <Spin /> :
-                    (
-                        <CustomTable
-                            columns={columns}
-                            data={data}
-                        />
-                    )} */}
             </GeneralLayout>
         </ItemProvider>
     );
