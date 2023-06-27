@@ -9,17 +9,14 @@ export const useItemContext = (): Partial<ItemProviderProps> => useContext(ItemC
 const ItemProvider = ({ children }) => {
     const [item, setItem] = useState<ItemDetails>()
     const updateItemDetails = (details: ItemDetails) => {
-        console.log("Update details", {
-            ...item,
-            ...details
-        });
         setItem({
             ...item,
             ...details
         })
     }
-    const createSupplyChainItem = async () => {
+    const createSupplyChainItem = async (details: ItemDetails) => {
         try {
+            console.log("Details", details);
         } catch (error) {
             throw error
         }

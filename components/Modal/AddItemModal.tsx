@@ -1,10 +1,13 @@
-import React from 'react';
-import { omit } from 'lodash';
-import { Button, Modal, Steps, theme, message } from 'antd';
+import React, { useState } from 'react';
 
+import { omit } from 'lodash';
+import { useMutation } from '@tanstack/react-query';
+import { Button, Modal, Steps, theme, message, Spin } from 'antd';
+
+import { ItemDetails } from '../../lib/types';
 import { ITEM_CREATION_STEPS } from '../../lib/constants';
 import { useItemContext } from '../../contexts/ItemProvider';
-import { StepOne, StepTwo, StepThree, StepFour } from './steps';
+import { StepOne, StepTwo, StepThree, StepFour } from './AddItemSteps';
 
 const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
@@ -18,8 +21,9 @@ const AddItemModal = (props) => {
         handleCancel,
         confirmLoading
     } = props;
+    const [error, setError] = useState('');
     const { token } = theme.useToken();
-    const { updateItemDetails, item } = useItemContext();
+    const { updateItemDetails, item, createSupplyChainItem } = useItemContext();
     const isLastStep = steps.length - 1 == current;
     const contentStyle: React.CSSProperties = {
         color: token.colorTextTertiary,
@@ -29,6 +33,18 @@ const AddItemModal = (props) => {
         marginTop: 10,
         padding: 16,
     };
+    const { mutateAsync, isLoading } = useMutation({
+        mutationFn: async (details: ItemDetails) => {
+            return await createSupplyChainItem(details);
+        },
+        onError: (error: Error) => {
+            setError(error.message)
+        },
+        onSuccess: () => {
+            message.success('Supply chain item created successfully.')
+            handleCancel()
+        },
+    })
     const renderSteps = (current: number) => {
         const stepProps = {
             updateItemDetails,
@@ -45,10 +61,14 @@ const AddItemModal = (props) => {
                 return <StepFour {...item} />
         }
     }
-    const updateItem = (event: React.SyntheticEvent) => {
+    const updateItem = () => {
         next()
-
     }
+
+    const createSupplyItem = async () => {
+        await mutateAsync(item)
+    };
+
     return (
         <Modal
             title="Create Item"
@@ -62,6 +82,7 @@ const AddItemModal = (props) => {
         >
             <Steps current={current} items={steps} />
             <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
+                {isLoading && <Spin />}
                 {renderSteps(current)}
             </div>
             <div style={{ marginTop: 24 }}>
@@ -71,7 +92,7 @@ const AddItemModal = (props) => {
                     </Button>
                 )}
                 {isLastStep && (
-                    <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                    <Button loading={isLoading} type="primary" onClick={createSupplyItem}>
                         Done
                     </Button>
                 )}

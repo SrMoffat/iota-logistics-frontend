@@ -40,9 +40,6 @@ const FormContainer = () => {
             }, 500)
         },
     })
-    const onFinishFailed = error => {
-        console.log("error===>", error);
-    };
     const onFinish = async (values: UserDetails) => {
         await mutateAsync(values)
     };
@@ -70,7 +67,6 @@ const FormContainer = () => {
                                 layout="vertical"
                                 autoComplete="off"
                                 onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
                                 initialValues={{ remember: true }}
                             >
                                 <FormFields formItems={FORM_ITEMS.FORM_ITEMS} />
