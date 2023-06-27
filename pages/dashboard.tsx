@@ -114,6 +114,7 @@ const Dashboard = () => {
                 break;
             case 'Logout':
                 logout();
+                push('/signin');
                 break;
         }
       };
