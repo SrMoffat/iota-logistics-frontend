@@ -1,6 +1,55 @@
-import { AccountBookOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import {
+    LockOutlined,
+    BellOutlined,
+    UserOutlined,
+    LogoutOutlined,
+    AppstoreOutlined,
+    CodeSandboxOutlined,
+    AccountBookOutlined,
+    NodeCollapseOutlined,
+    DeploymentUnitOutlined
+} from "@ant-design/icons";
+import type { MenuProps } from 'antd';
 
 export const USER_STORAGE_KEY = 'iota-user'
+
+const SIDE_MENU_ITEMS = [
+    {
+      href: '/dashboard',
+      title: 'Dashboard',
+      icon: AppstoreOutlined,
+    },
+    {
+      href: '/products',
+      title: 'Products',
+      icon: CodeSandboxOutlined,
+    },
+    {
+      href: '/shippments',
+      title: 'Shippments',
+      icon: DeploymentUnitOutlined,
+    },
+    {
+      href: '/notifications',
+      title: 'Notifications',
+      icon: BellOutlined,
+    },
+    {
+      href: '/returns',
+      title: 'Returns',
+      icon: NodeCollapseOutlined,
+    },
+    {
+      href: '/profile',
+      title: 'Profile',
+      icon: UserOutlined,
+    },
+    {
+      href: '/signin',
+      title: 'Logout',
+      icon: LogoutOutlined,
+    },
+  ];
 
 const HTTP_ERRORS = {
     400: {
@@ -118,6 +167,7 @@ export {
     API_BASE_URL,
     USERNAME_FIELD,
     PASSWORD_FIELD,
+    SIDE_MENU_ITEMS,
     CREATE_ITEM_STEPS,
     FORM_PARENT_STYLES
 }
