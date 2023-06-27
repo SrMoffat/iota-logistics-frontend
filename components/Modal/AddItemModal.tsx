@@ -4,10 +4,10 @@ import { omit } from 'lodash';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Modal, Steps, theme, message, Spin } from 'antd';
 
+import { ItemDetails } from '../../lib/types';
 import { ITEM_CREATION_STEPS } from '../../lib/constants';
 import { useItemContext } from '../../contexts/ItemProvider';
 import { StepOne, StepTwo, StepThree, StepFour } from './AddItemSteps';
-import { ItemDetails } from '../../lib/types';
 
 const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 

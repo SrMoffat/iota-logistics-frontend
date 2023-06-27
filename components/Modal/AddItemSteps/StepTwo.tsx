@@ -35,7 +35,7 @@ const StepTwo = (props: StepProps) => {
             style={{ maxWidth: 600 }}
         >
             <Form.Item label="Category">
-                <Select onChange={e => setItemCategory(e)}>
+                <Select defaultValue={item?.category} onChange={e => setItemCategory(e)}>
                     <Select.Option value="1">Demo</Select.Option>
                     <Select.Option value="2">Electronics</Select.Option>
                     <Select.Option value="3">Automotive</Select.Option>
@@ -43,20 +43,20 @@ const StepTwo = (props: StepProps) => {
                 </Select>
             </Form.Item>
             <Form.Item label="Supplier">
-                <Input onChange={e => setItemSupplier(e?.target?.value)} />
+                <Input defaultValue={item?.supplier} onChange={e => setItemSupplier(e?.target?.value)} />
             </Form.Item>
             <Form.Item label="Manufacturer">
-                <Input onChange={e => setItemManufacturer(e?.target?.value)} />
+                <Input defaultValue={item?.manufacturer} onChange={e => setItemManufacturer(e?.target?.value)} />
             </Form.Item>
             <Form.Item label="Handling">
-                <Select onChange={e => setItemHandling(e)}>
+                <Select defaultValue={item?.handling?.type} onChange={e => setItemHandling(e)}>
                     <Select.Option value="fragile">Fragile</Select.Option>
                     <Select.Option value="harzardous">Harzardous</Select.Option>
                     <Select.Option value="normal">Normal</Select.Option>
                 </Select>
             </Form.Item>
             <Form.Item label="Handling Instructions">
-                <TextArea rows={4} onChange={e => setItemHandlingInstructions(e?.target?.value)} />
+                <TextArea defaultValue={item?.handling?.instructions} rows={4} onChange={e => setItemHandlingInstructions(e?.target?.value)} />
             </Form.Item>
         </Form>
     )
