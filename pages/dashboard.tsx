@@ -120,6 +120,7 @@ const Dashboard = () => {
     };
 
     const next = () => {
+        // Update context with step details
         setCurrent(current + 1);
     };
     const prev = () => {

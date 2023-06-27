@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Form,
     Input,
@@ -9,61 +9,89 @@ import {
     ColorPicker,
     Descriptions
 } from 'antd';
+import FormComponent from '../Form/Form';
+import FormFields from '../Form/Fields';
+import { FORM_ITEMS } from '../../lib/constants';
 
 const { TextArea } = Input;
 const { Title } = Typography;
 
 export const StepOne = () => {
+    const [name, setItemName] = useState<string>();
+    const [colour, setItemColour] = useState<string>();
+    const [quantity, setItemQuantity] = useState<number>();
+    const [description, setItemDescription] = useState<string>();
+    console.log({
+        name,
+        description,
+        quantity,
+        colour
+    })
     return (
         <Form
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 14 }}
-            layout="horizontal"
+            layout="vertical"
+            name="generalInformationForm"
+            autoComplete="off"
             style={{ maxWidth: 600 }}
         >
             <Form.Item label="Name">
-                <Input />
+                <Input onChange={e => setItemName(e?.target?.value)} />
             </Form.Item>
             <Form.Item label="Description">
-                <TextArea rows={4} />
+                <TextArea rows={4} onChange={e => setItemDescription(e?.target?.value)} />
             </Form.Item>
             <Form.Item label="Quantity">
-                <InputNumber />
+                <InputNumber onChange={e => setItemQuantity(Number(e))} />
             </Form.Item>
             <Form.Item label="Color">
-                <ColorPicker />
+                <ColorPicker onChange={e => setItemColour(e?.toHexString())} />
             </Form.Item>
         </Form>
     )
 }
 export const StepTwo = () => {
+    const [handling, setItemHandling] = useState<string>();
+    const [supplier, setItemSupplier] = useState<string>();
+    const [manufacturer, setItemManufacturer] = useState<string>();
+    const [category, setItemCategory] = useState<string | number>();
+    const [instructions, setItemHandlingInstructions] = useState<string>();
+    console.log({
+        category,
+        handling,
+        manufacturer,
+        supplier,
+        instructions
+    })
     return (
         <Form
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 14 }}
-            layout="horizontal"
+            layout="vertical"
+            name="specificInformationForm"
+            autoComplete="off"
             style={{ maxWidth: 600 }}
         >
             <Form.Item label="Category">
-                <Select>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Electronics</Select.Option>
-                    <Select.Option value="demo">Automotive</Select.Option>
-                    <Select.Option value="demo">Household</Select.Option>
+                <Select onChange={e => setItemCategory(e)}>
+                    <Select.Option value="1">Demo</Select.Option>
+                    <Select.Option value="2">Electronics</Select.Option>
+                    <Select.Option value="3">Automotive</Select.Option>
+                    <Select.Option value="4">Household</Select.Option>
                 </Select>
             </Form.Item>
             <Form.Item label="Supplier">
-                <Input />
+                <Input onChange={e => setItemSupplier(e?.target?.value)} />
             </Form.Item>
             <Form.Item label="Manufacturer">
-                <Input />
+                <Input onChange={e => setItemManufacturer(e?.target?.value)} />
             </Form.Item>
             <Form.Item label="Handling">
-                <Select>
-                    <Select.Option value="demo">Fragile</Select.Option>
-                    <Select.Option value="demo">Harzardous</Select.Option>
-                    <Select.Option value="demo">Normal</Select.Option>
+                <Select onChange={e => setItemHandling(e?.target?.value)}>
+                    <Select.Option value="fragile">Fragile</Select.Option>
+                    <Select.Option value="harzardous">Harzardous</Select.Option>
+                    <Select.Option value="normal">Normal</Select.Option>
                 </Select>
+            </Form.Item>
+            <Form.Item label="Handling Instructions">
+                <TextArea rows={4} onChange={e => setItemHandlingInstructions(e?.target?.value)} />
             </Form.Item>
         </Form>
     )

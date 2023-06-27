@@ -1,4 +1,9 @@
-import { LockOutlined, AccountBookOutlined } from "@ant-design/icons";
+import {
+    LockOutlined,
+    MailOutlined,
+    FileOutlined,
+    AccountBookOutlined,
+} from "@ant-design/icons";
 
 const USERNAME_FIELD = {
     name: "username",
@@ -24,7 +29,7 @@ const EMAIL_FIELD = {
         },
     ],
     placeholder: "jane@doe.com",
-    icon: AccountBookOutlined,
+    icon: MailOutlined,
 }
 const PASSWORD_FIELD = {
     name: "password",
@@ -39,6 +44,31 @@ const PASSWORD_FIELD = {
     placeholder: "***************",
     icon: LockOutlined,
 }
+const ITEM_NAME_FIELD = {
+    name: "name",
+    type: "text",
+    rules: [
+        {
+            type: "string",
+            message: "Item name is a required field",
+            required: true,
+        },
+    ],
+    placeholder: "Item Name",
+    icon: FileOutlined,
+}
+const ITEM_DESCRIPTION_FIELD = {
+    name: "description",
+    type: "textarea",
+    rules: [],
+    placeholder: "Item Description",
+    icon: FileOutlined,
+}
+
+const ADD_ITEM_FORM_ITEMS = [
+    ITEM_NAME_FIELD,
+    ITEM_DESCRIPTION_FIELD
+];
 
 const FORM_ITEMS = [
     USERNAME_FIELD,
@@ -51,4 +81,5 @@ export default {
     EMAIL_FIELD,
     USERNAME_FIELD,
     PASSWORD_FIELD,
+    ADD_ITEM_FORM_ITEMS
 }

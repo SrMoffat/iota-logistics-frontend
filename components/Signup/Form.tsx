@@ -73,7 +73,7 @@ const FormContainer = () => {
                                 onFinishFailed={onFinishFailed}
                                 initialValues={{ remember: true }}
                             >
-                                <FormFields formItems={FORM_ITEMS} />
+                                <FormFields formItems={FORM_ITEMS.FORM_ITEMS} />
                                 <Footer loading={isLoading} text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
                             </FormComponent>
                         </section>

@@ -83,7 +83,7 @@ const FormContainer = () => {
                                 initialValues={{ remember: true }}
                             >
                                 <FormFields formItems={formItems} />
-                                <Footer loading={isLoading} text="Have an account?" cta="Login" cta2="Sign Up" ctaHref="/signin" />
+                                <Footer loading={isLoading} text="Don't have an account?" cta="Sign Up" cta2="Login" ctaHref="/signup" />
                             </FormComponent>
                         </section>
                     </Col>

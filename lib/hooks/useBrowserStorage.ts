@@ -79,6 +79,8 @@ const useBrowserStorage = <T>(
 
     const remove = useCallback(() => {
         try {
+            localStorage.removeItem(key);
+            sessionStorage.removeItem(key);
             storage.removeItem(key)
             setState(undefined)
         } catch {
