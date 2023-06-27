@@ -101,6 +101,7 @@ const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
     const [milestone, setMilestone] = useState();
+    const [milestoneItems, setMilestoneItems] = useState();
     const [confirmLoading, setConfirmLoading] = useState(false);
     const { isLoading: categoriesLoading, data: categories, error: categoryError } = useQuery({
         queryKey: ['categories'],
@@ -225,17 +226,19 @@ const Dashboard = () => {
         const error = usersError as Error
         error && message.error(error?.message)
     }, [usersError])
-    const fetchItemsData = async (id) => {
-        const res = await fetchItemsByMilestone(id)
-        console.log('fetchItemsh:data', res)
-        return res
-    }
     useEffect(() => {
+        const fetchItemsData = async (id) => {
+            const res = await fetchItemsByMilestone(id)
+            setMilestoneItems(res);
+        }
         if (milestone) {
-            fetchItemsData(milestone)
-            //.catch(console.error)
+            fetchItemsData(milestone);
         }
     }, [milestone])
+
+    console.log({
+        milestoneItems
+    })
     return (
         <ItemProvider>
             <AddItemModal
