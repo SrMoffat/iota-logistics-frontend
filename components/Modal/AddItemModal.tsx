@@ -19,8 +19,6 @@ const AddItemModal = (props) => {
         confirmLoading
     } = props;
     const contentStyle: React.CSSProperties = {
-        // lineHeight: '260px',
-        // textAlign: 'center',
         color: token.colorTextTertiary,
         backgroundColor: token.colorFillAlter,
         borderRadius: token.borderRadiusLG,
