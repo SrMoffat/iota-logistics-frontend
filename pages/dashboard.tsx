@@ -202,12 +202,32 @@ const Dashboard = () => {
         const error = usersError as Error
         error && message.error(error?.message)
     }, [usersError])
-    console.log("Datcategoriesa==>", categories);
-    console.log("Datacurrencies==>", currencies);
-    console.log("Dataevents==>", events);
-    console.log("Dataitems==>", items);
-    console.log("Datamilestoness==>", milestones);
-    console.log("Datamiusers==>", usersData);
+    const mapping = {
+        'Categories': {
+            value: categories?.categories?.length,
+            loading: currenciesLoading,
+        },
+        'Currencies': {
+            value: currencies?.currencies?.length,
+            loading: categoriesLoading,
+        },
+        'Events': {
+            value: events?.events?.length,
+            loading: eventsLoading,
+        },
+        'Items': {
+            value: items?.items?.length,
+            loading: itemsLoading,
+        },
+        'Milestones': {
+            value: milestones?.milestones?.length,
+            loading: milestonesLoading,
+        },
+        'Users': {
+            value: usersData?.users?.length,
+            loading: usersLoading,
+        },
+    }
     return (
         <ItemProvider>
             <AddItemModal
@@ -220,7 +240,7 @@ const Dashboard = () => {
                 confirmLoading={confirmLoading}
             />
             <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">
-                <StatisticsCards />
+                <StatisticsCards mapping={mapping}/>
                 <MilestoneCards />
                 <Row style={{ marginTop: 20 }}>
                     <Col span={24}>

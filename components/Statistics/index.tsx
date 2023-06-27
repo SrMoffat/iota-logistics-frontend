@@ -13,75 +13,74 @@ import {
     UserOutlined
 } from '@ant-design/icons';
 
-const statisticsCards = [
-    {
-        title: 'Categories',
-        prefix: <BoxPlotFilled />,
-        suffix: '',
-        value: 10,
-        precision: 2,
-        valueStyle: {},
-        loading: false,
-        bordered: true
-    },
-    {
-        title: 'Currencies',
-        prefix: <PoundCircleFilled />,
-        suffix: '',
-        value: 10,
-        precision: 2,
-        valueStyle: {},
-        loading: false,
-        bordered: true
-    },
-    {
-        title: 'Events',
-        prefix: <SlidersFilled />,
-        suffix: '',
-        value: 10,
-        precision: 2,
-        valueStyle: {},
-        loading: false,
-        bordered: true
-    },
-    {
-        title: 'Items',
-        prefix: <DropboxCircleFilled />,
-        suffix: '',
-        value: 10,
-        precision: 2,
-        valueStyle: {},
-        loading: false,
-        bordered: true
-    },
-    {
-        title: 'Milestones',
-        prefix: <GoldFilled />,
-        suffix: '',
-        value: 10,
-        precision: 2,
-        valueStyle: {},
-        loading: false,
-        bordered: true
-    },
-    {
-        title: 'Users',
-        prefix: <UserOutlined />,
-        suffix: '',
-        value: 10,
-        precision: 2,
-        valueStyle: {},
-        loading: false,
-        bordered: true
+interface StatsProps {
+    mapping: {
+        [key: string]: {
+            value: string | number;
+            loading: boolean;
+        }
     }
-]
+}
 
-const StatisticsCards = () => {
+const StatisticsCards = (props: StatsProps) => {
+    const { mapping } = props;
+
+    // 
+    const statisticsCards = [
+        {
+            title: 'Categories',
+            prefix: <BoxPlotFilled />,
+            suffix: '',
+            valueStyle: {},
+            bordered: true,
+            ...mapping['Categories']
+        },
+        {
+            title: 'Currencies',
+            prefix: <PoundCircleFilled />,
+            suffix: '',
+            valueStyle: {},
+            bordered: true,
+            ...mapping['Currencies']
+        },
+        {
+            title: 'Events',
+            prefix: <SlidersFilled />,
+            suffix: '',
+            valueStyle: {},
+            bordered: true,
+            ...mapping['Events']
+        },
+        {
+            title: 'Items',
+            prefix: <DropboxCircleFilled />,
+            suffix: '',
+            valueStyle: {},
+            bordered: true,
+            ...mapping['Items']
+        },
+        {
+            title: 'Milestones',
+            prefix: <GoldFilled />,
+            suffix: '',
+            valueStyle: {},
+            bordered: true,
+            ...mapping['Milestones']
+        },
+        {
+            title: 'Users',
+            prefix: <UserOutlined />,
+            suffix: '',
+            valueStyle: {},
+            bordered: true,
+            ...mapping['Users']
+        }
+    ]
     return (
         <Row gutter={16}>
             {
                 statisticsCards.map((entry, index) => {
-                    const { bordered, loading, title, value, precision, valueStyle, prefix, suffix } = entry;
+                    const { bordered, loading, title, value, valueStyle, prefix, suffix } = entry;
                     return (
                         <Col span={4} key={`${index}-${title}`}>
                             <Card bordered={bordered} loading={loading}>
@@ -90,7 +89,6 @@ const StatisticsCards = () => {
                                     value={value}
                                     prefix={prefix}
                                     suffix={suffix}
-                                    precision={precision}
                                     valueStyle={valueStyle}
                                 />
                             </Card>
