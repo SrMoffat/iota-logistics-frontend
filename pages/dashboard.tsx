@@ -115,7 +115,6 @@ const Dashboard = () => {
         }, 2000);
     };
     const handleCancel = () => {
-        console.log('Clicked cancel button');
         setOpen(false);
     };
 

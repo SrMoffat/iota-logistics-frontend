@@ -26,7 +26,6 @@ export const StepOne = (props: StepProps) => {
     const [quantity, setItemQuantity] = useState<number>();
     const [description, setItemDescription] = useState<string>();
     useEffect(() => {
-        console.log("Changed");
         updateItemDetails({
             ...item,
             name,
@@ -65,7 +64,6 @@ export const StepTwo = (props: StepProps) => {
     const [category, setItemCategory] = useState<string | number>();
     const [instructions, setItemHandlingInstructions] = useState<string>();
     useEffect(() => {
-        console.log("Changed");
         updateItemDetails({
             ...item,
             category,
