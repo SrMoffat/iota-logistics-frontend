@@ -5,14 +5,14 @@ import SideBar from '../SideBar';
 import Header from '../Header';
 
 const GeneralLayout = (props) => {
-    const { children, handleShowCreateItemModal } = props;
+    const { children, handleShowCreateItemModal, hasCta, ctaText } = props;
     const { Content, Footer } = Layout;
 
     return (
         <Layout hasSider>
            <SideBar />
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
-              <Header text="Create Item" handleShowCreateItemModal={handleShowCreateItemModal} />
+              <Header hasCta={hasCta} ctaText={hasCta ? ctaText : ""} handleShowCreateItemModal={handleShowCreateItemModal} />
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                     {children}
                 </Content>
