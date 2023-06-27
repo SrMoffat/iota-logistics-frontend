@@ -11,8 +11,8 @@ export async function fetchItemsByMilestone(milestoneId: string | number): Promi
             url: `${BASE_URL}/stages/${milestoneId}/events`,
             method: 'GET'
         });
-        const response = handleResponse(data);
-        return response
+        // const response = handleResponse(data);
+        return data
     } catch (error) {
         throw new Error(error)
     }
