@@ -43,7 +43,7 @@ const HTTP_ERRORS = {
 
 const API_BASE_URL = "http://localhost:1337/api";
 
-const USERNAME_FIELD =  {
+const USERNAME_FIELD = {
     name: "username",
     type: "text",
     rules: [
@@ -56,7 +56,7 @@ const USERNAME_FIELD =  {
     placeholder: "Jane Doe",
     icon: AccountBookOutlined,
 }
-const EMAIL_FIELD =  {
+const EMAIL_FIELD = {
     name: "email",
     type: "email",
     rules: [
@@ -69,7 +69,7 @@ const EMAIL_FIELD =  {
     placeholder: "jane@doe.com",
     icon: AccountBookOutlined,
 }
-const PASSWORD_FIELD =  {
+const PASSWORD_FIELD = {
     name: "password",
     type: "password",
     rules: [
@@ -96,6 +96,21 @@ const FORM_PARENT_STYLES = {
     overflow: "hidden",
 };
 
+const CREATE_ITEM_STEPS = [
+    {
+        title: 'First',
+        content: 'First-content',
+    },
+    {
+        title: 'Second',
+        content: 'Second-content',
+    },
+    {
+        title: 'Last',
+        content: 'Last-content',
+    },
+];
+
 export {
     FORM_ITEMS,
     HTTP_ERRORS,
@@ -103,5 +118,6 @@ export {
     API_BASE_URL,
     USERNAME_FIELD,
     PASSWORD_FIELD,
+    CREATE_ITEM_STEPS,
     FORM_PARENT_STYLES
 }
