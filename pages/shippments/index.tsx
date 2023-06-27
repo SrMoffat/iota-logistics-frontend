@@ -3,13 +3,7 @@ import { Tag, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import GeneralLayout from '../../components/Layout/General';
-interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-    tags: string[];
-}
+
 const Shippment = () => {
     const data: DataType[] = [
         {
