@@ -97,6 +97,16 @@ export const StepTwo = () => {
     )
 }
 export const StepThree = () => {
+    const [height, setItemHeight] = useState<number>();
+    const [length, setItemLength] = useState<number>();
+    const [width, setItemWidth] = useState<number>();
+    const [units, setUnits] = useState<string>();
+    console.log({
+        height,
+        length,
+        width,
+        units
+    })
     return (
         <Form
             labelCol={{ span: 6 }}
@@ -105,16 +115,16 @@ export const StepThree = () => {
             style={{ maxWidth: 600 }}
         >
             <Form.Item label="Height">
-                <InputNumber />
+                <InputNumber onChange={e => setItemHeight(Number(e))}/>
             </Form.Item>
-            <Form.Item label="Weight">
-                <InputNumber />
+            <Form.Item label="Width">
+                <InputNumber onChange={e => setItemWidth(Number(e))} />
             </Form.Item>
             <Form.Item label="Length">
-                <InputNumber />
+                <InputNumber onChange={e => setItemLength(Number(e))} />
             </Form.Item>
             <Form.Item label="Units">
-                <Select>
+                <Select onChange={e => setUnits(e)}>
                     <Select.Option value="demo">Centimeters</Select.Option>
                     <Select.Option value="demo">Milimieters</Select.Option>
                     <Select.Option value="demo">Meters</Select.Option>
