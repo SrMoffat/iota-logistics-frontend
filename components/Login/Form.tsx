@@ -27,7 +27,6 @@ const FormContainer = () => {
     const [error, setError] = useState('');
     const { login, user } = useAuthContext();
     const [api, contextHolder] = notification.useNotification();
-
     const openNotification = (placement: NotificationPlacement) => {
         api.success({
             message: 'Successfully Logged In',
@@ -35,7 +34,6 @@ const FormContainer = () => {
             placement,
         });
     };
-
     const { mutateAsync, isError, isLoading, isSuccess } = useMutation({
         mutationFn: async (details: UserLoginDetails) => {
             return await login(details);
@@ -47,14 +45,12 @@ const FormContainer = () => {
             openNotification('top')
             setTimeout(() => {
                 push('/dashboard');
-            }, 1000);
+            }, 500);
         },
     })
-
     const onFinishFailed = error => {
         console.log(error);
     };
-
     const onFinish = async (values: UserLoginDetails) => {
         await mutateAsync(values)
     };

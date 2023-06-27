@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { get } from 'lodash';
+import { useRouter } from 'next/navigation';
+import type { MenuProps } from 'antd';
 import {
     UserOutlined,
     BellOutlined,
+    LogoutOutlined,
     ArrowUpOutlined,
     AppstoreOutlined,
     ArrowDownOutlined,
@@ -20,8 +24,12 @@ import {
     Button,
     Statistic,
 } from 'antd';
+import { useAuthContext } from '../contexts/AuthProvider';
 
 const Dashboard = () => {
+    const { push } = useRouter();
+    const { logout } = useAuthContext();
+
     const { Header, Content, Footer, Sider } = Layout;
     const siderOptions = [
         {
@@ -47,12 +55,15 @@ const Dashboard = () => {
         {
             icon: <UserOutlined />,
             label: 'Profile'
+        },
+        {
+            icon: <LogoutOutlined />,
+            label: 'Logout'
         }
     ];
     const items = siderOptions.map((entry, index) => {
-        const key = index + 1;
         return {
-            key,
+            key: entry.label,
             icon: entry.icon,
             label: entry.label,
         };
@@ -79,6 +90,33 @@ const Dashboard = () => {
     const handleShowCreateItemModal = () => {
         setOpen(true);
     };
+
+    const onClickMenu: MenuProps['onClick'] = (e) => {
+        const itemKey = get(e, 'key');
+        switch (itemKey){
+            case 'Dashboard':
+                push('/dashboard');
+                break;
+            case 'Products':
+                push('/products');
+                break;
+            case 'Shippments':
+                push('/shippments');
+                break;
+            case 'Notifications':
+                push('/notifications');
+                break;
+            case 'Returns':
+                push('/returns');
+                break;
+            case 'Profile':
+                push('/profile');
+                break;
+            case 'Logout':
+                logout();
+                break;
+        }
+      };
     return (
         <Layout hasSider>
             <Sider
@@ -92,7 +130,7 @@ const Dashboard = () => {
                 }}
             >
                 <div className="demo-logo-vertical" />
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={items} />
+                <Menu onClick={onClickMenu} theme="dark" mode="inline" defaultSelectedKeys={['Dashboard']} items={items} />
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
                 <Header style={{ padding: 0, background: colorBgContainer }}>
