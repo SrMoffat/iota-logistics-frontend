@@ -1,7 +1,9 @@
-import { useState, useEffect, Suspense, lazy } from 'react';
 import { AppProps } from 'next/app';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { AuthProvider } from '../contexts'
 
 import '../styles/global.css';
 
@@ -23,14 +25,16 @@ export default function App({ Component, pageProps }: AppProps) {
     window.toggleDevtools = () => setShowDevtools((old) => !old)
   }, [])
   return (
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-      <ReactQueryDevtools initialIsOpen />
-      {showDevtools && (
-        <Suspense fallback={null}>
-          <ReactQueryDevtoolsProduction />
-        </Suspense>
-      )}
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+        <ReactQueryDevtools initialIsOpen={false} />
+        {showDevtools && (
+          <Suspense fallback={null}>
+            <ReactQueryDevtoolsProduction />
+          </Suspense>
+        )}
+      </QueryClientProvider>
+    </AuthProvider>
   )
 }

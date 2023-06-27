@@ -1,6 +1,6 @@
 import { get } from 'lodash';
-import { UserDetails, UserLoginDetails } from '../lib/types';
 
+import { UserDetails, UserLoginDetails } from '../lib/types';
 import { API_BASE_URL, HTTP_ERRORS } from '../lib/constants';
 
 export async function signupUser(values: UserDetails) {
@@ -14,7 +14,7 @@ export async function signupUser(values: UserDetails) {
         const hasErrors = get(data, 'error');
         if (hasErrors) {
             const status = get(hasErrors, 'status');
-            const errorMessage = get(HTTP_ERRORS[Number(status)], 'message')
+            const errorMessage = get(hasErrors, 'message') || get(HTTP_ERRORS[Number(status)], 'message')
             throw new Error(errorMessage)
         } else {
             return data

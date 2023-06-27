@@ -1,5 +1,7 @@
 import { AccountBookOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 
+export const USER_STORAGE_KEY = 'iota-user'
+
 const HTTP_ERRORS = {
     400: {
         name: "BadRequest",
