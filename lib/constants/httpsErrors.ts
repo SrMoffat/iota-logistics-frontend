@@ -36,3 +36,5 @@ export default {
         message: "Sever is currently down. Please try again later."
     }
 }
+
+// https://github.com/jshttp/http-errors#list-of-all-constructors

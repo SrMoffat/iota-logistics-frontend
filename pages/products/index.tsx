@@ -114,7 +114,7 @@ const Products = () => {
                                 },
                                 pageSize: 10,
                             }}
-                            dataSource={products}
+                            dataSource={products.reverse()}
                             renderItem={(item) => (
                                 <List.Item
                                     style={{ border: `1px solid ${colorBgContainer}`, borderRadius: 8 }}
