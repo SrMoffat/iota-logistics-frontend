@@ -35,18 +35,27 @@ export const makeRequestWithBody = async (details: RequestDetails) => {
     return res;
 };
 export const handleResponse = (data: Object) => {
+    console.log('handleResponse', data)
+
     const hasErrors = get(data, 'error');
     const isSystemError = get(data, 'status');
     if (hasErrors) {
+        console.log('hasErrors', hasErrors)
         const status = get(hasErrors, 'status');
         const errorMessage = get(hasErrors, 'message') || get(HTTP_ERRORS[Number(status)], 'message')
         throw new Error(errorMessage)
     } else if (isSystemError) {
+        console.log('isSystemError', isSystemError)
         const errorMessage = get(HTTP_ERRORS[Number(isSystemError)], 'message')
         throw new Error(errorMessage)
     } else {
         const response = get(data, 'data');
-        return response
+        console.log('response', response)
+        if (!response) {
+            return data
+        } else {
+            return response
+        }
     }
 };
 export async function fetchCategories(): Promise<void> {

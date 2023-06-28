@@ -27,6 +27,7 @@ export async function createSupplyChainItem(values: ItemDetails): Promise<void> 
         const response = handleResponse(data);
         return response
     } catch (error) {
+        console.log('createSupplyChainItem', error)
         throw new Error(error)
     }
 }
