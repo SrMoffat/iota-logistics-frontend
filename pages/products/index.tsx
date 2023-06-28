@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { List, message, Spin, ColorPicker, Button, Col, Row, theme } from 'antd';
+import { List, message, Spin, ColorPicker, Button, Col, Row, theme, Drawer } from 'antd';
 import { CodeSandboxOutlined } from '@ant-design/icons';
 
 import IconText from '../../components/IconText';
@@ -22,6 +22,7 @@ interface Product {
 }
 
 const Products = () => {
+    const [open, setOpen] = useState(false);
     const { push } = useRouter();
     const {
         token: { colorBgContainer },
@@ -35,6 +36,12 @@ const Products = () => {
             }
         },
     })
+    const showDrawer = () => {
+        setOpen(true);
+    };
+    const onClose = () => {
+        setOpen(false);
+    };
     useEffect(() => {
         const error = itemsError as Error
         error && message.error(error?.message)
@@ -53,6 +60,18 @@ const Products = () => {
     });
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
+            <Drawer
+                title="Recent Event"
+                placement="bottom"
+                closable={false}
+                onClose={onClose}
+                open={open}
+                key="topper"
+            >
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Drawer>
             {
                 itemsLoading
                     ? <Spin />
@@ -74,7 +93,8 @@ const Products = () => {
                                     key={item?.title}
                                     actions={[
                                         <IconText icon={CodeSandboxOutlined} text={`${item?.quantity} units`} key="list-vertical-star-o" />,
-                                        <Button onClick={() => push(`${item?.href}`)}>View</Button>
+                                        <Button onClick={() => push(`${item?.href}`)}>View</Button>,
+                                        <Button onClick={() => showDrawer()}>Status</Button>
                                     ]}
                                 >
                                     <List.Item.Meta
