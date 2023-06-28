@@ -1,26 +1,35 @@
-import React, { useEffect } from 'react';
-import { ClockCircleOutlined } from '@ant-design/icons';
-import { Divider, Steps, message, Spin, Timeline } from 'antd';
-import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+import { get, groupBy } from 'lodash';
+import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
+import { format, parseISO, formatDistance } from 'date-fns';
+import { Divider, Steps, Spin, Timeline, Descriptions } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
-import { fetchSupplyChainItemEvents } from '../../lib/items';
+
 import { fetchMilestones } from '../../lib/statistics';
+import { fetchSupplyChainItemEvents } from '../../lib/items';
+
+interface Event {
+    status: string;
+    statusId: string;
+    statusDescription: string;
+    stage: string;
+    stageId: string;
+    stageDescription: string;
+    updatedAt: string;
+    itemName: string;
+    itemUpdatedAt: string;
+    itemTrackingId: string;
+}
 
 const Product = () => {
-    const pathname = usePathname()
-
-    const { isLoading: eventsLoading, data: events, error: eventsError } = useQuery({
-        queryKey: ['itemMilestones'],
-        queryFn: async () => {
-            const res = await fetchSupplyChainItemEvents(pathname?.split('/products/')[1])
-            return {
-                itemMilestones: res
-            }
-        },
-    })
-    const { isLoading: milestonesLoading, data: milestones, error: milestonesError, refetch: refetchMilestones } = useQuery({
+    const router = useRouter()
+    const [current, setCurrent] = useState(0);
+    const [events, setEvents] = useState<{ [key: number | string]: Event[] }>();
+    const [currentStageStatuses, setCurrentStageStatuses] = useState<Event[]>();
+    const { isLoading: milestonesLoading, data: milestones } = useQuery({
         queryKey: ['milestones'],
         queryFn: async () => {
             const res = await fetchMilestones()
@@ -29,58 +38,91 @@ const Product = () => {
             }
         },
     })
-    useEffect(() => {
-        const error = eventsError as Error
-        const error2 = milestonesError as Error
-        error && message.error(error?.message)
-        error2 && message.error(error2?.message)
-    }, [eventsError, milestonesError])
-
-
-    const eventsArray = events?.itemMilestones?.events
     const milestonesArray = milestones?.milestones
-
     const milestonesMutated = milestonesArray?.map(({ id, attributes }) => ({ id, title: attributes?.name, description: attributes?.description }));
+    useEffect(() => {
+        if (router.isReady) {
+            const fetchDetails = async () => {
+                const itemID = router.query.id;
+                const res = await fetchSupplyChainItemEvents(itemID as string)
+                const massagedEvents = res?.events?.map(({ status, updatedAt, stage, data }) => ({
+                    status: status?.name,
+                    statusId: status?.id,
+                    statusDescription: status?.description,
+                    stage: stage?.name,
+                    stageId: stage?.id,
+                    stageDescription: stage?.description,
+                    updatedAt,
+                    itemName: data?.name,
+                    itemUpdatedAt: data?.updatedAt,
+                    itemTrackingId: data?.trackingId
+                }));
+                const groupedStuff = groupBy(massagedEvents, 'stageId')
+                setEvents(groupedStuff)
+            }
+            fetchDetails().catch(console.error);
+        }
+    }, [router.isReady])
+    useEffect(() => {
+        if (events && milestonesMutated?.length) {
+            const initialState = milestonesMutated[current]
+            const stateId = get(initialState, 'id');
+            setCurrentStageStatuses(events[stateId])
+        }
+    }, [events])
+    useEffect(() => {
+        if(current){
+            const newState = milestonesMutated[current]
+            const stageId = get(newState, 'id');
+            setCurrentStageStatuses(events[stageId])
+        }
+    }, [current])
+    const onChange = (value: number) => {
+        console.log('onChange:', value);
+        setCurrent(value);
+    };
+    const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt }) => ({
+        color: 'green',
+        children: (
+            <div style={{ padding: 0, lineHeight: 0.5 }}>
+                <p style={{ fontWeight: "bold", marginTop: "5px" }}>{status}</p>
+                <p>{statusDescription}</p>
+                <p style={{ fontSize: '11px', fontStyle: 'italic' }}>{format(parseISO(updatedAt), 'LLLL d, yyyy')}</p>
+            </div>
+        ),
 
-
-    console.log("eventsArray==>", eventsArray)
-    console.log("milestonesArray==>", milestonesMutated)
+    }))
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
-            {eventsLoading || milestonesLoading && <Spin />}
-            <Steps
-                progressDot
-                current={1}
-                items={milestonesMutated}
-            />
-            <Divider />
-            <Timeline
-                mode="alternate"
-                items={[
-                    {
-                        children: 'Create a services site 2015-09-01',
-                    },
-                    {
-                        children: 'Solve initial network problems 2015-09-01',
-                        color: 'green',
-                    },
-                    {
-                        dot: <ClockCircleOutlined style={{ fontSize: '16px' }} />,
-                        children: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.`,
-                    },
-                    {
-                        color: 'red',
-                        children: 'Network problems being solved 2015-09-01',
-                    },
-                    {
-                        children: 'Create a services site 2015-09-01',
-                    },
-                    {
-                        dot: <ClockCircleOutlined style={{ fontSize: '16px' }} />,
-                        children: 'Technical testing 2015-09-01',
-                    },
-                ]}
-            />
+            {milestonesLoading ? <Spin /> : (
+                <>
+                    {currentStageStatuses && (
+                        <Descriptions
+                            bordered
+                            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+                            style={{ marginBottom: 20 }}
+                        >
+                            <Descriptions.Item label="Name">{currentStageStatuses[0]?.itemName}</Descriptions.Item>
+                            <Descriptions.Item label="Tracking ID">{currentStageStatuses[0]?.itemTrackingId}</Descriptions.Item>
+                            <Descriptions.Item label="Last Updated">
+                                {`${formatDistance(parseISO(currentStageStatuses[0]?.itemUpdatedAt), new Date())} ago`}
+                            </Descriptions.Item>
+                        </Descriptions>
+
+                    )}
+                    <Steps
+                        progressDot
+                        current={current}
+                        onChange={onChange}
+                        items={milestonesMutated}
+                    />
+                    <Divider />
+                    <Timeline
+                        mode="alternate"
+                        items={entries}
+                    />
+                </>
+            )}
         </GeneralLayout>
     );
 };

@@ -1,11 +1,11 @@
 import {
-    BellOutlined,
+    // BellOutlined,
     UserOutlined,
     LogoutOutlined,
     AppstoreOutlined,
     CodeSandboxOutlined,
     NodeCollapseOutlined,
-    DeploymentUnitOutlined
+    // DeploymentUnitOutlined
 } from "@ant-design/icons";
 
 export default [

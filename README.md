@@ -20,3 +20,26 @@ The following bonus requirements could also be met:
 1. Responsive web application, as mobile users are also expected.
 2. Dockerfile for deployment of the Web application.
 
+
+# Local Setup
+
+### Prerequisites
+1. [Install NodeJS](https://nodejs.org/en/download) on your host machine
+2. Clone this repository
+```bash
+git clone https://github.com/SrMoffat/iota-logistics-frontend.git
+```
+3. Install dependencies
+```bash
+yarn OR npm install
+```
+4. Export environment variables (After adding correct values to `.env` as per `.env.example`)
+5. Start the app
+```bash
+yarn dev
+```
+6. Open the browser window on `http://localhost:3000`
+
+
+### With Docker
+1. [Install Docker](https://docs.docker.com/engine/install/)
