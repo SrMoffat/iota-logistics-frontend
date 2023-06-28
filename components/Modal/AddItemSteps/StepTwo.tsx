@@ -27,10 +27,7 @@ const StepTwo = (props: StepProps) => {
             supplier
         })
     }, [handling, supplier, manufacturer, category, instructions])
-
     const massagedCategories = categories?.map(({ id, attributes }) => ({ value: id, name: attributes?.name })) as SelectOptions[];
-
-    console.log("massagedCategories", massagedCategories)
     return (
         <Form
             layout="vertical"

@@ -31,13 +31,13 @@ const StepThree = (props: StepProps) => {
             style={{ maxWidth: 600 }}
         >
             <Form.Item label="Height">
-                <InputNumber defaultValue={item?.dimensions?.height} onChange={e => setItemHeight(Number(e))} />
+                <InputNumber min={1} defaultValue={item?.dimensions?.height} onChange={e => setItemHeight(Number(e))} />
             </Form.Item>
             <Form.Item label="Width">
-                <InputNumber defaultValue={item?.dimensions?.width}  onChange={e => setItemWidth(Number(e))} />
+                <InputNumber min={1} defaultValue={item?.dimensions?.width}  onChange={e => setItemWidth(Number(e))} />
             </Form.Item>
             <Form.Item label="Length">
-                <InputNumber defaultValue={item?.dimensions?.length}  onChange={e => setItemLength(Number(e))} />
+                <InputNumber min={1} defaultValue={item?.dimensions?.length}  onChange={e => setItemLength(Number(e))} />
             </Form.Item>
             <Form.Item label="Units">
                 <Select defaultValue={item?.dimensions?.units}  onChange={e => setUnits(e)}>

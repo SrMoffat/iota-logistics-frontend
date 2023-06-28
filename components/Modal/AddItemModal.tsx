@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { omit } from 'lodash';
 import { useMutation } from '@tanstack/react-query';
-import { Button, Modal, Steps, theme, message, Spin } from 'antd';
+import { Button, Modal, Steps, theme, message, Spin, Alert } from 'antd';
 
 import { ItemDetails } from '../../lib/types';
 import { ITEM_CREATION_STEPS } from '../../lib/constants';
@@ -22,7 +22,7 @@ const AddItemModal = (props) => {
         handleCancel,
         confirmLoading
     } = props;
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string>();
     const { token } = theme.useToken();
     const { updateItemDetails, item, createSupplyChainItem } = useItemContext();
     const isLastStep = steps.length - 1 == current;
@@ -34,12 +34,13 @@ const AddItemModal = (props) => {
         marginTop: 10,
         padding: 16,
     };
-    const { mutateAsync, isLoading } = useMutation({
+    const { mutateAsync, isLoading, isError } = useMutation({
         mutationFn: async (details: ItemDetails) => {
             return await createSupplyChainItem(details);
         },
         onError: (error: Error) => {
             setError(error.message)
+            message.error(error.message)
         },
         onSuccess: () => {
             message.success('Supply chain item created successfully.')
@@ -66,12 +67,9 @@ const AddItemModal = (props) => {
     const updateItem = () => {
         next()
     }
-
-    const createSupplyItem = async (data) => {
-        // await mutateAsync(data)
-        console.log("Hapa kazi ru", data)
+    const createSupplyItem = async (data: ItemDetails) => {
+        await mutateAsync(data)
     };
-
     return (
         <Modal
             title="Create Item"
@@ -86,6 +84,7 @@ const AddItemModal = (props) => {
             <Steps current={current} items={steps} />
             <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
                 {isLoading && <Spin />}
+                {isError && <Alert type="error" showIcon message={error} />}
                 {renderSteps(current)}
             </div>
             <div style={{ marginTop: 24 }}>

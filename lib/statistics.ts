@@ -10,6 +10,7 @@ interface RequestDetails {
     method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET';
     body?: Object;
 }
+
 export const makeRequest = async (details: RequestDetails) => {
     const { url, method } = details;
     const res = await fetch(`${url}`, {
@@ -21,11 +22,27 @@ export const makeRequest = async (details: RequestDetails) => {
     });
     return await res.json();
 };
+export const makeRequestWithBody = async (details: RequestDetails) => {
+    const { url, method, body } = details;
+    const res = await fetch(`${url}`, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${fetchJwt()}`
+        },
+        body: JSON.stringify(body)
+    });
+    return res;
+};
 export const handleResponse = (data: Object) => {
     const hasErrors = get(data, 'error');
+    const isSystemError = get(data, 'status');
     if (hasErrors) {
         const status = get(hasErrors, 'status');
         const errorMessage = get(hasErrors, 'message') || get(HTTP_ERRORS[Number(status)], 'message')
+        throw new Error(errorMessage)
+    } else if (isSystemError) {
+        const errorMessage = get(HTTP_ERRORS[Number(isSystemError)], 'message')
         throw new Error(errorMessage)
     } else {
         const response = get(data, 'data');

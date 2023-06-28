@@ -38,9 +38,9 @@ const StepOne = (props: StepProps) => {
                 <TextArea defaultValue={item?.description} rows={4} onChange={e => setItemDescription(e?.target?.value)} />
             </Form.Item>
             <Form.Item label="Quantity">
-                <InputNumber defaultValue={item?.quantity} onChange={e => setItemQuantity(Number(e))} />
+                <InputNumber min={1} defaultValue={item?.quantity} onChange={e => setItemQuantity(Number(e))} />
             </Form.Item>
-            <Form.Item label="Color">
+            <Form.Item label="Colour">
                 <ColorPicker defaultValue={item?.colour} onChange={e => setItemColour(e?.toHexString())} />
             </Form.Item>
         </Form>

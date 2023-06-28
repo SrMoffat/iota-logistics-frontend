@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-import { ItemProviderProps,  ItemDetails} from '../../lib/types';
+import { ItemProviderProps, ItemDetails } from '../../lib/types';
 import { createSupplyChainItem as createItem } from '../../lib/items';
 
 const ItemContext = createContext<Partial<ItemProviderProps>>({})
