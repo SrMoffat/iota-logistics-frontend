@@ -47,9 +47,14 @@ export async function addSupplyChainItemEvent(details: ItemDetails): Promise<voi
     }
 }
 
-export async function fetchSupplyChainItemEvents(details: ItemDetails): Promise<void> {
+export async function fetchSupplyChainItemEvents(id: string | number): Promise<Object> {
     try {
-
+        const data = await makeRequest({
+            url: `${BASE_URL}/supply-items/${id}/events`,
+            method: 'GET'
+        });
+        const response = handleResponse(data);
+        return response;
     } catch (error) {
         throw new Error(error)
     }

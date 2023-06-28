@@ -2,7 +2,6 @@ import { get } from 'lodash';
 
 import { fetchJwt } from './users';
 import { GENERAL_CONSTANTS, HTTP_ERRORS } from './constants';
-import { Category } from './types';
 
 const BASE_URL = GENERAL_CONSTANTS.API_BASE_URL;
 

@@ -19,9 +19,11 @@ const AddItemModal = (props) => {
         current,
         handleOk,
         categories,
+        setCurrent,
         refetchItems,
         handleCancel,
-        confirmLoading
+        confirmLoading,
+        refetchMilestones
     } = props;
     const [error, setError] = useState<string>();
     const { token } = theme.useToken();
@@ -48,6 +50,36 @@ const AddItemModal = (props) => {
             handleCancel();
             setItem(undefined);
             refetchItems();
+            refetchMilestones();
+            setCurrent(0)
+            updateItemDetails({
+                category: undefined,
+                colour: undefined,
+                description: undefined,
+                dimensions: {
+                    height: undefined,
+                    length: undefined,
+                    units: undefined,
+                    width: undefined
+                },
+                handling: {
+                    type: undefined,
+                    instructions: undefined
+                },
+                manufacturer: undefined,
+                name: undefined,
+                quantity: undefined,
+                supplier: undefined,
+                weight: {
+                    unit: undefined,
+                    value: undefined
+                },
+                compliance: {
+                    certificates: undefined,
+                    customs: undefined,
+                    regulatory: undefined
+                }
+            })
         },
     })
     const renderSteps = (current: number) => {

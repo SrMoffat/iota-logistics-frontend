@@ -181,6 +181,7 @@ const Dashboard = () => {
                 prev={prev}
                 current={current}
                 handleOk={handleOk}
+                setCurrent={setCurrent}
                 handleCancel={handleCancel}
                 refetchItems={refetchItems}
                 confirmLoading={confirmLoading}
@@ -191,6 +192,7 @@ const Dashboard = () => {
                 <StatisticsCards mapping={mapping} />
                 <MilestoneCards
                     milestone={milestone}
+                    itemsData={itemsData}
                     setMilestone={setMilestone}
                     milestones={milestones?.milestones}
                 />
@@ -199,7 +201,7 @@ const Dashboard = () => {
                         ? <Empty description="Select a milestone above to view items" />
                         : !milestoneItems?.length
                             ? <Empty description="No items exists for this milestone" />
-                            : <CustomTable data={itemsData} />
+                            : <CustomTable data={itemsData.reverse()} />
                 }
             </GeneralLayout>
         </ItemProvider>
