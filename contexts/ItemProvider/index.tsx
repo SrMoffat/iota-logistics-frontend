@@ -18,7 +18,7 @@ const ItemProvider = ({ children }) => {
     const createSupplyChainItem = async (details: ItemDetails) => {
         try {
             const response = await createItem(details);
-            console.log("response", response);
+            return response;
         } catch (error) {
             throw error
         }

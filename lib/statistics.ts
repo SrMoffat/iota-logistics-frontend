@@ -2,6 +2,7 @@ import { get } from 'lodash';
 
 import { fetchJwt } from './users';
 import { GENERAL_CONSTANTS, HTTP_ERRORS } from './constants';
+import { Category } from './types';
 
 const BASE_URL = GENERAL_CONSTANTS.API_BASE_URL;
 
@@ -35,37 +36,30 @@ export const makeRequestWithBody = async (details: RequestDetails) => {
     return res;
 };
 export const handleResponse = (data: Object) => {
-    console.log('handleResponse:input', data)
-
     const hasErrors = get(data, 'error');
     const isSystemResponse = get(data, 'status');
     if (hasErrors) {
-        console.log('hasErrors', data)
         const status = get(hasErrors, 'status');
         const errorMessage = get(hasErrors, 'message') || get(HTTP_ERRORS[Number(status)], 'message')
         throw new Error(errorMessage)
     } else if (isSystemResponse) {
         const isOk = get(data, 'ok');
         if (isSystemResponse === 200 && isOk) {
-            console.log('isSystemResponse:data.body', get(data, 'body'))
             return get(data, 'body')
         } else {
-            console.log('isSystemError', data)
             const errorMessage = get(HTTP_ERRORS[Number(isSystemResponse)], 'message')
             throw new Error(errorMessage)
         }
     } else {
         const response = get(data, 'data');
         if (!response) {
-            console.log('!response', data)
             return data
         } else {
-            console.log('response', response)
             return response
         }
     }
 };
-export async function fetchCategories(): Promise<void> {
+export async function fetchCategories(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/categories`,
@@ -77,7 +71,7 @@ export async function fetchCategories(): Promise<void> {
         throw new Error(error)
     }
 }
-export async function fetchCurrencies(): Promise<void> {
+export async function fetchCurrencies(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/currencies`,
@@ -90,7 +84,7 @@ export async function fetchCurrencies(): Promise<void> {
     }
 }
 
-export async function fetchEvents(): Promise<void> {
+export async function fetchEvents(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/events`,
@@ -103,7 +97,7 @@ export async function fetchEvents(): Promise<void> {
     }
 }
 
-export async function fetchItems(): Promise<void> {
+export async function fetchItems(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/items`,
@@ -116,7 +110,7 @@ export async function fetchItems(): Promise<void> {
     }
 }
 
-export async function fetchMilestones(): Promise<void> {
+export async function fetchMilestones(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/stages`,
@@ -129,7 +123,7 @@ export async function fetchMilestones(): Promise<void> {
     }
 }
 
-export async function fetchUsers(): Promise<void> {
+export async function fetchUsers(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/users`,

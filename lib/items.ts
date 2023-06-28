@@ -17,7 +17,7 @@ export async function fetchItemsByMilestone(milestoneId: string | number): Promi
     }
 }
 
-export async function createSupplyChainItem(values: ItemDetails): Promise<void> {
+export async function createSupplyChainItem(values: ItemDetails): Promise<Object> {
     try {
         const data = await makeRequestWithBody({
             url: `${BASE_URL}/supply-items`,
@@ -27,7 +27,6 @@ export async function createSupplyChainItem(values: ItemDetails): Promise<void> 
         const response = handleResponse(data);
         return response
     } catch (error) {
-        console.log('createSupplyChainItem', error)
         throw new Error(error)
     }
 }
