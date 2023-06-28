@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash'
 import {
     Tag,
     Typography,
@@ -10,19 +11,6 @@ import { ItemDetails } from '../../../lib/types';
 const { Title } = Typography;
 
 const StepFour = (props: ItemDetails) => {
-    const {
-        name,
-        description,
-        quantity,
-        dimensions,
-        manufacturer,
-        handling,
-        supplier,
-        category,
-        colour
-    } = props;
-    const { height, width, length, units } = dimensions;
-    const { type, instructions } = handling;
     return (
         <>
             <Title level={5}>
@@ -30,18 +18,18 @@ const StepFour = (props: ItemDetails) => {
             </Title>
             <Descriptions bordered size="middle" column={2} style={{ margin: -24 }}>
                 <Descriptions.Item label="Name" span={2}>
-                    {name}
+                    {get(props, 'name')}
                 </Descriptions.Item>
                 <Descriptions.Item span={2} label="Description">
-                    {description}
+                    {get(props, 'description')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Quantity" span={2}>
                     <Tag color="green">
-                        {`${quantity} units`}
+                        {`${get(props, 'description')} units`}
                     </Tag>
                 </Descriptions.Item>
                 <Descriptions.Item label="Color" span={2}>
-                    <ColorPicker disabled value={colour} />
+                    <ColorPicker disabled value={get(props, 'colour')} />
                 </Descriptions.Item>
             </Descriptions>
             <Title level={5}>
@@ -49,16 +37,16 @@ const StepFour = (props: ItemDetails) => {
             </Title>
             <Descriptions bordered size="middle" column={2} style={{ margin: -24 }}>
                 <Descriptions.Item label="Height" span={2}>
-                    {height}
+                    {get(props.dimensions, 'height')}
                 </Descriptions.Item>
                 <Descriptions.Item span={2} label="Width">
-                    {width}
+                    {get(props.dimensions, 'width')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Length" span={2}>
-                    {length}
+                    {get(props.dimensions, 'length')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Units" span={2}>
-                    {units}
+                    {get(props.dimensions, 'units')}
                 </Descriptions.Item>
             </Descriptions>
 
@@ -67,16 +55,16 @@ const StepFour = (props: ItemDetails) => {
             </Title>
             <Descriptions bordered size="middle" column={2} style={{ margin: -24 }}>
                 <Descriptions.Item label="Category" span={2}>
-                    {category}
+                    {get(props, 'category')}
                 </Descriptions.Item>
                 <Descriptions.Item span={2} label="Supplier">
-                    {supplier}
+                    {get(props, 'supplier')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Manufacturer" span={2}>
-                    {manufacturer}
+                    {get(props, 'manufacturer')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Handling" span={2}>
-                    {`${type}: ${instructions}`}
+                    {`${get(props?.handling, 'type')}: ${get(props?.handling, 'instructions')}`}
                 </Descriptions.Item>
             </Descriptions>
 

@@ -19,6 +19,7 @@ const AddItemModal = (props) => {
         current,
         handleOk,
         categories,
+        setCurrent,
         refetchItems,
         handleCancel,
         confirmLoading,
@@ -50,6 +51,8 @@ const AddItemModal = (props) => {
             setItem(undefined);
             refetchItems();
             refetchMilestones();
+            setCurrent(0)
+            updateItemDetails({})
         },
     })
     const renderSteps = (current: number) => {

@@ -69,13 +69,13 @@ const getIconAndColor = (name: string) => {
 const MilestoneCards = (props: MilestoneProps) => {
     const options = props.milestones?.map(entry => {
         const { icon, color } = getIconAndColor(entry?.attributes?.name);
-        const count = props?.itemsData?.length;
+        // const count = props?.itemsData?.length;
         return {
             label: (
                 <div style={{ padding: 4 }}>
                     <Avatar icon={icon} style={{ backgroundColor: color }} />
                     <div>{entry?.attributes?.name}</div>
-                    <div style={{ fontSize: "11px" }}>{count ? `${count} entries` : ''}</div>
+                    {/* <div style={{ fontSize: "11px" }}>{count ? `${count} entries` : ''}</div> */}
                 </div>
             ),
             value: entry?.id,
