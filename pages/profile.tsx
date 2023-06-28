@@ -1,39 +1,24 @@
 import React from 'react';
-import { Badge, Descriptions } from 'antd';
+import { format, parseISO } from 'date-fns';
+import { Badge, Descriptions, Tag } from 'antd';
 
 import GeneralLayout from '../components/Layout/General';
+import { useAuthContext } from '../contexts/AuthProvider';
 
 const Profile = () => {
+    const { user } = useAuthContext();
+
+    const date = parseISO(user?.createdAt)
+    
+
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
-            <Descriptions title="User Info" layout="vertical" bordered>
-                <Descriptions.Item label="Product">Cloud Database</Descriptions.Item>
-                <Descriptions.Item label="Billing Mode">Prepaid</Descriptions.Item>
-                <Descriptions.Item label="Automatic Renewal">YES</Descriptions.Item>
-                <Descriptions.Item label="Order time">2018-04-24 18:00:00</Descriptions.Item>
-                <Descriptions.Item label="Usage Time" span={2}>
-                    2019-04-24 18:00:00
-                </Descriptions.Item>
-                <Descriptions.Item label="Status" span={3}>
-                    <Badge status="processing" text="Running" />
-                </Descriptions.Item>
-                <Descriptions.Item label="Negotiated Amount">$80.00</Descriptions.Item>
-                <Descriptions.Item label="Discount">$20.00</Descriptions.Item>
-                <Descriptions.Item label="Official Receipts">$60.00</Descriptions.Item>
-                <Descriptions.Item label="Config Info">
-                    Data disk type: MongoDB
-                    <br />
-                    Database version: 3.4
-                    <br />
-                    Package: dds.mongo.mid
-                    <br />
-                    Storage space: 10 GB
-                    <br />
-                    Replication factor: 3
-                    <br />
-                    Region: East China 1
-                    <br />
-                </Descriptions.Item>
+            <Descriptions title="My Profile" layout="vertical" bordered>
+                <Descriptions.Item label="Username">{user?.username}</Descriptions.Item>
+                <Descriptions.Item label="Block Status"><Tag color={user?.blocked ? 'red' : 'green'}>{user?.blocked ? 'Blocked' : 'Not Blocked'}</Tag></Descriptions.Item>
+                <Descriptions.Item label="Joined On">{format(date, 'LLLL d, yyyy')}</Descriptions.Item>
+                <Descriptions.Item label="Email">{user?.email}</Descriptions.Item>
+                <Descriptions.Item label="Clearance"><Tag color="green">{user?.clearance?.toUpperCase()}</Tag></Descriptions.Item>
             </Descriptions>
         </GeneralLayout>
     )

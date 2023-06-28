@@ -5,7 +5,6 @@ import {
     AppstoreOutlined,
     CodeSandboxOutlined,
     NodeCollapseOutlined,
-    DeploymentUnitOutlined
 } from "@ant-design/icons";
 
 export default [
@@ -18,11 +17,6 @@ export default [
       href: '/products',
       title: 'Products',
       icon: CodeSandboxOutlined,
-    },
-    {
-      href: '/shippments',
-      title: 'Shippments',
-      icon: DeploymentUnitOutlined,
     },
     {
       href: '/notifications',
