@@ -191,6 +191,7 @@ const Dashboard = () => {
                 <StatisticsCards mapping={mapping} />
                 <MilestoneCards
                     milestone={milestone}
+                    itemsData={itemsData}
                     setMilestone={setMilestone}
                     milestones={milestones?.milestones}
                 />

@@ -21,7 +21,8 @@ const AddItemModal = (props) => {
         categories,
         refetchItems,
         handleCancel,
-        confirmLoading
+        confirmLoading,
+        refetchMilestones
     } = props;
     const [error, setError] = useState<string>();
     const { token } = theme.useToken();
@@ -48,6 +49,7 @@ const AddItemModal = (props) => {
             handleCancel();
             setItem(undefined);
             refetchItems();
+            refetchMilestones();
         },
     })
     const renderSteps = (current: number) => {
