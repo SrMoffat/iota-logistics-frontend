@@ -1,7 +1,6 @@
-import { UserDetails, UserLoginDetails } from '../lib/types';
-
+import { ItemDetails } from '../lib/types';
 import { GENERAL_CONSTANTS } from './constants';
-import { makeRequest, handleResponse } from './statistics';
+import { makeRequest, makeRequestWithBody, handleResponse } from './statistics';
 
 const BASE_URL = GENERAL_CONSTANTS.API_BASE_URL;
 
@@ -18,41 +17,47 @@ export async function fetchItemsByMilestone(milestoneId: string | number): Promi
     }
 }
 
-export async function createSupplyChainItem(values: UserDetails): Promise<void> {
+export async function createSupplyChainItem(values: ItemDetails): Promise<Object> {
     try {
-       
+        const data = await makeRequestWithBody({
+            url: `${BASE_URL}/supply-items`,
+            method: 'POST',
+            body: values
+        });
+        const response = handleResponse(data);
+        return response
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function updateSupplyChainItem(details: UserLoginDetails): Promise<void> {
+export async function updateSupplyChainItem(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function addSupplyChainItemEvent(details: UserLoginDetails): Promise<void> {
+export async function addSupplyChainItemEvent(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function fetchSupplyChainItemEvents(details: UserLoginDetails): Promise<void> {
+export async function fetchSupplyChainItemEvents(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function fetchSupplyChainItemRecentEvents(details: UserLoginDetails): Promise<void> {
+export async function fetchSupplyChainItemRecentEvents(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }

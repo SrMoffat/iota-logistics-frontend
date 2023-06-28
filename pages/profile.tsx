@@ -1,42 +1,30 @@
-import React from 'react';
-import { Badge, Descriptions } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Descriptions, Tag } from 'antd';
+import { format, parseISO, isDate } from 'date-fns';
 
 import GeneralLayout from '../components/Layout/General';
+import { useAuthContext } from '../contexts/AuthProvider';
+import { UserData } from '../lib/types';
 
 const Profile = () => {
+    const { user } = useAuthContext();
+    const [profile, setProfile] = useState<UserData>();
+    const date = parseISO(profile?.createdAt);
+    useEffect(() => {
+        setProfile(user)
+    }, [])
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
-            <Descriptions title="User Info" layout="vertical" bordered>
-                <Descriptions.Item label="Product">Cloud Database</Descriptions.Item>
-                <Descriptions.Item label="Billing Mode">Prepaid</Descriptions.Item>
-                <Descriptions.Item label="Automatic Renewal">YES</Descriptions.Item>
-                <Descriptions.Item label="Order time">2018-04-24 18:00:00</Descriptions.Item>
-                <Descriptions.Item label="Usage Time" span={2}>
-                    2019-04-24 18:00:00
-                </Descriptions.Item>
-                <Descriptions.Item label="Status" span={3}>
-                    <Badge status="processing" text="Running" />
-                </Descriptions.Item>
-                <Descriptions.Item label="Negotiated Amount">$80.00</Descriptions.Item>
-                <Descriptions.Item label="Discount">$20.00</Descriptions.Item>
-                <Descriptions.Item label="Official Receipts">$60.00</Descriptions.Item>
-                <Descriptions.Item label="Config Info">
-                    Data disk type: MongoDB
-                    <br />
-                    Database version: 3.4
-                    <br />
-                    Package: dds.mongo.mid
-                    <br />
-                    Storage space: 10 GB
-                    <br />
-                    Replication factor: 3
-                    <br />
-                    Region: East China 1
-                    <br />
-                </Descriptions.Item>
+            <Descriptions title="My Profile" layout="vertical" bordered>
+                <Descriptions.Item label="Username">{profile?.username}</Descriptions.Item>
+                <Descriptions.Item label="Block Status"><Tag color={user?.blocked ? 'red' : 'green'}>{profile?.blocked ? 'Blocked' : 'Not Blocked'}</Tag></Descriptions.Item>
+                <Descriptions.Item label="Email">{profile?.email}</Descriptions.Item>
+                <Descriptions.Item label="Joined On">{'Date Joined'}</Descriptions.Item>
+                <Descriptions.Item label="Clearance"><Tag color="green">{profile?.clearance?.toUpperCase()}</Tag></Descriptions.Item>
             </Descriptions>
         </GeneralLayout>
     )
+
 };
 
 export default Profile;

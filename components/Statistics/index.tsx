@@ -29,7 +29,7 @@ const StatisticsCards = (props: StatsProps) => {
             title: 'Categories',
             prefix: <BoxPlotFilled />,
             suffix: '',
-            valueStyle: {},
+            valueStyle: { color: '#FF9816' },
             bordered: true,
             ...mapping['Categories']
         },
@@ -37,7 +37,7 @@ const StatisticsCards = (props: StatsProps) => {
             title: 'Currencies',
             prefix: <PoundCircleFilled />,
             suffix: '',
-            valueStyle: {},
+            valueStyle: { color: '#FFE016' },
             bordered: true,
             ...mapping['Currencies']
         },
@@ -45,7 +45,7 @@ const StatisticsCards = (props: StatsProps) => {
             title: 'Events',
             prefix: <SlidersFilled />,
             suffix: '',
-            valueStyle: {},
+            valueStyle: { color: '#ACE91E' },
             bordered: true,
             ...mapping['Events']
         },
@@ -53,7 +53,7 @@ const StatisticsCards = (props: StatsProps) => {
             title: 'Items',
             prefix: <DropboxCircleFilled />,
             suffix: '',
-            valueStyle: {},
+            valueStyle: { color: '#22EEE7' },
             bordered: true,
             ...mapping['Items']
         },
@@ -61,7 +61,7 @@ const StatisticsCards = (props: StatsProps) => {
             title: 'Milestones',
             prefix: <GoldFilled />,
             suffix: '',
-            valueStyle: {},
+            valueStyle: { color: '#2A95F2' },
             bordered: true,
             ...mapping['Milestones']
         },
@@ -69,7 +69,7 @@ const StatisticsCards = (props: StatsProps) => {
             title: 'Users',
             prefix: <UserOutlined />,
             suffix: '',
-            valueStyle: {},
+            valueStyle: { color: '#8B2AF2' },
             bordered: true,
             ...mapping['Users']
         }

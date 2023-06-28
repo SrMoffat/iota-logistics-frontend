@@ -2,6 +2,7 @@ import { get } from 'lodash';
 
 import { fetchJwt } from './users';
 import { GENERAL_CONSTANTS, HTTP_ERRORS } from './constants';
+import { Category } from './types';
 
 const BASE_URL = GENERAL_CONSTANTS.API_BASE_URL;
 
@@ -10,6 +11,7 @@ interface RequestDetails {
     method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET';
     body?: Object;
 }
+
 export const makeRequest = async (details: RequestDetails) => {
     const { url, method } = details;
     const res = await fetch(`${url}`, {
@@ -21,18 +23,43 @@ export const makeRequest = async (details: RequestDetails) => {
     });
     return await res.json();
 };
+export const makeRequestWithBody = async (details: RequestDetails) => {
+    const { url, method, body } = details;
+    const res = await fetch(`${url}`, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${fetchJwt()}`
+        },
+        body: JSON.stringify(body)
+    });
+    return res;
+};
 export const handleResponse = (data: Object) => {
     const hasErrors = get(data, 'error');
+    const isSystemResponse = get(data, 'status');
     if (hasErrors) {
         const status = get(hasErrors, 'status');
         const errorMessage = get(hasErrors, 'message') || get(HTTP_ERRORS[Number(status)], 'message')
         throw new Error(errorMessage)
+    } else if (isSystemResponse) {
+        const isOk = get(data, 'ok');
+        if (isSystemResponse === 200 && isOk) {
+            return get(data, 'body')
+        } else {
+            const errorMessage = get(HTTP_ERRORS[Number(isSystemResponse)], 'message')
+            throw new Error(errorMessage)
+        }
     } else {
         const response = get(data, 'data');
-        return response
+        if (!response) {
+            return data
+        } else {
+            return response
+        }
     }
 };
-export async function fetchCategories(): Promise<void> {
+export async function fetchCategories(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/categories`,
@@ -44,7 +71,7 @@ export async function fetchCategories(): Promise<void> {
         throw new Error(error)
     }
 }
-export async function fetchCurrencies(): Promise<void> {
+export async function fetchCurrencies(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/currencies`,
@@ -57,7 +84,7 @@ export async function fetchCurrencies(): Promise<void> {
     }
 }
 
-export async function fetchEvents(): Promise<void> {
+export async function fetchEvents(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/events`,
@@ -70,7 +97,7 @@ export async function fetchEvents(): Promise<void> {
     }
 }
 
-export async function fetchItems(): Promise<void> {
+export async function fetchItems(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/items`,
@@ -83,7 +110,7 @@ export async function fetchItems(): Promise<void> {
     }
 }
 
-export async function fetchMilestones(): Promise<void> {
+export async function fetchMilestones(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/stages`,
@@ -96,7 +123,7 @@ export async function fetchMilestones(): Promise<void> {
     }
 }
 
-export async function fetchUsers(): Promise<void> {
+export async function fetchUsers(): Promise<Object> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/users`,

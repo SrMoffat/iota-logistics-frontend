@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import type { ColumnsType } from 'antd/es/table';
-import { useQuery } from '@tanstack/react-query';
-import {
-    Tag,
-    Space,
-    Empty,
-    message,
-} from 'antd';
 
-import CustomTable from '../components/Table';
+import { Empty, message } from 'antd';
+import { useQuery } from '@tanstack/react-query';
+
+import CustomTable from '../components/Table/ItemTable';
 import StatisticsCards from '../components/Statistics';
 import MilestoneCards from '../components/Milestones';
 import GeneralLayout from '../components/Layout/General';
 import AddItemModal from '../components/Modal/AddItemModal';
 
 import { ItemProvider } from '../contexts'
-import { DataType } from '../lib/types';
 import {
     fetchItems,
     fetchUsers,
@@ -26,77 +20,6 @@ import {
 } from '../lib/statistics';
 import { fetchItemsByMilestone } from '../lib/items';
 
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-    },
-];
-const columns: ColumnsType<DataType> = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-    },
-    {
-        title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-            <Space size="middle">
-                <a>Invite {record.name}</a>
-                <a>Delete</a>
-            </Space>
-        ),
-    },
-];
 const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
@@ -130,7 +53,7 @@ const Dashboard = () => {
             }
         },
     })
-    const { isLoading: itemsLoading, data: items, error: itemsError } = useQuery({
+    const { isLoading: itemsLoading, data: items, error: itemsError, refetch: refetchItems } = useQuery({
         queryKey: ['items'],
         queryFn: async () => {
             const res = await fetchItems()
@@ -139,7 +62,7 @@ const Dashboard = () => {
             }
         },
     })
-    const { isLoading: milestonesLoading, data: milestones, error: milestonesError } = useQuery({
+    const { isLoading: milestonesLoading, data: milestones, error: milestonesError, refetch: refetchMilestones } = useQuery({
         queryKey: ['milestones'],
         queryFn: async () => {
             const res = await fetchMilestones()
@@ -234,10 +157,21 @@ const Dashboard = () => {
         if (milestone) {
             fetchItemsData(milestone);
         }
-    }, [milestone])
-
-    console.log({
-        milestoneItems
+    }, [milestone]);
+    const milestonesMutated = milestoneItems?.map(({ stage, status, data }) => ({ stage, status, data }));
+    const itemsData = milestonesMutated?.map(({ stage, status, data }) => {
+        return {
+            key: `${data.uuid}:${Math.random()}`,
+            name: data.name,
+            colour: data.colour,
+            status: status.name,
+            manufacturer: data.manufacturer,
+            supplier: data.supplier,
+            category: data.category.name,
+            stage: stage.name,
+            description: data.description,
+            quantity: data.quantity,
+        }
     })
     return (
         <ItemProvider>
@@ -248,7 +182,10 @@ const Dashboard = () => {
                 current={current}
                 handleOk={handleOk}
                 handleCancel={handleCancel}
+                refetchItems={refetchItems}
                 confirmLoading={confirmLoading}
+                categories={categories?.categories}
+                refetchMilestones={refetchMilestones}
             />
             <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">
                 <StatisticsCards mapping={mapping} />
@@ -257,20 +194,13 @@ const Dashboard = () => {
                     setMilestone={setMilestone}
                     milestones={milestones?.milestones}
                 />
-                {!milestone ? (
-                    <Empty
-                        description="Select a milestone above to view items"
-                    />
-                ) : !milestoneItems?.length ? (
-                    <Empty
-                        description="No items exists for thids milestone"
-                    />
-                ) : (
-                    <CustomTable
-                        columns={columns}
-                        data={data}
-                    />
-                )}
+                {
+                    !milestone
+                        ? <Empty description="Select a milestone above to view items" />
+                        : !milestoneItems?.length
+                            ? <Empty description="No items exists for this milestone" />
+                            : <CustomTable data={itemsData} />
+                }
             </GeneralLayout>
         </ItemProvider>
     );

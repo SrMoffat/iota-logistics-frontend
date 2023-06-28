@@ -31,19 +31,21 @@ const StepThree = (props: StepProps) => {
             style={{ maxWidth: 600 }}
         >
             <Form.Item label="Height">
-                <InputNumber defaultValue={item?.dimensions?.height} onChange={e => setItemHeight(Number(e))} />
+                <InputNumber min={1} defaultValue={item?.dimensions?.height} onChange={e => setItemHeight(Number(e))} />
             </Form.Item>
             <Form.Item label="Width">
-                <InputNumber defaultValue={item?.dimensions?.width}  onChange={e => setItemWidth(Number(e))} />
+                <InputNumber min={1} defaultValue={item?.dimensions?.width}  onChange={e => setItemWidth(Number(e))} />
             </Form.Item>
             <Form.Item label="Length">
-                <InputNumber defaultValue={item?.dimensions?.length}  onChange={e => setItemLength(Number(e))} />
+                <InputNumber min={1} defaultValue={item?.dimensions?.length}  onChange={e => setItemLength(Number(e))} />
             </Form.Item>
             <Form.Item label="Units">
                 <Select defaultValue={item?.dimensions?.units}  onChange={e => setUnits(e)}>
-                    <Select.Option value="Centimeters">Centimeters</Select.Option>
-                    <Select.Option value="Milimieters">Milimieters</Select.Option>
-                    <Select.Option value="Meters">Meters</Select.Option>
+                    <Select.Option value="centimeter_cm">Centimeters</Select.Option>
+                    <Select.Option value="millimeter_mm">Millimeters</Select.Option>
+                    <Select.Option value="meter_m">Meters</Select.Option>
+                    <Select.Option value="inch_in">Inches</Select.Option>
+                    <Select.Option value="feet_ft">Feet</Select.Option>
                 </Select>
             </Form.Item>
         </Form>

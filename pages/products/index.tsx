@@ -1,62 +1,83 @@
-import React from 'react';
-import { List, Avatar } from 'antd';
-import { LikeOutlined, StarOutlined, MessageOutlined } from '@ant-design/icons';
+import React, { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { List, message, Spin, ColorPicker } from 'antd';
+import { CodeSandboxOutlined } from '@ant-design/icons';
 
 import IconText from '../../components/IconText';
 import GeneralLayout from '../../components/Layout/General';
 
+import { fetchItems } from '../../lib/statistics';
+
 const Products = () => {
-    const data = Array.from({ length: 23 }).map((_, i) => ({
-        href: 'https://ant.design',
-        title: `ant design part ${i}`,
-        avatar: `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${i}`,
-        description:
-            'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-        content:
-            'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-    }));
+    const { isLoading: itemsLoading, data: items, error: itemsError } = useQuery({
+        queryKey: ['items'],
+        queryFn: async () => {
+            const res = await fetchItems()
+            return {
+                items: res
+            }
+        },
+    })
+    useEffect(() => {
+        const error = itemsError as Error
+        error && message.error(error?.message)
+    }, [itemsError])
+    const products = items?.items?.map(({ id, attributes }) => {
+        return {
+            href: `/products/${id}`,
+            title: attributes?.name,
+            colour: attributes?.colour,
+            trackingId: attributes?.trackingId,
+            description: attributes?.description,
+            manufacturer: attributes?.manufacturer,
+            supplier: attributes?.supplier,
+            quantity: attributes?.quantity,
+        }
+    });
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
-            <List
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                    onChange: (page) => {
-                        console.log(page);
-                    },
-                    pageSize: 3,
-                }}
-                dataSource={data}
-                footer={
-                    <div>
-                        <b>ant design</b> footer part
-                    </div>
-                }
-                renderItem={(item) => (
-                    <List.Item
-                        key={item.title}
-                        actions={[
-                            <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                            <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                            <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-                        ]}
-                        extra={
-                            <img
-                                width={272}
-                                alt="logo"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                            />
-                        }
-                    >
-                        <List.Item.Meta
-                            avatar={<Avatar src={item.avatar} />}
-                            title={<a href={item.href}>{item.title}</a>}
-                            description={item.description}
+            {
+                itemsLoading
+                    ? <Spin />
+                    : (
+                        <List
+                            itemLayout="vertical"
+                            size="large"
+                            pagination={{
+                                onChange: (page) => {
+                                    console.log(page);
+                                },
+                                pageSize: 3,
+                            }}
+                            dataSource={products}
+                            renderItem={(item) => (
+                                <List.Item
+                                    key={item?.title}
+                                    actions={[
+                                        <IconText icon={CodeSandboxOutlined} text={item?.quantity} key="list-vertical-star-o" />,
+                                        // <Tag color="geekblue">
+                                        //     {`ddd units`}
+                                        // </Tag>,
+                                        // <Tag color="green">
+                                        //     {`ddd units`}
+                                        // </Tag>
+                                    ]}
+                                >
+                                    <List.Item.Meta
+                                        avatar={<ColorPicker value={item?.colour} />}
+                                        title={<a href={item?.href}>{item?.title}</a>}
+                                        description={item?.description}
+                                    />
+                                    <div>{item?.content}</div>
+                                    <div>{item?.trackingId}</div>
+                                    <div>{item?.supplier}</div>
+                                    <div>{item?.manufacturer}</div>
+                                </List.Item>
+                            )}
                         />
-                        {item.content}
-                    </List.Item>
-                )}
-            />
+
+                    )}
+
         </GeneralLayout>
     );
 };

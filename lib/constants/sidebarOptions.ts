@@ -19,16 +19,16 @@ export default [
       title: 'Products',
       icon: CodeSandboxOutlined,
     },
-    {
-      href: '/shippments',
-      title: 'Shippments',
-      icon: DeploymentUnitOutlined,
-    },
-    {
-      href: '/notifications',
-      title: 'Notifications',
-      icon: BellOutlined,
-    },
+    // {
+    //   href: '/shippments',
+    //   title: 'Shippments',
+    //   icon: DeploymentUnitOutlined,
+    // },
+    // {
+    //   href: '/notifications',
+    //   title: 'Notifications',
+    //   icon: BellOutlined,
+    // },
     {
       href: '/returns',
       title: 'Returns',

@@ -4,12 +4,12 @@ import {
     Input,
     Select,
 } from 'antd';
-import { StepProps } from '../../../lib/types';
+import { StepProps, SelectOptions } from '../../../lib/types';
 
 const { TextArea } = Input;
 
 const StepTwo = (props: StepProps) => {
-    const { updateItemDetails, item } = props;
+    const { updateItemDetails, item, categories } = props;
     const [handling, setItemHandling] = useState<string>();
     const [supplier, setItemSupplier] = useState<string>();
     const [manufacturer, setItemManufacturer] = useState<string>();
@@ -27,6 +27,7 @@ const StepTwo = (props: StepProps) => {
             supplier
         })
     }, [handling, supplier, manufacturer, category, instructions])
+    const massagedCategories = categories?.map(({ id, attributes }) => ({ value: id, name: attributes?.name })) as SelectOptions[];
     return (
         <Form
             layout="vertical"
@@ -36,10 +37,9 @@ const StepTwo = (props: StepProps) => {
         >
             <Form.Item label="Category">
                 <Select defaultValue={item?.category} onChange={e => setItemCategory(e)}>
-                    <Select.Option value="1">Demo</Select.Option>
-                    <Select.Option value="2">Electronics</Select.Option>
-                    <Select.Option value="3">Automotive</Select.Option>
-                    <Select.Option value="4">Household</Select.Option>
+                    {massagedCategories?.map(({ value, name }) => (
+                        <Select.Option key={`${value}-${name}`} value={value}>{name}</Select.Option>
+                    ))}
                 </Select>
             </Form.Item>
             <Form.Item label="Supplier">
@@ -51,8 +51,8 @@ const StepTwo = (props: StepProps) => {
             <Form.Item label="Handling">
                 <Select defaultValue={item?.handling?.type} onChange={e => setItemHandling(e)}>
                     <Select.Option value="fragile">Fragile</Select.Option>
-                    <Select.Option value="harzardous">Harzardous</Select.Option>
-                    <Select.Option value="normal">Normal</Select.Option>
+                    <Select.Option value="hazardous">Harzardous</Select.Option>
+                    <Select.Option value="general">Normal</Select.Option>
                 </Select>
             </Form.Item>
             <Form.Item label="Handling Instructions">

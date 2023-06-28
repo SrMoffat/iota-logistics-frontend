@@ -20,35 +20,59 @@ interface MilestoneProps {
     milestone: string | number;
     setMilestone: React.Dispatch<React.SetStateAction<string | number>>
 }
-
-const getIcon = (name: string) => {
+const getIconAndColor = (name: string) => {
     switch (true) {
         case name?.includes('Warehousing'):
-            return <ShopFilled />;
+            return {
+                icon: <ShopFilled />,
+                color: '#8B2AF2'
+            };
         case name?.includes('Processing'):
-            return <FolderOpenFilled />;
+            return {
+                icon: <FolderOpenFilled />,
+                color: '#2A95F2'
+            };
         case name?.includes('Transit'):
-            return <CarFilled />;
+            return {
+                icon: <CarFilled />,
+                color: '#22EEE7'
+            };
         case name?.includes('Delivery'):
-            return <GiftFilled />;
+            return {
+                icon: <GiftFilled />,
+                color: '#ACE91E'
+            };
         case name?.includes('Returned'):
-            return <InteractionFilled />;
+            return {
+                icon: <InteractionFilled />,
+                color: '#FFE016'
+            };
         case name?.includes('Recovery'):
-            return <NodeExpandOutlined />;
+            return {
+                icon: <NodeExpandOutlined />,
+                color: '#FF9816'
+            };
         case name?.includes('Termination'):
-            return <WalletFilled />;
+            return {
+                icon: <WalletFilled />,
+                color: '#FF9816'
+            };
         default:
-            return <ShopFilled />;
+            return {
+                icon: <ShopFilled />,
+                color: '#FF9816'
+            };
     }
 };
-
 const MilestoneCards = (props: MilestoneProps) => {
     const options = props.milestones?.map(entry => {
+        const { icon, color } = getIconAndColor(entry?.attributes?.name);
         return {
             label: (
                 <div style={{ padding: 4 }}>
-                    <Avatar icon={getIcon(entry?.attributes?.name)} />
+                    <Avatar icon={icon} style={{ backgroundColor: color }} />
                     <div>{entry?.attributes?.name}</div>
+                    <div style={{ fontSize: "11px" }}>4 entires</div>
                 </div>
             ),
             value: entry?.id,
