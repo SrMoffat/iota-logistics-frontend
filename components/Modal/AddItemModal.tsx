@@ -18,6 +18,7 @@ const AddItemModal = (props) => {
         next,
         current,
         handleOk,
+        categories,
         handleCancel,
         confirmLoading
     } = props;
@@ -48,7 +49,8 @@ const AddItemModal = (props) => {
     const renderSteps = (current: number) => {
         const stepProps = {
             updateItemDetails,
-            item
+            item,
+            categories
         };
         switch (current) {
             case 0:
@@ -65,8 +67,9 @@ const AddItemModal = (props) => {
         next()
     }
 
-    const createSupplyItem = async () => {
-        await mutateAsync(item)
+    const createSupplyItem = async (data) => {
+        // await mutateAsync(data)
+        console.log("Hapa kazi ru", data)
     };
 
     return (
@@ -92,7 +95,7 @@ const AddItemModal = (props) => {
                     </Button>
                 )}
                 {isLastStep && (
-                    <Button loading={isLoading} type="primary" onClick={createSupplyItem}>
+                    <Button loading={isLoading} type="primary" onClick={() => createSupplyItem(item)}>
                         Done
                     </Button>
                 )}

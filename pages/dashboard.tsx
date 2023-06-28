@@ -182,6 +182,7 @@ const Dashboard = () => {
                 current={current}
                 handleOk={handleOk}
                 handleCancel={handleCancel}
+                categories={categories?.categories}
                 confirmLoading={confirmLoading}
             />
             <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">

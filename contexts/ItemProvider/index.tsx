@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 
 import { ItemProviderProps,  ItemDetails} from '../../lib/types';
+import { createSupplyChainItem as createItem } from '../../lib/items';
 
 const ItemContext = createContext<Partial<ItemProviderProps>>({})
 
@@ -16,7 +17,8 @@ const ItemProvider = ({ children }) => {
     }
     const createSupplyChainItem = async (details: ItemDetails) => {
         try {
-            console.log("Details", details);
+            const response = await createItem(details);
+            console.log("response", response);
         } catch (error) {
             throw error
         }

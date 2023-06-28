@@ -13,12 +13,12 @@ export interface UserData {
     createdAt: string;
     updatedAt: string;
     confirmed: boolean;
-} 
+}
 export interface LoggedInUserDetails {
     jwt: string;
     user: UserData
 }
-export type UserLoginDetails =  {
+export type UserLoginDetails = {
     password: string;
     identifier: string;
     rememberMe?: boolean;
@@ -73,7 +73,22 @@ export type ItemProviderProps = {
     createSupplyChainItem: (details: ItemDetails) => Promise<void>;
     setItem: React.Dispatch<React.SetStateAction<ItemDetails | undefined>>
 }
+
+export interface SelectOptions {
+    value: string | number;
+    name: string;
+}
+export interface Category {
+    id: string | number;
+    attributes: {
+        name: string;
+        description: string;
+        updatedAt: string;
+        createdAt: string;
+    }
+}
 export interface StepProps {
     item: ItemDetails;
+    categories: Category[];
     updateItemDetails: (details: ItemDetails) => void
 }

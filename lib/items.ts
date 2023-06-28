@@ -1,4 +1,4 @@
-import { UserDetails, UserLoginDetails } from '../lib/types';
+import { ItemDetails, UserLoginDetails } from '../lib/types';
 
 import { GENERAL_CONSTANTS } from './constants';
 import { makeRequest, handleResponse } from './statistics';
@@ -18,41 +18,47 @@ export async function fetchItemsByMilestone(milestoneId: string | number): Promi
     }
 }
 
-export async function createSupplyChainItem(values: UserDetails): Promise<void> {
+export async function createSupplyChainItem(values: ItemDetails): Promise<void> {
     try {
-       
+        const data = await makeRequest({
+            url: `${BASE_URL}/supply-items`,
+            method: 'POST',
+            body: JSON.stringify(values)
+        });
+        console.log('Data', data);
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function updateSupplyChainItem(details: UserLoginDetails): Promise<void> {
+export async function updateSupplyChainItem(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function addSupplyChainItemEvent(details: UserLoginDetails): Promise<void> {
+export async function addSupplyChainItemEvent(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function fetchSupplyChainItemEvents(details: UserLoginDetails): Promise<void> {
+export async function fetchSupplyChainItemEvents(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export async function fetchSupplyChainItemRecentEvents(details: UserLoginDetails): Promise<void> {
+export async function fetchSupplyChainItemRecentEvents(details: ItemDetails): Promise<void> {
     try {
-       
+
     } catch (error) {
         throw new Error(error)
     }
