@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { List, message, Spin, ColorPicker, Button, Col, Row, theme, Drawer } from 'antd';
+import { List, message, Spin, ColorPicker, Button, Col, Row, theme, Drawer, Descriptions, Tag } from 'antd';
 import { CodeSandboxOutlined } from '@ant-design/icons';
 
 import IconText from '../../components/IconText';
@@ -68,9 +68,37 @@ const Products = () => {
                 open={open}
                 key="topper"
             >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+                <Descriptions
+                    bordered
+                    column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+                >
+                    <Descriptions.Item label="Stage"><Tag color='green'>Warehousing</Tag></Descriptions.Item>
+                    <Descriptions.Item label="Status"><Tag color='geekblue'>Stocked</Tag></Descriptions.Item>
+                    <Descriptions.Item label="Last Updated">2 hours ago</Descriptions.Item>
+                    <Descriptions.Item label="Updated By">Zurich Jalakov</Descriptions.Item>
+                    <Descriptions.Item label="Item Info">
+                        <Row>
+                            <Col span={4} style={{ fontWeight: "bold" }}>Name:</Col>
+                            <Col span={12}>Mac Boock Pro</Col>
+                        </Row>
+                        <Row>
+                            <Col span={4} style={{ fontWeight: "bold" }}>Description:</Col>
+                            <Col span={12}>Mac Boock Pro</Col>
+                        </Row>
+                        <Row>
+                            <Col span={4} style={{ fontWeight: "bold" }}>Manufacturer:</Col>
+                            <Col span={12}>Mac Boock Pro</Col>
+                        </Row>
+                        <Row>
+                            <Col span={4} style={{ fontWeight: "bold" }}>Supplier:</Col>
+                            <Col span={12}>Supplier</Col>
+                        </Row>
+                        <Row>
+                            <Col span={4} style={{ fontWeight: "bold" }}>Tracking ID:</Col>
+                            <Col span={12}>Mac Boock Pro</Col>
+                        </Row>
+                    </Descriptions.Item>
+                </Descriptions>
             </Drawer>
             {
                 itemsLoading

@@ -2,21 +2,16 @@ import React from 'react';
 import { get } from 'lodash'
 import {
     Tag,
-    Typography,
     ColorPicker,
     Descriptions
 } from 'antd';
 
 import { ItemDetails } from '../../../lib/types';
-const { Title } = Typography;
 
 const StepFour = (props: ItemDetails) => {
     return (
         <>
-            <Title level={5}>
-                General Information
-            </Title>
-            <Descriptions bordered size="middle" column={2} style={{ margin: -24 }}>
+            <Descriptions title="General Information" bordered size="middle" column={2} style={{ margin: -24 }}>
                 <Descriptions.Item label="Name" span={2}>
                     {get(props, 'name')}
                 </Descriptions.Item>
@@ -32,10 +27,7 @@ const StepFour = (props: ItemDetails) => {
                     <ColorPicker disabled value={get(props, 'colour')} />
                 </Descriptions.Item>
             </Descriptions>
-            <Title level={5}>
-                Specific Information
-            </Title>
-            <Descriptions bordered size="middle" column={2} style={{ margin: -24 }}>
+            <Descriptions title="Specific Information"  bordered size="middle" column={2} style={{ margin: -24 }}>
                 <Descriptions.Item label="Height" span={2}>
                     {get(props.dimensions, 'height')}
                 </Descriptions.Item>
@@ -49,11 +41,7 @@ const StepFour = (props: ItemDetails) => {
                     {get(props.dimensions, 'units')}
                 </Descriptions.Item>
             </Descriptions>
-
-            <Title level={5}>
-                Logistics Information
-            </Title>
-            <Descriptions bordered size="middle" column={2} style={{ margin: -24 }}>
+            <Descriptions title="Logistics Information"  bordered size="middle" column={2} style={{ margin: -24 }}>
                 <Descriptions.Item label="Category" span={2}>
                     {get(props, 'category')}
                 </Descriptions.Item>
