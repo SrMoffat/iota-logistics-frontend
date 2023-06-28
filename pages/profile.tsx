@@ -1,16 +1,13 @@
 import React from 'react';
+import { Descriptions, Tag } from 'antd';
 import { format, parseISO } from 'date-fns';
-import { Badge, Descriptions, Tag } from 'antd';
 
 import GeneralLayout from '../components/Layout/General';
 import { useAuthContext } from '../contexts/AuthProvider';
 
 const Profile = () => {
     const { user } = useAuthContext();
-
     const date = parseISO(user?.createdAt)
-    
-
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
             <Descriptions title="My Profile" layout="vertical" bordered>
