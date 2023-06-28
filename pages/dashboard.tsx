@@ -62,7 +62,7 @@ const Dashboard = () => {
             }
         },
     })
-    const { isLoading: milestonesLoading, data: milestones, error: milestonesError } = useQuery({
+    const { isLoading: milestonesLoading, data: milestones, error: milestonesError, refetch: refetchMilestones } = useQuery({
         queryKey: ['milestones'],
         queryFn: async () => {
             const res = await fetchMilestones()
@@ -181,10 +181,11 @@ const Dashboard = () => {
                 prev={prev}
                 current={current}
                 handleOk={handleOk}
-                refetchItems={refetchItems}
                 handleCancel={handleCancel}
-                categories={categories?.categories}
+                refetchItems={refetchItems}
                 confirmLoading={confirmLoading}
+                categories={categories?.categories}
+                refetchMilestones={refetchMilestones}
             />
             <GeneralLayout handleShowCreateItemModal={handleShowCreateItemModal} hasCta ctaText="Create Item">
                 <StatisticsCards mapping={mapping} />
