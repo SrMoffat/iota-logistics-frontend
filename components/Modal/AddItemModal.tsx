@@ -52,7 +52,34 @@ const AddItemModal = (props) => {
             refetchItems();
             refetchMilestones();
             setCurrent(0)
-            updateItemDetails({})
+            updateItemDetails({
+                category: undefined,
+                colour: undefined,
+                description: undefined,
+                dimensions: {
+                    height: undefined,
+                    length: undefined,
+                    units: undefined,
+                    width: undefined
+                },
+                handling: {
+                    type: undefined,
+                    instructions: undefined
+                },
+                manufacturer: undefined,
+                name: undefined,
+                quantity: undefined,
+                supplier: undefined,
+                weight: {
+                    unit: undefined,
+                    value: undefined
+                },
+                compliance: {
+                    certificates: undefined,
+                    customs: undefined,
+                    regulatory: undefined
+                }
+            })
         },
     })
     const renderSteps = (current: number) => {

@@ -25,7 +25,7 @@ const StepFour = (props: ItemDetails) => {
                 </Descriptions.Item>
                 <Descriptions.Item label="Quantity" span={2}>
                     <Tag color="green">
-                        {`${get(props, 'description')} units`}
+                        {`${get(props, 'quantity')} units`}
                     </Tag>
                 </Descriptions.Item>
                 <Descriptions.Item label="Color" span={2}>
