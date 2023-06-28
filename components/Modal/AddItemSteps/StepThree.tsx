@@ -41,9 +41,11 @@ const StepThree = (props: StepProps) => {
             </Form.Item>
             <Form.Item label="Units">
                 <Select defaultValue={item?.dimensions?.units}  onChange={e => setUnits(e)}>
-                    <Select.Option value="Centimeters">Centimeters</Select.Option>
-                    <Select.Option value="Milimieters">Milimieters</Select.Option>
-                    <Select.Option value="Meters">Meters</Select.Option>
+                    <Select.Option value="centimeter_cm">Centimeters</Select.Option>
+                    <Select.Option value="millimeter_mm">Millimeters</Select.Option>
+                    <Select.Option value="meter_m">Meters</Select.Option>
+                    <Select.Option value="inch_in">Inches</Select.Option>
+                    <Select.Option value="feet_ft">Feet</Select.Option>
                 </Select>
             </Form.Item>
         </Form>

@@ -41,7 +41,7 @@ const StepTwo = (props: StepProps) => {
             <Form.Item label="Category">
                 <Select defaultValue={item?.category} onChange={e => setItemCategory(e)}>
                     {massagedCategories?.map(({ value, name }) => (
-                        <Select.Option value={value}>{name}</Select.Option>
+                        <Select.Option key={`${value}-${name}`} value={value}>{name}</Select.Option>
                     ))}
                 </Select>
             </Form.Item>
