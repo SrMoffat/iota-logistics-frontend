@@ -19,12 +19,13 @@ const AddItemModal = (props) => {
         current,
         handleOk,
         categories,
+        refetchItems,
         handleCancel,
         confirmLoading
     } = props;
     const [error, setError] = useState<string>();
     const { token } = theme.useToken();
-    const { updateItemDetails, item, createSupplyChainItem } = useItemContext();
+    const { updateItemDetails, item, createSupplyChainItem, setItem } = useItemContext();
     const isLastStep = steps.length - 1 == current;
     const contentStyle: React.CSSProperties = {
         color: token.colorTextTertiary,
@@ -39,12 +40,14 @@ const AddItemModal = (props) => {
             return await createSupplyChainItem(details);
         },
         onError: (error: Error) => {
-            setError(error.message)
-            message.error(error.message)
+            setError(error.message);
+            message.error(error.message);
         },
         onSuccess: () => {
-            message.success('Supply chain item created successfully.')
-            handleCancel()
+            message.success('Supply chain item created successfully.');
+            handleCancel();
+            setItem(undefined);
+            refetchItems();
         },
     })
     const renderSteps = (current: number) => {

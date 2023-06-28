@@ -53,7 +53,7 @@ const Dashboard = () => {
             }
         },
     })
-    const { isLoading: itemsLoading, data: items, error: itemsError } = useQuery({
+    const { isLoading: itemsLoading, data: items, error: itemsError, refetch: refetchItems } = useQuery({
         queryKey: ['items'],
         queryFn: async () => {
             const res = await fetchItems()
@@ -181,6 +181,7 @@ const Dashboard = () => {
                 prev={prev}
                 current={current}
                 handleOk={handleOk}
+                refetchItems={refetchItems}
                 handleCancel={handleCancel}
                 categories={categories?.categories}
                 confirmLoading={confirmLoading}
