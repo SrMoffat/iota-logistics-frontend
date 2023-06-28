@@ -20,7 +20,6 @@ interface MilestoneProps {
     milestone: string | number;
     setMilestone: React.Dispatch<React.SetStateAction<string | number>>
 }
-
 const getIcon = (name: string) => {
     switch (true) {
         case name?.includes('Warehousing'):
@@ -41,7 +40,6 @@ const getIcon = (name: string) => {
             return <ShopFilled />;
     }
 };
-
 const MilestoneCards = (props: MilestoneProps) => {
     const options = props.milestones?.map(entry => {
         return {

@@ -9,7 +9,6 @@ const columns: ColumnsType<DataType> = [
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        // render: (text) => <a>{text}</a>,
     },
     {
         title: 'Description',
@@ -64,16 +63,6 @@ const columns: ColumnsType<DataType> = [
         dataIndex: 'quantity',
         key: 'age',
     },
-    // {
-    //     title: 'Action',
-    //     key: 'action',
-    //     render: (_, record) => (
-    //         <Space size="middle">
-    //             <a>Invite {record.name}</a>
-    //             <a>Delete</a>
-    //         </Space>
-    //     ),
-    // },
 ];
 
 export default columns;

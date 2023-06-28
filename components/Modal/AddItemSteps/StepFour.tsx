@@ -6,9 +6,8 @@ import {
     Descriptions
 } from 'antd';
 
-const { Title } = Typography;
-
 import { ItemDetails } from '../../../lib/types';
+const { Title } = Typography;
 
 const StepFour = (props: ItemDetails) => {
     const {

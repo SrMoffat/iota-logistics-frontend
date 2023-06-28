@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import type { NotificationPlacement } from 'antd/es/notification/interface';
 import { Row, Col, Divider, notification, Spin, Alert } from 'antd';
+import type { NotificationPlacement } from 'antd/es/notification/interface';
 
 import Footer from '../Signup/Footer';
 import FormFields from '../Form/Fields';
@@ -21,7 +21,6 @@ const formItems = [
     },
     FORM_ITEMS.PASSWORD_FIELD
 ];
-
 const FormContainer = () => {
     const { push } = useRouter();
     const [error, setError] = useState('');
