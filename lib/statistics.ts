@@ -35,25 +35,32 @@ export const makeRequestWithBody = async (details: RequestDetails) => {
     return res;
 };
 export const handleResponse = (data: Object) => {
-    console.log('handleResponse', data)
+    console.log('handleResponse:input', data)
 
     const hasErrors = get(data, 'error');
-    const isSystemError = get(data, 'status');
+    const isSystemResponse = get(data, 'status');
     if (hasErrors) {
-        console.log('hasErrors', hasErrors)
+        console.log('hasErrors', data)
         const status = get(hasErrors, 'status');
         const errorMessage = get(hasErrors, 'message') || get(HTTP_ERRORS[Number(status)], 'message')
         throw new Error(errorMessage)
-    } else if (isSystemError) {
-        console.log('isSystemError', isSystemError)
-        const errorMessage = get(HTTP_ERRORS[Number(isSystemError)], 'message')
-        throw new Error(errorMessage)
+    } else if (isSystemResponse) {
+        const isOk = get(data, 'ok');
+        if (isSystemResponse === 200 && isOk) {
+            console.log('isSystemResponse:data.body', get(data, 'body'))
+            return get(data, 'body')
+        } else {
+            console.log('isSystemError', data)
+            const errorMessage = get(HTTP_ERRORS[Number(isSystemResponse)], 'message')
+            throw new Error(errorMessage)
+        }
     } else {
         const response = get(data, 'data');
-        console.log('response', response)
         if (!response) {
+            console.log('!response', data)
             return data
         } else {
+            console.log('response', response)
             return response
         }
     }

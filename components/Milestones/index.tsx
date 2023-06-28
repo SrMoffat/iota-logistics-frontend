@@ -72,6 +72,7 @@ const MilestoneCards = (props: MilestoneProps) => {
                 <div style={{ padding: 4 }}>
                     <Avatar icon={icon} style={{ backgroundColor: color }} />
                     <div>{entry?.attributes?.name}</div>
+                    <div style={{ fontSize: "11px" }}>4 entires</div>
                 </div>
             ),
             value: entry?.id,
