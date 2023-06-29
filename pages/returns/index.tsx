@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { get } from 'lodash';
 import { Card, List } from 'antd';
+import { useQuery } from '@tanstack/react-query';
 
 import GeneralLayout from '../../components/Layout/General';
 
+import { fetchMilestones } from '../../lib/statistics';
+import { fetchItemsByMilestone } from '../../lib/items';
+
 const Returns = () => {
+    const [returnedStageId, setReturnedStageId] = useState();
+    const [milestoneItems, setMilestoneItems] = useState([]);
     const data = [
         {
             title: 'Title 1',
@@ -24,6 +32,32 @@ const Returns = () => {
             title: 'Title 6',
         },
     ];
+
+    useEffect(() => {
+        const fetchMilestonesData = async () => {
+            const res = await fetchMilestones()
+            const returnedStage = res?.filter(({ id, attributes }) => attributes?.name === 'Returned');
+            if (returnedStage?.length) {
+                const retrunedStage = returnedStage[0];
+                const returnedStageId = get(retrunedStage, 'id');
+                setReturnedStageId(returnedStageId);
+            }
+        }
+        fetchMilestonesData();
+    }, [])
+    useEffect(() => {
+        const fetchItemsDetails = async (id) => {
+            const res = await fetchItemsByMilestone(id)
+            setMilestoneItems(res);
+        }
+        if (returnedStageId) {
+            fetchItemsDetails(returnedStageId);;
+        }
+
+    }, [returnedStageId])
+
+    console.log("Fetch items", milestoneItems)
+
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
             <List
