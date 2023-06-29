@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { get } from 'lodash';
 import { Col, Row, Drawer, Descriptions, Tag } from 'antd';
 

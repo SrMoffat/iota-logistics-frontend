@@ -60,9 +60,14 @@ export async function fetchSupplyChainItemEvents(id: string | number): Promise<O
     }
 }
 
-export async function fetchSupplyChainItemRecentEvents(details: ItemDetails): Promise<void> {
+export async function fetchSupplyChainItemRecentEvents(id: string): Promise<Object> {
     try {
-
+        const data = await makeRequest({
+            url: `${BASE_URL}/supply-items/${id}/events`,
+            method: 'GET'
+        });
+        const response = handleResponse(data);
+        return response;
     } catch (error) {
         throw new Error(error)
     }

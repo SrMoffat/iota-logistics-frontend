@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { List, ColorPicker, Button, Col, Row, theme } from 'antd';
 import { CodeSandboxOutlined } from '@ant-design/icons';
+import { List, ColorPicker, Button, Col, Row, theme } from 'antd';
 
 import IconText from '../../../components/IconText';
 import { ProductDetails } from '../../../lib/types';
@@ -31,7 +31,7 @@ const ProductDetails = (props: ProductDetails) => {
                     actions={[
                         <IconText icon={CodeSandboxOutlined} text={`${item?.quantity} units`} key="list-vertical-star-o" />,
                         <Button onClick={() => push(`${item?.href}`)}>View</Button>,
-                        <Button onClick={() => itemStatusRequested(item?.id)}>Status</Button>
+                        // <Button onClick={() => itemStatusRequested(item?.id)}>Status</Button>
                     ]}
                 >
                     <List.Item.Meta

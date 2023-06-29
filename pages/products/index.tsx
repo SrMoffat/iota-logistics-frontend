@@ -52,9 +52,6 @@ const Products = () => {
         setSelectedProduct(selectedProduct);
         showDrawer();
     };
-    useEffect(() => {
-        console.log("selectedProduct===>", selectedProduct);
-    }, [selectedProduct])
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
             <StatusDrawer open={open} onClose={onClose}
