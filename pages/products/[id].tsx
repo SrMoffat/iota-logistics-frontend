@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { get, groupBy } from 'lodash';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import { format, parseISO, formatDistance } from 'date-fns';
+import { parseISO, formatDistance } from 'date-fns';
 import { Divider, Steps, Spin, Timeline, Descriptions, Empty } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
@@ -15,6 +15,7 @@ import { fetchSupplyChainItemEvents } from '../../lib/items';
 
 const Product = () => {
     const router = useRouter()
+    const [itemId, setItemId] = useState<string>();
     const [current, setCurrent] = useState(0);
     const [events, setEvents] = useState<{ [key: number | string]: EventDetails[] }>();
     const [currentStageStatuses, setCurrentStageStatuses] = useState<EventDetails[]>();
@@ -34,7 +35,7 @@ const Product = () => {
             const fetchDetails = async () => {
                 const itemID = router.query.id;
                 const res = await fetchSupplyChainItemEvents(itemID as string)
-                const massagedEvents = res?.events?.map(({ status, updatedAt, stage, data }) => ({
+                const massagedEvents = res?.events?.map(({ status, updatedAt, stage, data, user }) => ({
                     status: status?.name,
                     statusId: status?.id,
                     statusDescription: status?.description,
@@ -44,10 +45,13 @@ const Product = () => {
                     updatedAt,
                     itemName: data?.name,
                     itemUpdatedAt: data?.updatedAt,
-                    itemTrackingId: data?.trackingId
+                    itemTrackingId: data?.trackingId,
+                    username: user?.username,
+                    userEmail: user?.email
                 }));
                 const groupedStuff = groupBy(massagedEvents, 'stageId')
                 setEvents(groupedStuff)
+                setItemId(itemID as string);
             }
             fetchDetails().catch(console.error);
         }
@@ -72,18 +76,21 @@ const Product = () => {
         console.log('onChange:', value);
         setCurrent(value);
     };
-    const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt }) => ({
+    const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt, username }) => ({
         color: 'green',
         children: (
             <div style={{ padding: 0, lineHeight: 0.5 }}>
                 <p style={{ fontWeight: "bold", marginTop: "5px" }}>{status}</p>
                 <p>{statusDescription}</p>
-                <p style={{ fontSize: '11px', fontStyle: 'italic' }}>{format(parseISO(updatedAt), 'LLLL d, yyyy')}</p>
+                <p style={{ fontSize: '11px', fontWeight: 'bold' }}>
+                    {`${formatDistance(parseISO(updatedAt), new Date())} ago`}
+                </p>
+                <p style={{ fontSize: '11px', fontStyle: 'italic' }}>
+                    {`Updated By: ${username}`}
+                </p>
             </div>
         ),
-
     }))
-
     const handleShowUpdateItemModal = () => {
         console.log("Modal");
         setOpen(true);
@@ -125,6 +132,7 @@ const Product = () => {
                 confirmLoading={confirmLoading}
                 // categories={categories?.categories}
                 // refetchMilestones={refetchMilestones}
+                itemId={itemId}
                 title={`Update ${currentStageStatuses ? currentStageStatuses[0]?.itemName : "Item"}`}
             />
             {milestonesLoading ? <Spin /> : (

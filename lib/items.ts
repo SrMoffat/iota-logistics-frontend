@@ -1,4 +1,5 @@
-import { ItemDetails } from '../lib/types';
+import { get, pick } from 'lodash';
+import { ItemDetails, ItemEventsInputs } from '../lib/types';
 import { GENERAL_CONSTANTS } from './constants';
 import { makeRequest, makeRequestWithBody, handleResponse } from './statistics';
 
@@ -39,9 +40,16 @@ export async function updateSupplyChainItem(details: ItemDetails): Promise<void>
     }
 }
 
-export async function addSupplyChainItemEvent(details: ItemDetails): Promise<void> {
+export async function addSupplyChainItemEvent(details: ItemEventsInputs): Promise<void> {
     try {
-
+        const itemId = get(details, 'id');
+        const body = pick(details, ['stage', 'status']);
+        const data = await makeRequestWithBody({
+            url: `${BASE_URL}/supply-items/${itemId}/events`,
+            method: 'POST',
+            body
+        });
+        console.log("data", data);
     } catch (error) {
         throw new Error(error)
     }

@@ -7,7 +7,7 @@ import { Modal, message, Tabs, Steps, Spin, Alert, theme } from 'antd';
 import ModalFooter from './ModalFooter';
 import UpdateItemStatus from './UpdateItemStatus';
 
-import { ItemDetails, Stage, Status } from '../../lib/types';
+import { ItemDetails, ItemEventsInputs, Stage, Status } from '../../lib/types';
 import { ITEM_CREATION_STEPS, GENERAL_CONSTANTS } from '../../lib/constants';
 import { useItemContext } from '../../contexts/ItemProvider';
 import { StepOne, StepTwo, StepThree, StepFour } from './AddItemSteps';
@@ -26,6 +26,7 @@ const AddItemModal = (props) => {
         prev,
         next,
         title,
+        itemId,
         current,
         handleOk,
         editMode,
@@ -38,12 +39,18 @@ const AddItemModal = (props) => {
         confirmLoading,
         refetchMilestones
     } = props;
+    const {
+        item,
+        setItem,
+        updateItemDetails,
+        createSupplyChainItem,
+        updateSupplyChainItemStatus,
+    } = useItemContext();
     const { token } = theme.useToken();
     const [error, setError] = useState<string>();
     const [selectedStatus, setSelectedStatus] = useState<Status>();
     const [selectedMilestone, setSelectedMilestone] = useState<Stage>();
     const [currentEditTab, setCurrentEditTab] = useState<string>(updateModes?.STATUS);
-    const { updateItemDetails, item, createSupplyChainItem, setItem } = useItemContext();
     const isLastStep = steps.length - 1 == current;
     const contentStyle: React.CSSProperties = {
         color: token.colorTextTertiary,
@@ -99,6 +106,19 @@ const AddItemModal = (props) => {
             })
         },
     })
+    const { mutateAsync: mutateStatusAsync, isLoading: updateIsLoading, isError: updateHasError } = useMutation({
+        mutationFn: async (details: ItemEventsInputs) => {
+            return await updateSupplyChainItemStatus(details);
+        },
+        onError: (error: Error) => {
+            setError(error.message);
+            message.error(error.message);
+        },
+        onSuccess: () => {
+            message.success('Supply chain item status updated.');
+            handleCancel();
+        },
+    })
     const renderCreateSteps = (current: number) => {
         const stepProps = {
             updateItemDetails,
@@ -133,15 +153,15 @@ const AddItemModal = (props) => {
                 return <FakeStep />
         }
     }
-    const updateItem = () => {
+    const updateItem = async () => {
         if (!editMode) {
             next();
         } else {
             if (currentEditTab === GENERAL_CONSTANTS.ITEM_EDIT_MODES.DETAILS) {
                 console.log("Details")
             } else if (currentEditTab === GENERAL_CONSTANTS.ITEM_EDIT_MODES.STATUS) {
-                console.log("Status")
-                console.log({
+                await updateStatus({
+                    id: itemId,
                     stage: {
                         id: selectedMilestone?.id,
                         name: selectedMilestone?.name
@@ -150,18 +170,19 @@ const AddItemModal = (props) => {
                         id: selectedStatus?.id,
                         name: selectedStatus?.name
                     }
-                })
+                });
             }
         }
     }
     const createSupplyItem = async (data: ItemDetails) => {
         await mutateAsync(data)
     };
+    const updateStatus = async (data: ItemEventsInputs) => {
+        await mutateStatusAsync(data);
+    };
     const onChange = (key: string) => {
         setCurrentEditTab(key)
     };
-
-
     const editTabItems = [
         {
             label: "Update Status",
@@ -174,7 +195,6 @@ const AddItemModal = (props) => {
             children: `Update Details`,
         }
     ]
-
     const renderModalContent = () => {
         return (
             <>
@@ -211,23 +231,6 @@ const AddItemModal = (props) => {
             confirmLoading={confirmLoading}
         >
             {renderModalContent()}
-            {/* {!editMode && <Steps current={current} items={steps} />}
-            {
-                editMode
-                    ? <Tabs
-                        onChange={onChange}
-                        type="card"
-                        items={editTabItems}
-                    >
-                    </Tabs>
-                    : (
-                        <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
-                            {isLoading && <Spin />}
-                            {isError && <Alert type="error" showIcon message={error} />}
-                            {renderCreateSteps(current)}
-                        </div>
-                    )
-            } */}
             <ModalFooter
                 prev={prev}
                 item={item}

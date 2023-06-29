@@ -69,6 +69,7 @@ const UpdateItemStatus = (props: UpdateItemStatusProps) => {
             return (
                 <Select
                     style={{ width: "100%" }}
+                    
                     placeholder="Select Stage"
                     defaultValue={milestoneNames[0]?.value}
                     onChange={handleStageChange}
