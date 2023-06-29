@@ -11,25 +11,14 @@ import UpdateItemModal from '../../components/Modal/ItemModal';
 
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchSupplyChainItemEvents } from '../../lib/items';
+import { EventDetails } from '../../lib/types';
 
-interface Event {
-    status: string;
-    statusId: string;
-    statusDescription: string;
-    stage: string;
-    stageId: string;
-    stageDescription: string;
-    updatedAt: string;
-    itemName: string;
-    itemUpdatedAt: string;
-    itemTrackingId: string;
-}
 
 const Product = () => {
     const router = useRouter()
     const [current, setCurrent] = useState(0);
-    const [events, setEvents] = useState<{ [key: number | string]: Event[] }>();
-    const [currentStageStatuses, setCurrentStageStatuses] = useState<Event[]>();
+    const [events, setEvents] = useState<{ [key: number | string]: EventDetails[] }>();
+    const [currentStageStatuses, setCurrentStageStatuses] = useState<EventDetails[]>();
     const { isLoading: milestonesLoading, data: milestones } = useQuery({
         queryKey: ['milestones'],
         queryFn: async () => {

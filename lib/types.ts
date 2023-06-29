@@ -92,3 +92,33 @@ export interface StepProps {
     categories: Category[];
     updateItemDetails: (details: ItemDetails) => void
 }
+export interface Product {
+    id: string;
+    href: string;
+    name: string;
+    title: string;
+    colour: string;
+    trackingId: string;
+    description: string;
+    manufacturer: string;
+    supplier: string;
+    quantity: string;
+}
+export interface EventDetails {
+    status: string;
+    statusId: string;
+    statusDescription: string;
+    stage: string;
+    stageId: string;
+    stageDescription: string;
+    updatedAt: string;
+    itemName: string;
+    itemUpdatedAt: string;
+    itemTrackingId: string;
+}
+
+export interface ProductDetails {
+    products: Product[];
+    itemStatusRequested: (id: string | number) => void
+}
+
