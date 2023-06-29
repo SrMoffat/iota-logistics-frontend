@@ -28,18 +28,25 @@ The following bonus requirements could also be met:
 2. Clone this repository
 ```bash
 git clone https://github.com/SrMoffat/iota-logistics-frontend.git
+cd iota-logistics-frontend
 ```
 3. Install dependencies
 ```bash
 yarn OR npm install
 ```
 4. Export environment variables (After adding correct values to `.env` as per `.env.example`)
-5. Start the app
+```bash
+cat .env.example >> .env
+```
+5. Export environment variables
+```bash
+set -o allexport; source .env; set +o allexport
+```
+6. Start the app
 ```bash
 yarn dev
 ```
-6. Open the browser window on `http://localhost:3000`
-
+7. Open the browser window on `http://localhost:3000` for web application (Single Page App)
 
 ### With Docker
 1. [Install Docker](https://docs.docker.com/engine/install/)
