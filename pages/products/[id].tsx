@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { get, groupBy } from 'lodash';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import { format, parseISO, formatDistance } from 'date-fns';
+import { parseISO, formatDistance } from 'date-fns';
 import { Divider, Steps, Spin, Timeline, Descriptions, Empty } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
@@ -15,6 +15,7 @@ import { fetchSupplyChainItemEvents } from '../../lib/items';
 
 const Product = () => {
     const router = useRouter()
+    const [itemId, setItemId] = useState<string>();
     const [current, setCurrent] = useState(0);
     const [events, setEvents] = useState<{ [key: number | string]: EventDetails[] }>();
     const [currentStageStatuses, setCurrentStageStatuses] = useState<EventDetails[]>();
@@ -50,6 +51,7 @@ const Product = () => {
                 }));
                 const groupedStuff = groupBy(massagedEvents, 'stageId')
                 setEvents(groupedStuff)
+                setItemId(itemID as string);
             }
             fetchDetails().catch(console.error);
         }
@@ -89,7 +91,6 @@ const Product = () => {
             </div>
         ),
     }))
-
     const handleShowUpdateItemModal = () => {
         console.log("Modal");
         setOpen(true);
@@ -114,7 +115,6 @@ const Product = () => {
     const handleCancel = () => {
         setOpen(false);
     };
-
     return (
         <GeneralLayout handleShowCreateItemModal={handleShowUpdateItemModal} hasCta ctaText="Update Item">
             <UpdateItemModal
@@ -132,6 +132,7 @@ const Product = () => {
                 confirmLoading={confirmLoading}
                 // categories={categories?.categories}
                 // refetchMilestones={refetchMilestones}
+                itemId={itemId}
                 title={`Update ${currentStageStatuses ? currentStageStatuses[0]?.itemName : "Item"}`}
             />
             {milestonesLoading ? <Spin /> : (

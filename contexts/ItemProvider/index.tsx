@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 
-import { ItemProviderProps, ItemDetails } from '../../lib/types';
-import { createSupplyChainItem as createItem } from '../../lib/items';
+import { ItemProviderProps, ItemDetails, ItemEventsInputs } from '../../lib/types';
+import {
+    createSupplyChainItem as createItem,
+    addSupplyChainItemEvent as updateItemStatus
+} from '../../lib/items';
 
 const ItemContext = createContext<Partial<ItemProviderProps>>({})
 
@@ -23,13 +26,22 @@ const ItemProvider = ({ children }) => {
             throw error
         }
     }
+    const updateSupplyChainItemStatus = async (details: ItemEventsInputs) => {
+        try {
+            const response = await updateItemStatus(details);
+            return response;
+        } catch (error) {
+            throw error
+        }
+    }
     return (
         <ItemContext.Provider
             value={{
                 item,
                 setItem,
                 updateItemDetails,
-                createSupplyChainItem
+                createSupplyChainItem,
+                updateSupplyChainItemStatus
             }}
         >
             {children}

@@ -71,6 +71,7 @@ export type ItemProviderProps = {
     item: ItemDetails;
     updateItemDetails: (details: ItemDetails) => void;
     createSupplyChainItem: (details: ItemDetails) => Promise<Object>;
+    updateSupplyChainItemStatus: (details: ItemEventsInputs) => Promise<void>;
     setItem: React.Dispatch<React.SetStateAction<ItemDetails | undefined>>
 }
 
@@ -145,5 +146,14 @@ export interface StatusSummary {
     description: string;
     label: string;
     value: string | number;
+}
+export interface StageOrStatusSummary {
+    id: string | number;
+    name: string | number;
+}
+export interface ItemEventsInputs {
+    id: string | number;
+    stage: StageOrStatusSummary
+    status: StageOrStatusSummary
 }
 
