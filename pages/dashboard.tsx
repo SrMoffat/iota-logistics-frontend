@@ -9,7 +9,6 @@ import MilestoneCards from '../components/Milestones';
 import GeneralLayout from '../components/Layout/General';
 import AddItemModal from '../components/Modal/AddItemModal';
 
-import { ItemProvider } from '../contexts'
 import {
     fetchItems,
     fetchUsers,
@@ -174,7 +173,7 @@ const Dashboard = () => {
         }
     })
     return (
-        <ItemProvider>
+        <>
             <AddItemModal
                 open={open}
                 next={next}
@@ -206,7 +205,8 @@ const Dashboard = () => {
                             : <CustomTable data={itemsData.reverse()} />
                 }
             </GeneralLayout>
-        </ItemProvider>
+        </>
+
     );
 };
 

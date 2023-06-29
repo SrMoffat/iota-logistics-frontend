@@ -4,9 +4,10 @@ import { get, groupBy } from 'lodash';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { format, parseISO, formatDistance } from 'date-fns';
-import { Divider, Steps, Spin, Timeline, Descriptions } from 'antd';
+import { Divider, Steps, Spin, Timeline, Descriptions, Empty, Button } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
+import AddItemModal from '../../components/Modal/AddItemModal';
 
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchSupplyChainItemEvents } from '../../lib/items';
@@ -71,10 +72,12 @@ const Product = () => {
         }
     }, [events])
     useEffect(() => {
-        if(current){
+        if (current) {
             const newState = milestonesMutated[current]
             const stageId = get(newState, 'id');
-            setCurrentStageStatuses(events[stageId])
+            if (events[stageId]) {
+                setCurrentStageStatuses(events[stageId])
+            }
         }
     }, [current])
     const onChange = (value: number) => {
@@ -92,8 +95,48 @@ const Product = () => {
         ),
 
     }))
+
+    const handleShowUpdateItemModal = () => {
+        console.log("Modal");
+        setOpen(true);
+    };
+    const next = () => {
+        setCurrent(current + 1);
+    };
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+    const [open, setOpen] = useState(false);
+    const [milestone, setMilestone] = useState();
+    const [milestoneItems, setMilestoneItems] = useState([]);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const handleOk = () => {
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setOpen(false);
+            setConfirmLoading(false);
+        }, 2000);
+    };
+    const handleCancel = () => {
+        setOpen(false);
+    };
     return (
-        <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
+        <GeneralLayout handleShowCreateItemModal={handleShowUpdateItemModal} hasCta ctaText="Update Item">
+            <AddItemModal
+                open={open}
+                next={next}
+                prev={prev}
+                current={current}
+                handleOk={handleOk}
+                setCurrent={setCurrent}
+                handleCancel={handleCancel}
+                // refetchItems={refetchItems}
+                setMilestone={setMilestone}
+                // refetchEvents={refetchEvents}
+                confirmLoading={confirmLoading}
+            // categories={categories?.categories}
+            // refetchMilestones={refetchMilestones}
+            />
             {milestonesLoading ? <Spin /> : (
                 <>
                     {currentStageStatuses && (
@@ -117,10 +160,15 @@ const Product = () => {
                         items={milestonesMutated}
                     />
                     <Divider />
-                    <Timeline
-                        mode="alternate"
-                        items={entries}
-                    />
+                    {
+                        entries?.length
+                            ? (<Timeline
+                                mode="alternate"
+                                items={entries} />)
+                            : <Empty description="No status updated for this stage" />
+
+                    }
+
                 </>
             )}
         </GeneralLayout>

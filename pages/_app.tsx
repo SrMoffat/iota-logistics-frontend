@@ -1,9 +1,10 @@
 import { AppProps } from 'next/app';
 import { useState, useEffect, Suspense, lazy } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { AuthProvider } from '../contexts'
+import { AuthProvider } from '../contexts';
+import { ItemProvider } from '../contexts';
 
 import '../styles/global.css';
 
@@ -26,15 +27,17 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
   return (
     <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-        <ReactQueryDevtools initialIsOpen={false} />
-        {showDevtools && (
-          <Suspense fallback={null}>
-            <ReactQueryDevtoolsProduction />
-          </Suspense>
-        )}
-      </QueryClientProvider>
+      <ItemProvider>
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} />
+          {showDevtools && (
+            <Suspense fallback={null}>
+              <ReactQueryDevtoolsProduction />
+            </Suspense>
+          )}
+        </QueryClientProvider>
+      </ItemProvider>
     </AuthProvider>
   )
 }
