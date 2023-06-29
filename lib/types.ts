@@ -157,3 +157,10 @@ export interface ItemEventsInputs {
     status: StageOrStatusSummary
 }
 
+export interface ItemDetailsSummary {
+    name: string;
+    trackingId: string;
+    updatedAt: string;
+}
+
+

@@ -9,20 +9,18 @@ import { Divider, Steps, Spin, Timeline, Descriptions, Empty } from 'antd';
 import GeneralLayout from '../../components/Layout/General';
 import UpdateItemModal from '../../components/Modal/ItemModal';
 
-import { EventDetails } from '../../lib/types';
+import { EventDetails, ItemDetailsSummary } from '../../lib/types';
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchSupplyChainItemEvents } from '../../lib/items';
-
-interface ItemDetailsSummary {
-    name: string;
-    trackingId: string;
-    updatedAt: string;
-}
 
 const Product = () => {
     const router = useRouter()
     const [itemId, setItemId] = useState<string>();
     const [current, setCurrent] = useState(0);
+    const [open, setOpen] = useState(false);
+    const [milestone, setMilestone] = useState();
+    // const [milestoneItems, setMilestoneItems] = useState([]);
+    const [confirmLoading, setConfirmLoading] = useState(false);
     const [itemDetails, setItemDetails] = useState<ItemDetailsSummary>();
     const [events, setEvents] = useState<{ [key: number | string]: EventDetails[] }>();
     const [currentStageStatuses, setCurrentStageStatuses] = useState<EventDetails[]>();
@@ -37,6 +35,53 @@ const Product = () => {
     })
     const milestonesArray = milestones?.milestones
     const milestonesMutated = milestonesArray?.map(({ id, name, description }) => ({ id, title: name, description }));
+    const onChange = (value: number) => {
+        setCurrent(value);
+        if (!value) {
+            if (events && milestonesMutated?.length) {
+                const initialState = milestonesMutated[value]
+                const stateId = get(initialState, 'id');
+                setCurrentStageStatuses(events[stateId]);
+            }
+        }
+    };
+    const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt, username }) => ({
+        color: 'green',
+        children: (
+            <div style={{ padding: 0, lineHeight: 0.5 }}>
+                <p style={{ fontWeight: "bold", marginTop: "5px" }}>{status}</p>
+                <p>{statusDescription}</p>
+                <p style={{ fontSize: '11px', fontWeight: 'bold' }}>
+                    {`${formatDistance(parseISO(updatedAt), new Date())} ago`}
+                </p>
+                <p style={{ fontSize: '11px', fontStyle: 'italic' }}>
+                    {`Updated By: ${username}`}
+                </p>
+            </div>
+        ),
+    }))
+    const handleShowUpdateItemModal = () => {
+        setOpen(true);
+    };
+    const next = () => {
+        setCurrent(current + 1);
+    };
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+    const handleOk = () => {
+        setConfirmLoading(true);
+        setTimeout(() => {
+            setOpen(false);
+            setConfirmLoading(false);
+        }, 2000);
+    };
+    const handleCancel = () => {
+        setOpen(false);
+    };
+    const productRecentUpdateTimestamp = currentStageStatuses
+        ? currentStageStatuses[0]?.itemUpdatedAt
+        : itemDetails?.updatedAt
     useEffect(() => {
         if (router.isReady) {
             const fetchDetails = async () => {
@@ -56,8 +101,8 @@ const Product = () => {
                     username: user?.username,
                     userEmail: user?.email
                 }));
-                const groupedStuff = groupBy(massagedEvents, 'stageId')
-                setEvents(groupedStuff)
+                const groupedStuff = groupBy(massagedEvents, 'stageId');
+                setEvents(groupedStuff);
                 setItemId(itemID as string);
             }
             fetchDetails().catch(console.error);
@@ -87,58 +132,40 @@ const Product = () => {
             }
         }
     }, [current])
-    const onChange = (value: number) => {
-        setCurrent(value);
-        if (!value) {
-            if (events && milestonesMutated?.length) {
-                const initialState = milestonesMutated[value]
-                const stateId = get(initialState, 'id');
-                setCurrentStageStatuses(events[stateId]);
-            }
-        }
-    };
-    const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt, username }) => ({
-        color: 'green',
-        children: (
-            <div style={{ padding: 0, lineHeight: 0.5 }}>
-                <p style={{ fontWeight: "bold", marginTop: "5px" }}>{status}</p>
-                <p>{statusDescription}</p>
-                <p style={{ fontSize: '11px', fontWeight: 'bold' }}>
-                    {`${formatDistance(parseISO(updatedAt), new Date())} ago`}
-                </p>
-                <p style={{ fontSize: '11px', fontStyle: 'italic' }}>
-                    {`Updated By: ${username}`}
-                </p>
-            </div>
-        ),
-    }))
-    const handleShowUpdateItemModal = () => {
-        console.log("Modal");
-        setOpen(true);
-    };
-    const next = () => {
-        setCurrent(current + 1);
-    };
-    const prev = () => {
-        setCurrent(current - 1);
-    };
-    const [open, setOpen] = useState(false);
-    const [milestone, setMilestone] = useState();
-    const [milestoneItems, setMilestoneItems] = useState([]);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const handleOk = () => {
-        setConfirmLoading(true);
-        setTimeout(() => {
-            setOpen(false);
-            setConfirmLoading(false);
-        }, 2000);
-    };
-    const handleCancel = () => {
-        setOpen(false);
-    };
-    const productRecentUpdateTimestamp = currentStageStatuses
-        ? currentStageStatuses[0]?.itemUpdatedAt
-        : itemDetails?.updatedAt
+    // useEffect(() => {
+    //     const refetchEventDetails = async (id: string | number) => {
+    //         if (id) {
+    //             const res = await fetchSupplyChainItemEvents(id)
+    //             console.log("Hapa kazi..00", res);
+    //         }
+    //         // const events = res?.events?.map(({ status, updatedAt, stage, data, user }) => ({
+    //         //     status: status?.name,
+    //         //     statusId: status?.id,
+    //         //     statusDescription: status?.description,
+    //         //     stage: stage?.name,
+    //         //     stageId: stage?.id,
+    //         //     stageDescription: stage?.description,
+    //         //     updatedAt,
+    //         //     itemName: data?.name,
+    //         //     itemUpdatedAt: data?.updatedAt,
+    //         //     itemTrackingId: data?.trackingId,
+    //         //     username: user?.username,
+    //         //     userEmail: user?.email
+    //         // }));
+    //         // const groupedStuff = groupBy(events, 'stageId')
+    //         // setEvents(groupedStuff);
+    //     }
+    //     if (!open) {
+    //         console.log("Hapa kazi rtuuuuu", itemId);
+    //         refetchEventDetails(itemId);
+    //     }
+    // }, [open])
+
+    console.log({
+        currentStageStatuses,
+        itemDetails,
+        productRecentUpdateTimestamp
+    })
     return (
         <GeneralLayout handleShowCreateItemModal={handleShowUpdateItemModal} hasCta ctaText="Update Item">
             <UpdateItemModal
@@ -152,32 +179,18 @@ const Product = () => {
                 handleCancel={handleCancel}
                 setMilestone={setMilestone}
                 // refetchItems={refetchItems}
+                refetchItems={() => console.log("Refetch items")}
                 // refetchEvents={refetchEvents}
+                refetchEvents={() => console.log("Refetch events")}
                 confirmLoading={confirmLoading}
                 // categories={categories?.categories}
                 // refetchMilestones={refetchMilestones}
+                refetchMilestones={() => console.log("Refetch milestones")}
                 itemId={itemId}
                 title={`Update ${currentStageStatuses ? currentStageStatuses[0]?.itemName : "Item"}`}
             />
             {milestonesLoading ? <Spin /> : (
                 <>
-                    {/* {currentStageStatuses?.length && (
-                        <Descriptions
-                            bordered
-                            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-                            style={{ marginBottom: 20 }}
-                        >
-                            <Descriptions.Item label="Name">
-                                {currentStageStatuses[0]?.itemName || itemDetails?.name}
-                            </Descriptions.Item>
-                            <Descriptions.Item label="Tracking ID">
-                                {currentStageStatuses[0]?.itemTrackingId || itemDetails?.trackingId}
-                            </Descriptions.Item>
-                            <Descriptions.Item label="Last Updated">
-                                {`${formatDistance(parseISO(productRecentUpdateTimestamp), new Date())} ago`}
-                            </Descriptions.Item>
-                        </Descriptions>
-                    )} */}
                     <Descriptions
                         bordered
                         column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}

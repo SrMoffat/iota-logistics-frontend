@@ -74,8 +74,8 @@ const AddItemModal = (props) => {
             handleCancel();
             refetchItems();
             refetchEvents();
-            setItem(undefined);
             refetchMilestones();
+            setItem(undefined);
             updateItemDetails({
                 category: undefined,
                 colour: undefined,
