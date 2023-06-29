@@ -67,7 +67,6 @@ const getIconAndColor = (name: string) => {
     }
 };
 const MilestoneCards = (props: MilestoneProps) => {
-    console.log("Save", props?.milestones)
     const options = props.milestones?.map(entry => {
         const { icon, color } = getIconAndColor(entry?.name);
         // const count = props?.itemsData?.length;

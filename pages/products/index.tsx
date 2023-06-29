@@ -1,37 +1,18 @@
 import React, { useEffect, useState } from 'react';
+
+import { message, Spin } from 'antd';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { List, message, Spin, ColorPicker, Button, Col, Row, theme, Drawer, Descriptions, Tag } from 'antd';
-import { CodeSandboxOutlined } from '@ant-design/icons';
-
-import IconText from '../../components/IconText';
-import GeneralLayout from '../../components/Layout/General';
-
-import { fetchItems } from '../../lib/statistics';
 
 import StatusDrawer from './components/StatusDrawer';
+import ProductDetails from './components/ProductDetails';
+import GeneralLayout from '../../components/Layout/General';
 
-interface Product {
-    id: string;
-    href: string;
-    name: string;
-    title: string;
-    colour: string;
-    trackingId: string;
-    description: string;
-    manufacturer: string;
-    supplier: string;
-    quantity: string;
-
-}
+import { Product } from '../../lib/types';
+import { fetchItems } from '../../lib/statistics';
 
 const Products = () => {
-    const { push } = useRouter();
     const [open, setOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product>();
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
     const { isLoading: itemsLoading, data: items, error: itemsError } = useQuery({
         queryKey: ['items'],
         queryFn: async () => {
@@ -65,8 +46,6 @@ const Products = () => {
             quantity: attributes?.quantity,
         }
     });
-    console.log("selectedProduct===>", selectedProduct);
-
     const itemStatusRequested = (id: string | number) => {
         const productDetails = products?.filter((entry) => `${id}` === `${entry.id}`);
         const selectedProduct = productDetails[0];
@@ -87,53 +66,11 @@ const Products = () => {
             {
                 itemsLoading
                     ? <Spin />
-                    : (
-                        <List
-                            itemLayout="horizontal"
-                            size="small"
-                            grid={{ column: 2, gutter: 8 }}
-                            pagination={{
-                                onChange: (page) => {
-                                    console.log(page);
-                                },
-                                pageSize: 10,
-                            }}
-                            dataSource={products.reverse()}
-                            renderItem={(item) => (
-                                <List.Item
-                                    style={{ border: `1px solid ${colorBgContainer}`, borderRadius: 8 }}
-                                    key={item?.title}
-                                    actions={[
-                                        <IconText icon={CodeSandboxOutlined} text={`${item?.quantity} units`} key="list-vertical-star-o" />,
-                                        <Button onClick={() => push(`${item?.href}`)}>View</Button>,
-                                        <Button onClick={() => itemStatusRequested(item?.id)}>Status</Button>
-                                    ]}
-                                >
-                                    <List.Item.Meta
-                                        avatar={<ColorPicker value={item?.colour} />}
-                                        title={<a href={item?.href}>{item?.title}</a>}
-                                        description={item?.description}
-                                    />
-                                    <Col span={12} style={{ marginTop: 10 }}>
-                                        <Row>
-                                            <Col span={10}>Tracking ID:</Col>
-                                            <Col span={14}>{item?.trackingId}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col span={10}>Supplier:</Col>
-                                            <Col span={14}>{item?.supplier}</Col>
-                                        </Row>
-                                        <Row>
-                                            <Col span={10}>Manufacturer:</Col>
-                                            <Col span={14}>{item?.manufacturer}</Col>
-                                        </Row>
-                                    </Col>
-                                </List.Item>
-                            )}
-                        />
-
-                    )}
-
+                    : <ProductDetails
+                        itemStatusRequested={itemStatusRequested}
+                        products={products.reverse()}
+                    />
+            }
         </GeneralLayout>
     );
 };

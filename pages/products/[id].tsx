@@ -4,32 +4,20 @@ import { get, groupBy } from 'lodash';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { format, parseISO, formatDistance } from 'date-fns';
-import { Divider, Steps, Spin, Timeline, Descriptions, Empty, Button } from 'antd';
+import { Divider, Steps, Spin, Timeline, Descriptions, Empty } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
 import UpdateItemModal from '../../components/Modal/ItemModal';
 
+import { EventDetails } from '../../lib/types';
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchSupplyChainItemEvents } from '../../lib/items';
-
-interface Event {
-    status: string;
-    statusId: string;
-    statusDescription: string;
-    stage: string;
-    stageId: string;
-    stageDescription: string;
-    updatedAt: string;
-    itemName: string;
-    itemUpdatedAt: string;
-    itemTrackingId: string;
-}
 
 const Product = () => {
     const router = useRouter()
     const [current, setCurrent] = useState(0);
-    const [events, setEvents] = useState<{ [key: number | string]: Event[] }>();
-    const [currentStageStatuses, setCurrentStageStatuses] = useState<Event[]>();
+    const [events, setEvents] = useState<{ [key: number | string]: EventDetails[] }>();
+    const [currentStageStatuses, setCurrentStageStatuses] = useState<EventDetails[]>();
     const { isLoading: milestonesLoading, data: milestones } = useQuery({
         queryKey: ['milestones'],
         queryFn: async () => {
@@ -170,7 +158,6 @@ const Product = () => {
                             : <Empty description="No status updated for this stage" />
 
                     }
-
                 </>
             )}
         </GeneralLayout>
