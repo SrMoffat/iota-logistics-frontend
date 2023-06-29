@@ -88,4 +88,4 @@ const FormContainer = () => {
     )
 };
 
-export default FormContainer
+export default FormContainer;

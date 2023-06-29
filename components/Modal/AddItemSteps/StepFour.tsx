@@ -2,9 +2,9 @@ import React from 'react';
 import { get } from 'lodash'
 import {
     Tag,
+    Typography,
     ColorPicker,
     Descriptions,
-    Typography
 } from 'antd';
 
 import { ItemDetails } from '../../../lib/types';

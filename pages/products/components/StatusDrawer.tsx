@@ -2,27 +2,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { Col, Row, Drawer, Descriptions, Tag } from 'antd';
 
-interface Item {
-    name: string;
-    description: string;
-    supplier: string;
-    manufacturer: string;
-    trackingId: string;
-}
-
-interface Status {
-    stage: string;
-    status: string;
-    lastUpdated: string;
-    updatedBy: string;
-}
-
-interface StatusDrawerProps {
-    item: Item;
-    open: boolean;
-    status: Status;
-    onClose: () => void;
-}
+import { StatusDrawerProps } from '../../../lib/types';
 
 const StatusDrawer = (props: StatusDrawerProps) => {
     const { open, onClose, item, status } = props;

@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Form,
-    Input,
-    Select,
-} from 'antd';
+import { Form, Input, Select } from 'antd';
+
 import { StepProps, SelectOptions } from '../../../lib/types';
 
 const { TextArea } = Input;

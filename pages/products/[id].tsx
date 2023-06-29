@@ -9,9 +9,9 @@ import { Divider, Steps, Spin, Timeline, Descriptions, Empty } from 'antd';
 import GeneralLayout from '../../components/Layout/General';
 import UpdateItemModal from '../../components/Modal/ItemModal';
 
-import { EventDetails, ItemDetailsSummary } from '../../lib/types';
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchSupplyChainItemEvents } from '../../lib/items';
+import { EventDetails, ItemDetailsSummary } from '../../lib/types';
 
 const Product = () => {
     const router = useRouter()

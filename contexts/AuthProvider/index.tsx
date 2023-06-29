@@ -4,23 +4,11 @@ import { isEqual } from 'lodash';
 import { useBrowserStorage } from '../../lib/hooks';
 import { GENERAL_CONSTANTS } from '../../lib/constants';
 import { signupUser, loginUser } from '../../lib/users';
-import { UserData, UserDetails, LoggedInUserDetails, UserLoginDetails } from '../../lib/types';
-
-type AuthProviderProps = {
-  user: UserData;
-  isAuthenticated: boolean;
-  isAuthenticating: boolean;
-  logout: () => void;
-  signup: (details: UserDetails) => Promise<void>
-  login: (details: UserLoginDetails) => Promise<void>
-  setUser: React.Dispatch<React.SetStateAction<UserData | undefined>>
-}
+import { UserDetails, UserLoginDetails, AuthProviderProps, UserStorage } from '../../lib/types';
 
 const AuthContext = createContext<Partial<AuthProviderProps>>({})
 
 export const useAuthContext = (): Partial<AuthProviderProps> => useContext(AuthContext)
-
-type UserStorage = LoggedInUserDetails | null
 
 const AuthProvider = ({ children }) => {
   const [localUser, setLocalUser, removeLocalUser] = useBrowserStorage<UserStorage>(
@@ -97,4 +85,4 @@ const AuthProvider = ({ children }) => {
   )
 }
 
-export default AuthProvider
+export default AuthProvider;

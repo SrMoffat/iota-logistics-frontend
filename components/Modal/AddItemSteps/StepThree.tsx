@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Form,
-    Select,
-    InputNumber,
-} from 'antd';
+import { Form, Select, InputNumber } from 'antd';
+
 import { StepProps } from '../../../lib/types';
 
 const StepThree = (props: StepProps) => {

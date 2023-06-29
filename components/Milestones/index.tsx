@@ -9,10 +9,10 @@ import {
     CarFilled,
     ShopFilled,
     GiftFilled,
-    NodeExpandOutlined,
+    WalletFilled,
     FolderOpenFilled,
     InteractionFilled,
-    WalletFilled,
+    NodeExpandOutlined,
 } from '@ant-design/icons';
 import { DataType } from '../../lib/types';
 

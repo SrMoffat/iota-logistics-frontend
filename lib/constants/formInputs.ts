@@ -64,12 +64,10 @@ const ITEM_DESCRIPTION_FIELD = {
     placeholder: "Item Description",
     icon: FileOutlined,
 }
-
 const ADD_ITEM_FORM_ITEMS = [
     ITEM_NAME_FIELD,
     ITEM_DESCRIPTION_FIELD
 ];
-
 const FORM_ITEMS = [
     USERNAME_FIELD,
     EMAIL_FIELD,
@@ -82,4 +80,4 @@ export default {
     USERNAME_FIELD,
     PASSWORD_FIELD,
     ADD_ITEM_FORM_ITEMS
-}
+};

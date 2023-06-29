@@ -1,14 +1,10 @@
 /* eslint-disable */
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 
+import { parserOptions } from '../../lib/types';
+
 const isClient = typeof window === 'object'
 
-type parserOptions<T> =
-    {
-        raw: true
-        serializer: (value: T) => string
-        deserializer: (value: string) => T
-    }
 const noop = () => { }
 
 const useBrowserStorage = <T>(
@@ -23,15 +19,12 @@ const useBrowserStorage = <T>(
     if (!key) {
         throw new Error('useBrowserStorage key may not be falsy')
     }
-
     const storage = type === 'local' ? localStorage : sessionStorage
-
     const deserializer = options
         ? options.raw
             ? (value: any) => value
             : options.deserializer
         : JSON.parse
-
     const [state, setState] = useState<T | undefined>(() => {
         try {
             const serializer = options ? (options.raw ? String : options.serializer) : JSON.stringify
@@ -50,7 +43,6 @@ const useBrowserStorage = <T>(
             return initialValue
         }
     })
-
     const set: Dispatch<SetStateAction<T | undefined>> = useCallback(
         (valOrFunc) => {
             try {
@@ -76,7 +68,6 @@ const useBrowserStorage = <T>(
         },
         [key, setState]
     )
-
     const remove = useCallback(() => {
         try {
             localStorage.removeItem(key);
@@ -88,8 +79,7 @@ const useBrowserStorage = <T>(
             // storage can throw.
         }
     }, [key, setState])
-
     return [state, set, remove]
 }
 
-export default useBrowserStorage
+export default useBrowserStorage;

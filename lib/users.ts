@@ -22,8 +22,7 @@ export async function signupUser(values: UserDetails): Promise<LoggedInUserDetai
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function loginUser(details: UserLoginDetails): Promise<LoggedInUserDetails> {
     try {
         const res = await fetch(`${GENERAL_CONSTANTS.API_BASE_URL}/auth/local`, {
@@ -43,13 +42,11 @@ export async function loginUser(details: UserLoginDetails): Promise<LoggedInUser
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export const fetchJwt = (): string | null => {
     const localUser = localStorage.getItem(GENERAL_CONSTANTS.USER_STORAGE_KEY)
     const sessionUser = sessionStorage.getItem(GENERAL_CONSTANTS.USER_STORAGE_KEY)
     const user = sessionUser || localUser
-  
+
     return user ? JSON.parse(user).jwt : null
-  }
-  
+};

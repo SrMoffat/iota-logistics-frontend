@@ -27,4 +27,4 @@ const LoginSection = (props) => {
     );
 };
 
-export default LoginSection
+export default LoginSection;

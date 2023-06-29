@@ -1,13 +1,12 @@
 import React from 'react';
 import { Layout } from 'antd';
 
-import SideBar from '../SideBar';
 import Header from '../Header';
+import SideBar from '../SideBar';
 
 const GeneralLayout = (props) => {
     const { children, handleShowCreateItemModal, hasCta, ctaText } = props;
     const { Content, Footer } = Layout;
-
     return (
         <Layout hasSider>
            <SideBar />

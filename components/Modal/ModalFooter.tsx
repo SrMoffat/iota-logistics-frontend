@@ -22,7 +22,6 @@ const ModalFooter = (props) => {
                 </Button>
             )}
         </div>
-
     )
 }
 

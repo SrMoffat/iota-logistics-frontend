@@ -32,11 +32,10 @@ const Returns = () => {
             title: 'Title 6',
         },
     ];
-
     useEffect(() => {
         const fetchMilestonesData = async () => {
             const res = await fetchMilestones()
-            const returnedStage = res?.filter(({ id, attributes }) => attributes?.name === 'Returned');
+            const returnedStage = res?.filter(({ id, name }) => name === 'Returned');
             if (returnedStage?.length) {
                 const retrunedStage = returnedStage[0];
                 const returnedStageId = get(retrunedStage, 'id');
@@ -47,8 +46,10 @@ const Returns = () => {
     }, [])
     useEffect(() => {
         const fetchItemsDetails = async (id) => {
-            const res = await fetchItemsByMilestone(id)
-            setMilestoneItems(res);
+            console.log("Fetch items", id)
+            // const res = await fetchItemsByMilestone(id)
+            // // const res = await fetchItemsByMilestone(id)
+            // setMilestoneItems(res);
         }
         if (returnedStageId) {
             fetchItemsDetails(returnedStageId);;
@@ -56,7 +57,6 @@ const Returns = () => {
 
     }, [returnedStageId])
 
-    console.log("Fetch items", milestoneItems)
 
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>

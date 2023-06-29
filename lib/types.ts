@@ -168,4 +168,49 @@ export interface UpdateItemStatusProps {
     updateStatus: React.Dispatch<React.SetStateAction<Status>>;
 }
 
+export type AuthProviderProps = {
+    user: UserData;
+    isAuthenticated: boolean;
+    isAuthenticating: boolean;
+    logout: () => void;
+    signup: (details: UserDetails) => Promise<void>
+    login: (details: UserLoginDetails) => Promise<void>
+    setUser: React.Dispatch<React.SetStateAction<UserData | undefined>>
+}
 
+export type UserStorage = LoggedInUserDetails | null;
+
+export type parserOptions<T> =
+{
+    raw: true
+    serializer: (value: T) => string
+    deserializer: (value: string) => T
+}
+
+export interface RequestDetails {
+    url: string;
+    method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET';
+    body?: Object;
+};
+
+export interface Item {
+    name: string;
+    description: string;
+    supplier: string;
+    manufacturer: string;
+    trackingId: string;
+}
+
+export interface DrawerStatus {
+    stage: string;
+    status: string;
+    lastUpdated: string;
+    updatedBy: string;
+}
+
+export interface StatusDrawerProps {
+    item: Item;
+    open: boolean;
+    status: Status;
+    onClose: () => void;
+}

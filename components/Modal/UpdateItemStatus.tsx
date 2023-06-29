@@ -95,4 +95,4 @@ const UpdateItemStatus = (props: UpdateItemStatusProps) => {
     )
 }
 
-export default UpdateItemStatus
+export default UpdateItemStatus;

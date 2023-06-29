@@ -1,15 +1,10 @@
 import { get } from 'lodash';
 
 import { fetchJwt } from './users';
+import { RequestDetails } from '../lib/types';
 import { GENERAL_CONSTANTS, HTTP_ERRORS } from './constants';
 
 const BASE_URL = GENERAL_CONSTANTS.API_BASE_URL;
-
-interface RequestDetails {
-    url: string;
-    method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET';
-    body?: Object;
-}
 
 export const makeRequest = async (details: RequestDetails) => {
     const { url, method } = details;
@@ -69,7 +64,7 @@ export async function fetchCategories(): Promise<Object> {
     } catch (error) {
         throw new Error(error)
     }
-}
+};
 export async function fetchCurrencies(): Promise<Object> {
     try {
         const data = await makeRequest({
@@ -81,8 +76,7 @@ export async function fetchCurrencies(): Promise<Object> {
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function fetchEvents(): Promise<Object> {
     try {
         const data = await makeRequest({
@@ -94,8 +88,7 @@ export async function fetchEvents(): Promise<Object> {
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function fetchItems(): Promise<Object> {
     try {
         const data = await makeRequest({
@@ -107,8 +100,7 @@ export async function fetchItems(): Promise<Object> {
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function fetchMilestones(): Promise<Object> {
     try {
         const data = await makeRequest({
@@ -120,8 +112,7 @@ export async function fetchMilestones(): Promise<Object> {
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function fetchUsers(): Promise<Object> {
     try {
         const data = await makeRequest({
@@ -133,4 +124,4 @@ export async function fetchUsers(): Promise<Object> {
     } catch (error) {
         throw new Error(error)
     }
-}
+};

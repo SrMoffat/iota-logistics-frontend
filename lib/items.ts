@@ -1,6 +1,6 @@
 import { get, pick } from 'lodash';
-import { ItemDetails, ItemEventsInputs } from '../lib/types';
 import { GENERAL_CONSTANTS } from './constants';
+import { ItemDetails, ItemEventsInputs } from '../lib/types';
 import { makeRequest, makeRequestWithBody, handleResponse } from './statistics';
 
 const BASE_URL = GENERAL_CONSTANTS.API_BASE_URL;
@@ -16,8 +16,7 @@ export async function fetchItemsByMilestone(milestoneId: string | number): Promi
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function createSupplyChainItem(values: ItemDetails): Promise<Object> {
     try {
         const data = await makeRequestWithBody({
@@ -30,16 +29,14 @@ export async function createSupplyChainItem(values: ItemDetails): Promise<Object
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function updateSupplyChainItem(details: ItemDetails): Promise<void> {
     try {
 
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function addSupplyChainItemEvent(details: ItemEventsInputs): Promise<void> {
     try {
         const itemId = get(details, 'id');
@@ -53,8 +50,7 @@ export async function addSupplyChainItemEvent(details: ItemEventsInputs): Promis
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function fetchSupplyChainItemEvents(id: string | number): Promise<Object> {
     try {
         const data = await makeRequest({
@@ -66,8 +62,7 @@ export async function fetchSupplyChainItemEvents(id: string | number): Promise<O
     } catch (error) {
         throw new Error(error)
     }
-}
-
+};
 export async function fetchSupplyChainItemRecentEvents(id: string): Promise<Object> {
     try {
         const data = await makeRequest({
@@ -79,4 +74,4 @@ export async function fetchSupplyChainItemRecentEvents(id: string): Promise<Obje
     } catch (error) {
         throw new Error(error)
     }
-}
+};
