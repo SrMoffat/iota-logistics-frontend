@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { omit } from 'lodash';
 
 import { useMutation } from '@tanstack/react-query';
-import { Modal, message, Tabs } from 'antd';
+import { Modal, message, Tabs, Steps, Spin, Alert, theme } from 'antd';
 
 import ModalFooter from './ModalFooter';
 import UpdateItemStatus from './UpdateItemStatus';
@@ -16,6 +17,8 @@ const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, tit
 const FakeStep = () => {
     return 'Planes';
 }
+
+
 
 const AddItemModal = (props) => {
     const {
@@ -35,10 +38,19 @@ const AddItemModal = (props) => {
         confirmLoading,
         refetchMilestones
     } = props;
+    const { token } = theme.useToken();
     const [error, setError] = useState<string>();
     const [currentEditTab, setCurrentEditTab] = useState<string>();
     const { updateItemDetails, item, createSupplyChainItem, setItem } = useItemContext();
     const isLastStep = steps.length - 1 == current;
+    const contentStyle: React.CSSProperties = {
+        color: token.colorTextTertiary,
+        backgroundColor: token.colorFillAlter,
+        borderRadius: token.borderRadiusLG,
+        border: `1px dashed ${token.colorBorder}`,
+        marginTop: 10,
+        padding: 16,
+    };
     const { mutateAsync, isLoading, isError } = useMutation({
         mutationFn: async (details: ItemDetails) => {
             return await createSupplyChainItem(details);
@@ -155,6 +167,7 @@ const AddItemModal = (props) => {
             confirmLoading={confirmLoading}
             style={{ padding: 20 }}
         >
+            {!editMode && <Steps current={current} items={steps} />}
             {
                 editMode
                     ? <Tabs
@@ -163,7 +176,13 @@ const AddItemModal = (props) => {
                         items={editTabItems}
                     >
                     </Tabs>
-                    : 'Create Stuff'
+                    : (
+                        <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
+                            {isLoading && <Spin />}
+                            {isError && <Alert type="error" showIcon message={error} />}
+                            {renderCreateSteps(current)}
+                        </div>
+                    )
             }
             <ModalFooter
                 prev={prev}

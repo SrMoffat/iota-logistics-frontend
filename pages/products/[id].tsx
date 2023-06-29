@@ -40,7 +40,7 @@ const Product = () => {
         },
     })
     const milestonesArray = milestones?.milestones
-    const milestonesMutated = milestonesArray?.map(({ id, attributes }) => ({ id, title: attributes?.name, description: attributes?.description }));
+    const milestonesMutated = milestonesArray?.map(({ id, name, description }) => ({ id, title: name, description }));
     useEffect(() => {
         if (router.isReady) {
             const fetchDetails = async () => {

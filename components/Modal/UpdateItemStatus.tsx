@@ -1,11 +1,35 @@
 import React, { useState, useEffect } from 'react';
 
-import { groupBy } from 'lodash';
+import { groupBy, get } from 'lodash';
 import { Select, Space, message } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchMilestones } from '../../lib/statistics';
 import type { BaseOptionType } from 'antd/es/select';
+
+interface Status {
+    name: string;
+    id: string | number;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+}
+interface Stage {
+    name: string;
+    id: string | number;
+    statuses: Status[]
+}
+interface GroupedMilestone {
+    [key: number | string]: Stage[]
+}
+
+// interface GroupedMilestone {
+//     [key: number|string]: {
+//         id: string | number;
+//         name: string;
+//         statuses: Status[]
+//     }
+// }
 
 const provinceData = ['Warehousing', 'Processing', 'Transit', 'Delivery', 'Returned', 'Recovery', 'Termination'];
 
@@ -23,32 +47,15 @@ type CityName = keyof typeof cityData;
 const UpdateItemStatus = () => {
     const [milestoneNames, setMilestoneNames] = useState<BaseOptionType[]>();
     const [cities, setCities] = useState(cityData[provinceData[0] as CityName]);
+    const [selectedMilestone, setSelectedMilestone] = useState<string | number>();
+    const [groupedMilestones, setGroupedMilestone] = useState<GroupedMilestone>();
     const [secondCity, setSecondCity] = useState(cityData[provinceData[0] as CityName][0]);
-    // const { isLoading: milestonesLoading, data: milestones, error: milestonesError, refetch: refetchMilestones } = useQuery({
-    //     queryKey: ['milestones'],
-    //     queryFn: async () => {
-    //         const res = await fetchMilestones()
-    //         return {
-    //             milestones: res
-    //         }
-    //     },
-    // })
-    const handleProvinceChange = (value: CityName) => {
-        setCities(cityData[value]);
-        setSecondCity(cityData[value][0]);
+    const handleStageChange = (value: string | number) => {
+        setSelectedMilestone(value);
     };
     const onSecondCityChange = (value: CityName) => {
         setSecondCity(value);
     };
-    // useEffect(() => {
-    //     const error = milestonesError as Error
-    //     error && message.error(error?.message)
-    // }, [milestonesError])
-
-
-
-
-    // console.log(groupedMilestones)
     useEffect(() => {
         const getMilestonesData = async () => {
             const res = await fetchMilestones();
@@ -57,27 +64,36 @@ const UpdateItemStatus = () => {
                 name,
                 statuses
             }));
-            // const groupedMilestones = groupBy(massgedMilestones, 'name');
-            // const milestoneNames = Object.keys(groupedMilestones);
+            const grouped = groupBy(massgedMilestones, 'id');
             const milestoneNames = massgedMilestones?.map(({ id, name }) => ({ label: name, value: id }));
             setMilestoneNames(milestoneNames);
-            console.log("massgedMilestones==>", massgedMilestones);
+            setGroupedMilestone(grouped);
+            console.log("massgedMilestonesmassgedMilestones==>", res);
+
         }
         getMilestonesData();
     }, [])
-
-    console.log("Data==>", milestoneNames);
-
-    // milestoneNames 
-
+    useEffect(() => {
+        if (selectedMilestone) {
+            const selected = groupedMilestones[selectedMilestone];
+            if (selected) {
+                const details = get(selected[0], 'statuses');
+                // if(groupedMilestones[selectedMilestone]){}
+                // console.log("details==>", details);
+                // console.log("selectedMilestone==>", selectedMilestone);
+                // console.log("groupedMilestones==>", groupedMilestones);
+                // console.log("groupedMilestones==>", groupedMilestones[selectedMilestone][0]);
+            }
+        }
+    }, [selectedMilestone]);
     return (
         <Space style={{ width: '100%' }} direction="vertical">
             Select Stage
             {milestoneNames && (
                 <Select
                     style={{ width: "100%" }}
-                    defaultValue={milestoneNames[3]?.value}
-                    onChange={handleProvinceChange}
+                    defaultValue={milestoneNames[0]?.value}
+                    onChange={handleStageChange}
                     options={milestoneNames}
                 />
             )}

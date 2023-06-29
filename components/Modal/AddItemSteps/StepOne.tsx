@@ -41,7 +41,7 @@ const StepOne = (props: StepProps) => {
                 <InputNumber min={1} defaultValue={item?.quantity} onChange={e => setItemQuantity(Number(e))} />
             </Form.Item>
             <Form.Item label="Colour">
-                <ColorPicker defaultValue={item?.colour} onChange={e => setItemColour(e?.toHexString())} />
+                <ColorPicker defaultValue={item?.colour} onChange={e => setItemColour(e?.toHexString() || '#ffffff')} />
             </Form.Item>
         </Form>
     )
