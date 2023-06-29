@@ -161,7 +161,7 @@ const Product = () => {
             />
             {milestonesLoading ? <Spin /> : (
                 <>
-                    {currentStageStatuses?.length && (
+                    {/* {currentStageStatuses?.length && (
                         <Descriptions
                             bordered
                             column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
@@ -177,7 +177,7 @@ const Product = () => {
                                 {`${formatDistance(parseISO(productRecentUpdateTimestamp), new Date())} ago`}
                             </Descriptions.Item>
                         </Descriptions>
-                    )}
+                    )} */}
                     <Descriptions
                         bordered
                         column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
@@ -189,37 +189,7 @@ const Product = () => {
                         <Descriptions.Item label="Tracking ID">
                             {itemDetails?.trackingId}
                         </Descriptions.Item>
-                        {/* <Descriptions.Item label="Last Updated">
-                            {`${formatDistance(parseISO(
-                                currentStageStatuses
-                                ? currentStageStatuses[0]?.itemUpdatedAt
-                                : itemDetails
-                                    ? itemDetails?.updatedAt
-                                    : 
-                                itemDetails?.updatedAt),
-                                new Date()
-                            )} ago`}
-                        </Descriptions.Item> */}
                     </Descriptions>
-                    {/* {currentStageStatuses?.length && (
-                        <Descriptions
-                            bordered
-                            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-                            style={{ marginBottom: 20 }}
-                        >
-                            <Descriptions.Item label="Name">
-                                {currentStageStatuses[0]?.itemName || itemDetails?.name}
-                            </Descriptions.Item>
-                            <Descriptions.Item label="Tracking ID">
-                                {currentStageStatuses[0]?.itemTrackingId || itemDetails?.trackingId}
-                            </Descriptions.Item>
-                            <Descriptions.Item label="Last Updated">
-                                {`${formatDistance(parseISO(currentStageStatuses[0]?.itemUpdatedAt
-                                    || itemDetails?.updatedAt), new Date())} ago`}
-                            </Descriptions.Item>
-                        </Descriptions>
-
-                    )} */}
                     <Steps
                         progressDot
                         current={current}
