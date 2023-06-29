@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-import { omit } from 'lodash';
 import { useMutation } from '@tanstack/react-query';
-import { Button, Modal, Steps, theme, message, Spin, Alert } from 'antd';
+import { Modal, message, Tabs } from 'antd';
+
+import ModalFooter from './ModalFooter';
+import UpdateItemStatus from './UpdateItemStatus';
 
 import { ItemDetails } from '../../lib/types';
 import { ITEM_CREATION_STEPS } from '../../lib/constants';
@@ -11,13 +13,19 @@ import { StepOne, StepTwo, StepThree, StepFour } from './AddItemSteps';
 
 const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
+const FakeStep = () => {
+    return 'Planes';
+}
+
 const AddItemModal = (props) => {
     const {
         open,
         prev,
         next,
+        title,
         current,
         handleOk,
+        editMode,
         categories,
         setCurrent,
         refetchItems,
@@ -28,17 +36,9 @@ const AddItemModal = (props) => {
         refetchMilestones
     } = props;
     const [error, setError] = useState<string>();
-    const { token } = theme.useToken();
+    const [currentEditTab, setCurrentEditTab] = useState<string>();
     const { updateItemDetails, item, createSupplyChainItem, setItem } = useItemContext();
     const isLastStep = steps.length - 1 == current;
-    const contentStyle: React.CSSProperties = {
-        color: token.colorTextTertiary,
-        backgroundColor: token.colorFillAlter,
-        borderRadius: token.borderRadiusLG,
-        border: `1px dashed ${token.colorBorder}`,
-        marginTop: 10,
-        padding: 16,
-    };
     const { mutateAsync, isLoading, isError } = useMutation({
         mutationFn: async (details: ItemDetails) => {
             return await createSupplyChainItem(details);
@@ -85,7 +85,7 @@ const AddItemModal = (props) => {
             })
         },
     })
-    const renderSteps = (current: number) => {
+    const renderCreateSteps = (current: number) => {
         const stepProps = {
             updateItemDetails,
             item,
@@ -102,46 +102,81 @@ const AddItemModal = (props) => {
                 return <StepFour {...item} />
         }
     }
+    const renderEditSteps = (current: number) => {
+        const stepProps = {
+            updateItemDetails,
+            item,
+            categories
+        };
+        switch (current) {
+            case 0:
+                return <FakeStep />
+            case 1:
+                return <FakeStep />
+            case 2:
+                return <FakeStep />
+            case 3:
+                return <FakeStep />
+        }
+    }
     const updateItem = () => {
         next()
     }
     const createSupplyItem = async (data: ItemDetails) => {
         await mutateAsync(data)
     };
+    const onChange = (key: string) => {
+        setCurrentEditTab(key)
+    };
+
+    console.log(currentEditTab);
+
+    const editTabItems = [
+        {
+            label: "Update Status",
+            key: "status",
+            children: <UpdateItemStatus />,
+        },
+        {
+            label: "Update Details",
+            key: "details",
+            children: `Update Details`,
+        }
+    ]
     return (
         <Modal
-            title="Create Item"
+            title={title}
             open={open}
             width={600}
             footer={null}
+            destroyOnClose
             onOk={handleOk}
             onCancel={handleCancel}
             confirmLoading={confirmLoading}
             style={{ padding: 20 }}
         >
-            <Steps current={current} items={steps} />
-            <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
-                {isLoading && <Spin />}
-                {isError && <Alert type="error" showIcon message={error} />}
-                {renderSteps(current)}
-            </div>
-            <div style={{ marginTop: 24 }}>
-                {current < steps.length - 1 && (
-                    <Button type="primary" onClick={updateItem}>
-                        Next
-                    </Button>
-                )}
-                {isLastStep && (
-                    <Button loading={isLoading} type="primary" onClick={() => createSupplyItem(item)}>
-                        Done
-                    </Button>
-                )}
-                {current > 0 && (
-                    <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-                        Previous
-                    </Button>
-                )}
-            </div>
+            {
+                editMode
+                    ? <Tabs
+                        onChange={onChange}
+                        type="card"
+                        items={editTabItems}
+                    >
+                    </Tabs>
+                    : 'Create Stuff'
+            }
+            <ModalFooter
+                prev={prev}
+                item={item}
+                steps={steps}
+                editMode={editMode}
+                current={current}
+                isLoading={isLoading}
+                isLastStep={isLastStep}
+                updateItem={updateItem}
+                currentEditTab={currentEditTab}
+                createSupplyItem={createSupplyItem}
+            />
         </Modal>
     );
 };

@@ -7,7 +7,7 @@ import { format, parseISO, formatDistance } from 'date-fns';
 import { Divider, Steps, Spin, Timeline, Descriptions, Empty, Button } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
-import AddItemModal from '../../components/Modal/AddItemModal';
+import UpdateItemModal from '../../components/Modal/ItemModal';
 
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchSupplyChainItemEvents } from '../../lib/items';
@@ -122,7 +122,8 @@ const Product = () => {
     };
     return (
         <GeneralLayout handleShowCreateItemModal={handleShowUpdateItemModal} hasCta ctaText="Update Item">
-            <AddItemModal
+            <UpdateItemModal
+                editMode
                 open={open}
                 next={next}
                 prev={prev}
@@ -134,8 +135,9 @@ const Product = () => {
                 setMilestone={setMilestone}
                 // refetchEvents={refetchEvents}
                 confirmLoading={confirmLoading}
-            // categories={categories?.categories}
-            // refetchMilestones={refetchMilestones}
+                // categories={categories?.categories}
+                // refetchMilestones={refetchMilestones}
+                title={`Update ${currentStageStatuses ? currentStageStatuses[0]?.itemName : "Item"}`}
             />
             {milestonesLoading ? <Spin /> : (
                 <>

@@ -7,7 +7,7 @@ import CustomTable from '../components/Table/ItemTable';
 import StatisticsCards from '../components/Statistics';
 import MilestoneCards from '../components/Milestones';
 import GeneralLayout from '../components/Layout/General';
-import AddItemModal from '../components/Modal/AddItemModal';
+import AddItemModal from '../components/Modal/ItemModal';
 
 import {
     fetchItems,
@@ -179,6 +179,7 @@ const Dashboard = () => {
                 next={next}
                 prev={prev}
                 current={current}
+                title="Create Item"
                 handleOk={handleOk}
                 setCurrent={setCurrent}
                 handleCancel={handleCancel}
