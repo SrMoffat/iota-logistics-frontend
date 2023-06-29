@@ -13,10 +13,17 @@ import { EventDetails } from '../../lib/types';
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchSupplyChainItemEvents } from '../../lib/items';
 
+interface ItemDetailsSummary {
+    name: string;
+    trackingId: string;
+    updatedAt: string;
+}
+
 const Product = () => {
     const router = useRouter()
     const [itemId, setItemId] = useState<string>();
     const [current, setCurrent] = useState(0);
+    const [itemDetails, setItemDetails] = useState<ItemDetailsSummary>();
     const [events, setEvents] = useState<{ [key: number | string]: EventDetails[] }>();
     const [currentStageStatuses, setCurrentStageStatuses] = useState<EventDetails[]>();
     const { isLoading: milestonesLoading, data: milestones } = useQuery({
@@ -60,7 +67,13 @@ const Product = () => {
         if (events && milestonesMutated?.length) {
             const initialState = milestonesMutated[current]
             const stateId = get(initialState, 'id');
+            const itemData = events[stateId][0];
             setCurrentStageStatuses(events[stateId]);
+            setItemDetails({
+                name: itemData?.itemName,
+                trackingId: itemData?.itemTrackingId,
+                updatedAt: itemData?.itemUpdatedAt
+            });
         }
     }, [events])
     useEffect(() => {
@@ -123,6 +136,9 @@ const Product = () => {
     const handleCancel = () => {
         setOpen(false);
     };
+    const productRecentUpdateTimestamp = currentStageStatuses
+        ? currentStageStatuses[0]?.itemUpdatedAt
+        : itemDetails?.updatedAt
     return (
         <GeneralLayout handleShowCreateItemModal={handleShowUpdateItemModal} hasCta ctaText="Update Item">
             <UpdateItemModal
@@ -134,8 +150,8 @@ const Product = () => {
                 handleOk={handleOk}
                 setCurrent={setCurrent}
                 handleCancel={handleCancel}
-                // refetchItems={refetchItems}
                 setMilestone={setMilestone}
+                // refetchItems={refetchItems}
                 // refetchEvents={refetchEvents}
                 confirmLoading={confirmLoading}
                 // categories={categories?.categories}
@@ -145,20 +161,65 @@ const Product = () => {
             />
             {milestonesLoading ? <Spin /> : (
                 <>
-                    {currentStageStatuses && (
+                    {currentStageStatuses?.length && (
                         <Descriptions
                             bordered
                             column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
                             style={{ marginBottom: 20 }}
                         >
-                            <Descriptions.Item label="Name">{currentStageStatuses[0]?.itemName}</Descriptions.Item>
-                            <Descriptions.Item label="Tracking ID">{currentStageStatuses[0]?.itemTrackingId}</Descriptions.Item>
+                            <Descriptions.Item label="Name">
+                                {currentStageStatuses[0]?.itemName || itemDetails?.name}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Tracking ID">
+                                {currentStageStatuses[0]?.itemTrackingId || itemDetails?.trackingId}
+                            </Descriptions.Item>
                             <Descriptions.Item label="Last Updated">
-                                {`${formatDistance(parseISO(currentStageStatuses[0]?.itemUpdatedAt), new Date())} ago`}
+                                {`${formatDistance(parseISO(productRecentUpdateTimestamp), new Date())} ago`}
+                            </Descriptions.Item>
+                        </Descriptions>
+                    )}
+                    <Descriptions
+                        bordered
+                        column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+                        style={{ marginBottom: 20 }}
+                    >
+                        <Descriptions.Item label="Name">
+                            {itemDetails?.name}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Tracking ID">
+                            {itemDetails?.trackingId}
+                        </Descriptions.Item>
+                        {/* <Descriptions.Item label="Last Updated">
+                            {`${formatDistance(parseISO(
+                                currentStageStatuses
+                                ? currentStageStatuses[0]?.itemUpdatedAt
+                                : itemDetails
+                                    ? itemDetails?.updatedAt
+                                    : 
+                                itemDetails?.updatedAt),
+                                new Date()
+                            )} ago`}
+                        </Descriptions.Item> */}
+                    </Descriptions>
+                    {/* {currentStageStatuses?.length && (
+                        <Descriptions
+                            bordered
+                            column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+                            style={{ marginBottom: 20 }}
+                        >
+                            <Descriptions.Item label="Name">
+                                {currentStageStatuses[0]?.itemName || itemDetails?.name}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Tracking ID">
+                                {currentStageStatuses[0]?.itemTrackingId || itemDetails?.trackingId}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Last Updated">
+                                {`${formatDistance(parseISO(currentStageStatuses[0]?.itemUpdatedAt
+                                    || itemDetails?.updatedAt), new Date())} ago`}
                             </Descriptions.Item>
                         </Descriptions>
 
-                    )}
+                    )} */}
                     <Steps
                         progressDot
                         current={current}
