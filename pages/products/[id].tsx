@@ -15,11 +15,10 @@ import { fetchSupplyChainItemEvents } from '../../lib/items';
 
 const Product = () => {
     const router = useRouter()
-    const [itemId, setItemId] = useState<string>();
     const [current, setCurrent] = useState(0);
     const [open, setOpen] = useState(false);
     const [milestone, setMilestone] = useState();
-    // const [milestoneItems, setMilestoneItems] = useState([]);
+    const [itemId, setItemId] = useState<string>();
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [itemDetails, setItemDetails] = useState<ItemDetailsSummary>();
     const [events, setEvents] = useState<{ [key: number | string]: EventDetails[] }>();
@@ -79,9 +78,6 @@ const Product = () => {
     const handleCancel = () => {
         setOpen(false);
     };
-    const productRecentUpdateTimestamp = currentStageStatuses
-        ? currentStageStatuses[0]?.itemUpdatedAt
-        : itemDetails?.updatedAt
     useEffect(() => {
         if (router.isReady) {
             const fetchDetails = async () => {
@@ -132,40 +128,7 @@ const Product = () => {
             }
         }
     }, [current])
-    // useEffect(() => {
-    //     const refetchEventDetails = async (id: string | number) => {
-    //         if (id) {
-    //             const res = await fetchSupplyChainItemEvents(id)
-    //             console.log("Hapa kazi..00", res);
-    //         }
-    //         // const events = res?.events?.map(({ status, updatedAt, stage, data, user }) => ({
-    //         //     status: status?.name,
-    //         //     statusId: status?.id,
-    //         //     statusDescription: status?.description,
-    //         //     stage: stage?.name,
-    //         //     stageId: stage?.id,
-    //         //     stageDescription: stage?.description,
-    //         //     updatedAt,
-    //         //     itemName: data?.name,
-    //         //     itemUpdatedAt: data?.updatedAt,
-    //         //     itemTrackingId: data?.trackingId,
-    //         //     username: user?.username,
-    //         //     userEmail: user?.email
-    //         // }));
-    //         // const groupedStuff = groupBy(events, 'stageId')
-    //         // setEvents(groupedStuff);
-    //     }
-    //     if (!open) {
-    //         console.log("Hapa kazi rtuuuuu", itemId);
-    //         refetchEventDetails(itemId);
-    //     }
-    // }, [open])
-
-    console.log({
-        currentStageStatuses,
-        itemDetails,
-        productRecentUpdateTimestamp
-    })
+    console.log("current==>", current)
     return (
         <GeneralLayout handleShowCreateItemModal={handleShowUpdateItemModal} hasCta ctaText="Update Item">
             <UpdateItemModal
@@ -173,20 +136,16 @@ const Product = () => {
                 open={open}
                 next={next}
                 prev={prev}
+                itemId={itemId}
                 current={current}
                 handleOk={handleOk}
                 setCurrent={setCurrent}
                 handleCancel={handleCancel}
                 setMilestone={setMilestone}
-                // refetchItems={refetchItems}
-                refetchItems={() => console.log("Refetch items")}
-                // refetchEvents={refetchEvents}
-                refetchEvents={() => console.log("Refetch events")}
                 confirmLoading={confirmLoading}
-                // categories={categories?.categories}
-                // refetchMilestones={refetchMilestones}
+                refetchItems={() => console.log("Refetch items")}
+                refetchEvents={() => console.log("Refetch events")}
                 refetchMilestones={() => console.log("Refetch milestones")}
-                itemId={itemId}
                 title={`Update ${currentStageStatuses ? currentStageStatuses[0]?.itemName : "Item"}`}
             />
             {milestonesLoading ? <Spin /> : (

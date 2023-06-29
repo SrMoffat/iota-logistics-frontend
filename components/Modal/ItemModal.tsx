@@ -6,6 +6,7 @@ import { Modal, message, Tabs, Steps, Spin, Alert, theme } from 'antd';
 
 import ModalFooter from './ModalFooter';
 import UpdateItemStatus from './UpdateItemStatus';
+import UpdateItemDetails from './UpdateItemDetails';
 
 import { ItemDetails, ItemEventsInputs, Stage, Status } from '../../lib/types';
 import { ITEM_CREATION_STEPS, GENERAL_CONSTANTS } from '../../lib/constants';
@@ -16,11 +17,39 @@ const updateModes = GENERAL_CONSTANTS.ITEM_EDIT_MODES;
 
 const steps = ITEM_CREATION_STEPS.map(({ title, content }) => ({ key: title, title, content }));
 
-const FakeStep = () => {
-    return 'Planes';
-}
-
-const AddItemModal = (props) => {
+const ModalContent = (props) => {
+    const {
+        steps,
+        current,
+        editMode,
+        onChange,
+        isLastStep,
+        contentStyle,
+        editTabItems,
+        renderCreateSteps,
+    } = props;
+    return (
+        <>
+            <div
+                style={
+                    isLastStep
+                        ? omit(contentStyle, ["backgroundColor", "border"])
+                        : contentStyle
+                }
+            >
+                {editMode ? (
+                    <Tabs onChange={onChange} type="card" items={editTabItems} />
+                ) : (
+                    <>
+                        <Steps current={current} items={steps} />
+                        {renderCreateSteps(current)}
+                    </>
+                )}
+            </div>
+        </>
+    );
+};
+const ItemModal = (props) => {
     const {
         open,
         prev,
@@ -136,30 +165,12 @@ const AddItemModal = (props) => {
                 return <StepFour {...item} />
         }
     }
-    const renderEditSteps = (current: number) => {
-        const stepProps = {
-            updateItemDetails,
-            item,
-            categories
-        };
-        switch (current) {
-            case 0:
-                return <FakeStep />
-            case 1:
-                return <FakeStep />
-            case 2:
-                return <FakeStep />
-            case 3:
-                return <FakeStep />
-        }
-    }
     const updateItem = async () => {
-        if (!editMode) {
+        if (!editMode || currentEditTab === GENERAL_CONSTANTS.ITEM_EDIT_MODES.DETAILS) {
             next();
+            console.log('Grajua');
         } else {
-            if (currentEditTab === GENERAL_CONSTANTS.ITEM_EDIT_MODES.DETAILS) {
-                console.log("Details")
-            } else if (currentEditTab === GENERAL_CONSTANTS.ITEM_EDIT_MODES.STATUS) {
+            if (currentEditTab === GENERAL_CONSTANTS.ITEM_EDIT_MODES.STATUS) {
                 await updateStatus({
                     id: itemId,
                     stage: {
@@ -186,38 +197,23 @@ const AddItemModal = (props) => {
     const editTabItems = [
         {
             label: "Update Status",
-            key: "status",
-            children: <UpdateItemStatus updateStage={setSelectedMilestone} updateStatus={setSelectedStatus} />,
+            key: updateModes.STATUS,
+            children: <UpdateItemStatus
+                updateStatus={setSelectedStatus}
+                updateStage={setSelectedMilestone}
+            />,
         },
         {
             label: "Update Details",
-            key: "details",
-            children: `Update Details`,
+            key: updateModes.DETAILS,
+            children: <UpdateItemDetails
+                // item={item}
+                current={current}
+                // categories={categories}
+                // updateItemDetails={updateItemDetails}
+            />,
         }
     ]
-    const renderModalContent = () => {
-        return (
-            <>
-                {!editMode && <Steps current={current} items={steps} />}
-                {
-                    editMode
-                        ? <Tabs
-                            onChange={onChange}
-                            type="card"
-                            items={editTabItems}
-                        >
-                        </Tabs>
-                        : (
-                            <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
-                                {isLoading && <Spin />}
-                                {isError && <Alert type="error" showIcon message={error} />}
-                                {renderCreateSteps(current)}
-                            </div>
-                        )
-                }
-            </>
-        )
-    };
     return (
         <Modal
             title={title}
@@ -230,7 +226,17 @@ const AddItemModal = (props) => {
             style={{ padding: 20 }}
             confirmLoading={confirmLoading}
         >
-            {renderModalContent()}
+            {/* {renderModalContent()} */}
+            <ModalContent
+                steps={steps}
+                current={current}
+                editMode={editMode}
+                onChange={onChange}
+                isLastStep={isLastStep}
+                contentStyle={contentStyle}
+                editTabItems={editTabItems}
+                renderCreateSteps={renderCreateSteps}
+            />
             <ModalFooter
                 prev={prev}
                 item={item}
@@ -247,4 +253,4 @@ const AddItemModal = (props) => {
     );
 };
 
-export default AddItemModal;
+export default ItemModal;

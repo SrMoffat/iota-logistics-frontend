@@ -5,12 +5,7 @@ import { groupBy, get, pick } from 'lodash';
 import type { BaseOptionType } from 'antd/es/select';
 
 import { fetchMilestones } from '../../lib/statistics';
-import { Status,  Stage, GroupedMilestone, StatusSummary} from '../../lib/types';
-
-interface UpdateItemStatusProps {
-    updateStage: React.Dispatch<React.SetStateAction<Stage>>;
-    updateStatus: React.Dispatch<React.SetStateAction<Status>>;
-}
+import { Status,  Stage, GroupedMilestone, StatusSummary, UpdateItemStatusProps} from '../../lib/types';
 
 const UpdateItemStatus = (props: UpdateItemStatusProps) => {
     const { updateStage, updateStatus } = props;

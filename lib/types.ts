@@ -163,4 +163,9 @@ export interface ItemDetailsSummary {
     updatedAt: string;
 }
 
+export interface UpdateItemStatusProps {
+    updateStage: React.Dispatch<React.SetStateAction<Stage>>;
+    updateStatus: React.Dispatch<React.SetStateAction<Status>>;
+}
+
 
