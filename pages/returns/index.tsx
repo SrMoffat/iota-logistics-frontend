@@ -1,39 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 import { get } from 'lodash';
-import { Card, List } from 'antd';
-import { useQuery } from '@tanstack/react-query';
+import { Card, Empty, Spin, Row, Col, Tag, ColorPicker } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
 
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchItemsByMilestone } from '../../lib/items';
 
+const { Meta } = Card;
+
 const Returns = () => {
+    const [loading, setLoading] = useState(false);
     const [returnedStageId, setReturnedStageId] = useState();
     const [milestoneItems, setMilestoneItems] = useState([]);
-    const data = [
-        {
-            title: 'Title 1',
-        },
-        {
-            title: 'Title 2',
-        },
-        {
-            title: 'Title 3',
-        },
-        {
-            title: 'Title 4',
-        },
-        {
-            title: 'Title 5',
-        },
-        {
-            title: 'Title 6',
-        },
-    ];
     useEffect(() => {
         const fetchMilestonesData = async () => {
+            setLoading(true);
             const res = await fetchMilestones()
             const returnedStage = res?.filter(({ id, name }) => name === 'Returned');
             if (returnedStage?.length) {
@@ -43,40 +26,47 @@ const Returns = () => {
             }
         }
         fetchMilestonesData();
+        setLoading(false);
     }, [])
     useEffect(() => {
         const fetchItemsDetails = async (id) => {
-            console.log("Fetch items", id)
-            // const res = await fetchItemsByMilestone(id)
-            // // const res = await fetchItemsByMilestone(id)
-            // setMilestoneItems(res);
+            const res = await fetchItemsByMilestone(id)
+            const massagedEvents = res?.map(({ data, stage, status }) => ({ data, stage, status }))
+            setMilestoneItems(massagedEvents);
         }
         if (returnedStageId) {
-            fetchItemsDetails(returnedStageId);;
+            fetchItemsDetails(returnedStageId);
         }
-
-    }, [returnedStageId])
-
-
+    }, [returnedStageId]);
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
-            <List
-                grid={{
-                    gutter: 16,
-                    xs: 1,
-                    sm: 2,
-                    md: 4,
-                    lg: 4,
-                    xl: 6,
-                    xxl: 3,
-                }}
-                dataSource={data}
-                renderItem={(item) => (
-                    <List.Item>
-                        <Card title={item.title}>Card content</Card>
-                    </List.Item>
-                )}
-            />
+            {
+                loading
+                    ? <Spin />
+                    : !milestoneItems?.length
+                        ? <Empty description="No active returns found" />
+                        :
+                        <Row gutter={[16, 16]}>
+                            {milestoneItems?.map(({ data, stage, status }) => (
+                                <Col span={8}>
+                                    <Card
+                                        bordered={false}
+                                        style={{ width: 300 }}
+                                        actions={[
+                                            <Tag color="red">{stage?.name}</Tag>,
+                                            <Tag color="orange">{status?.name}</Tag>,
+                                        ]}
+                                    >
+                                        <Meta
+                                            avatar={<ColorPicker value={data?.colour} />}
+                                            title={data?.name}
+                                            description={data?.description}
+                                        />
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
+            }
         </GeneralLayout>
     )
 };
