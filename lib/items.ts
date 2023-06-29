@@ -4,7 +4,7 @@ import { makeRequest, makeRequestWithBody, handleResponse } from './statistics';
 
 const BASE_URL = GENERAL_CONSTANTS.API_BASE_URL;
 
-export async function fetchItemsByMilestone(milestoneId: string | number): Promise<void> {
+export async function fetchItemsByMilestone(milestoneId: string | number): Promise<[]> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/stages/${milestoneId}/events`,

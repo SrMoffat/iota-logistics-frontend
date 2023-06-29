@@ -24,7 +24,7 @@ const Dashboard = () => {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(0);
     const [milestone, setMilestone] = useState();
-    const [milestoneItems, setMilestoneItems] = useState();
+    const [milestoneItems, setMilestoneItems] = useState([]);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const { isLoading: categoriesLoading, data: categories, error: categoryError } = useQuery({
         queryKey: ['categories'],
