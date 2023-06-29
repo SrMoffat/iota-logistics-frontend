@@ -60,7 +60,7 @@ const Product = () => {
         if (events && milestonesMutated?.length) {
             const initialState = milestonesMutated[current]
             const stateId = get(initialState, 'id');
-            setCurrentStageStatuses(events[stateId])
+            setCurrentStageStatuses(events[stateId]);
         }
     }, [events])
     useEffect(() => {
@@ -68,13 +68,21 @@ const Product = () => {
             const newState = milestonesMutated[current]
             const stageId = get(newState, 'id');
             if (events[stageId]) {
-                setCurrentStageStatuses(events[stageId])
+                setCurrentStageStatuses(events[stageId]);
+            } else {
+                setCurrentStageStatuses(undefined);
             }
         }
     }, [current])
     const onChange = (value: number) => {
-        console.log('onChange:', value);
         setCurrent(value);
+        if (!value) {
+            if (events && milestonesMutated?.length) {
+                const initialState = milestonesMutated[value]
+                const stateId = get(initialState, 'id');
+                setCurrentStageStatuses(events[stateId]);
+            }
+        }
     };
     const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt, username }) => ({
         color: 'green',
