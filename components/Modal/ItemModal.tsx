@@ -211,23 +211,6 @@ const AddItemModal = (props) => {
             confirmLoading={confirmLoading}
         >
             {renderModalContent()}
-            {/* {!editMode && <Steps current={current} items={steps} />}
-            {
-                editMode
-                    ? <Tabs
-                        onChange={onChange}
-                        type="card"
-                        items={editTabItems}
-                    >
-                    </Tabs>
-                    : (
-                        <div style={isLastStep ? omit(contentStyle, ['backgroundColor', 'border']) : contentStyle}>
-                            {isLoading && <Spin />}
-                            {isError && <Alert type="error" showIcon message={error} />}
-                            {renderCreateSteps(current)}
-                        </div>
-                    )
-            } */}
             <ModalFooter
                 prev={prev}
                 item={item}

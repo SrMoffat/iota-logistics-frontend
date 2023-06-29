@@ -115,6 +115,8 @@ export interface EventDetails {
     itemName: string;
     itemUpdatedAt: string;
     itemTrackingId: string;
+    username: string;
+    userEmail: string;
 }
 
 export interface ProductDetails {

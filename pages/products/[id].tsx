@@ -34,7 +34,7 @@ const Product = () => {
             const fetchDetails = async () => {
                 const itemID = router.query.id;
                 const res = await fetchSupplyChainItemEvents(itemID as string)
-                const massagedEvents = res?.events?.map(({ status, updatedAt, stage, data }) => ({
+                const massagedEvents = res?.events?.map(({ status, updatedAt, stage, data, user }) => ({
                     status: status?.name,
                     statusId: status?.id,
                     statusDescription: status?.description,
@@ -44,7 +44,9 @@ const Product = () => {
                     updatedAt,
                     itemName: data?.name,
                     itemUpdatedAt: data?.updatedAt,
-                    itemTrackingId: data?.trackingId
+                    itemTrackingId: data?.trackingId,
+                    username: user?.username,
+                    userEmail: user?.email
                 }));
                 const groupedStuff = groupBy(massagedEvents, 'stageId')
                 setEvents(groupedStuff)
@@ -72,16 +74,20 @@ const Product = () => {
         console.log('onChange:', value);
         setCurrent(value);
     };
-    const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt }) => ({
+    const entries = currentStageStatuses?.map(({ status, statusDescription, updatedAt, username }) => ({
         color: 'green',
         children: (
             <div style={{ padding: 0, lineHeight: 0.5 }}>
                 <p style={{ fontWeight: "bold", marginTop: "5px" }}>{status}</p>
                 <p>{statusDescription}</p>
-                <p style={{ fontSize: '11px', fontStyle: 'italic' }}>{format(parseISO(updatedAt), 'LLLL d, yyyy')}</p>
+                <p style={{ fontSize: '11px', fontWeight: 'bold' }}>
+                    {`${formatDistance(parseISO(updatedAt), new Date())} ago`}
+                </p>
+                <p style={{ fontSize: '11px', fontStyle: 'italic' }}>
+                    {`Updated By: ${username}`}
+                </p>
             </div>
         ),
-
     }))
 
     const handleShowUpdateItemModal = () => {
@@ -108,6 +114,7 @@ const Product = () => {
     const handleCancel = () => {
         setOpen(false);
     };
+
     return (
         <GeneralLayout handleShowCreateItemModal={handleShowUpdateItemModal} hasCta ctaText="Update Item">
             <UpdateItemModal
