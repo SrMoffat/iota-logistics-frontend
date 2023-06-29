@@ -44,7 +44,7 @@ const Dashboard = () => {
             }
         },
     })
-    const { isLoading: eventsLoading, data: events, error: eventsError } = useQuery({
+    const { isLoading: eventsLoading, data: events, error: eventsError, refetch: refetchEvents } = useQuery({
         queryKey: ['events'],
         queryFn: async () => {
             const res = await fetchEvents()
@@ -184,6 +184,7 @@ const Dashboard = () => {
                 setCurrent={setCurrent}
                 handleCancel={handleCancel}
                 refetchItems={refetchItems}
+                refetchEvents={refetchEvents}
                 confirmLoading={confirmLoading}
                 categories={categories?.categories}
                 refetchMilestones={refetchMilestones}
