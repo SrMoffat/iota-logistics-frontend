@@ -122,3 +122,26 @@ export interface ProductDetails {
     itemStatusRequested: (id: string | number) => void
 }
 
+export interface Status {
+    name: string;
+    id: string | number;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+}
+export interface Stage {
+    description: string;
+    name: string;
+    id: string | number;
+    statuses: Status[]
+}
+export interface GroupedMilestone {
+    [key: number | string]: Stage[]
+}
+
+export interface StatusSummary {
+    description: string;
+    label: string;
+    value: string | number;
+}
+

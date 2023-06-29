@@ -6,8 +6,13 @@ const FORM_PARENT_STYLES = {
     backgroundColor: "white",
     overflow: "hidden",
 };
+const ITEM_EDIT_MODES = {
+    DETAILS: "details",
+    STATUS: "status",
+};
 export default {
-    USER_STORAGE_KEY,
     API_BASE_URL,
+    ITEM_EDIT_MODES,
+    USER_STORAGE_KEY,
     FORM_PARENT_STYLES
 }
