@@ -1,12 +1,22 @@
-import Head from 'next/head'
 import Link from 'next/link'
-import { Fragment } from 'react';
-import { Col, Row, Layout, Button, Divider } from 'antd';
+import { Layout, Row, Col, Typography, Divider } from 'antd';
 
-import Title from "antd/lib/typography/Title";
+const { Content } = Layout;
+const { Title } = Typography;
 
-const Footer = () => {
-    return (
+const HomePage = () => {
+  return (
+    <Layout>
+      <Content style={{ minHeight: '100vh', background: '#f0f2f5' }}>
+        <div style={{ height: '600px', background: 'url("/images/background.jpg")' }}>
+          <Row justify="center" align="middle" style={{ height: '100%' }}>
+            <Col>
+              <Title level={1} style={{ color: '#ffffff', textAlign: 'center' }}>
+                Welcome to IOTA Logistics
+              </Title>
+            </Col>
+          </Row>
+        </div>
         <Layout.Footer>
             <Row gutter={[10, 10]} className="website-footer">
                 <Col span={8} className="footer-links">
@@ -30,41 +40,11 @@ const Footer = () => {
                     </Link>
                 </Col>
             </Row>
-            {/* bottom divider for more information */}
             <Divider orientation="left">IOTA - Logistics &copy; {new Date().getFullYear()}.</Divider>
         </Layout.Footer>
-    );
+      </Content>
+    </Layout>
+  );
 };
 
-const name = '[Your Name]'
-export const siteTitle = 'Next.js Sample Website'
-
-export default function Home({
-    children,
-    home
-}: {
-    children: React.ReactNode
-    home?: boolean
-}) {
-    return (
-        <Fragment>
-            <Layout>
-                <Head>
-                    <title>Welcome to IOTA Logistics</title>
-                </Head>
-                <Layout.Content>
-                    <Row style={{ height: "70vh" }} justify="center" align="middle">
-                        <Col span={6}>
-                            <Link href="/signin" as="/signin" passHref>
-                                <Button type="primary" shape="round">
-                                    Sign In
-                                </Button>
-                            </Link>
-                        </Col>
-                    </Row>
-                    <Footer />
-                </Layout.Content>
-            </Layout>
-        </Fragment>
-    )
-}
+export default HomePage;
