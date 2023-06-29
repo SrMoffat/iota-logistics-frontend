@@ -9,8 +9,12 @@ import GeneralLayout from '../../components/Layout/General';
 
 import { fetchItems } from '../../lib/statistics';
 
+import StatusDrawer from './components/StatusDrawer';
+
 interface Product {
+    id: string;
     href: string;
+    name: string;
     title: string;
     colour: string;
     trackingId: string;
@@ -22,8 +26,9 @@ interface Product {
 }
 
 const Products = () => {
-    const [open, setOpen] = useState(false);
     const { push } = useRouter();
+    const [open, setOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<Product>();
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -48,6 +53,8 @@ const Products = () => {
     }, [itemsError])
     const products: Product[] = items?.items?.map(({ id, attributes }) => {
         return {
+            id,
+            name: attributes?.name,
             href: `/products/${id}`,
             title: attributes?.name,
             colour: attributes?.colour,
@@ -58,48 +65,25 @@ const Products = () => {
             quantity: attributes?.quantity,
         }
     });
+    console.log("selectedProduct===>", selectedProduct);
+
+    const itemStatusRequested = (id: string | number) => {
+        const productDetails = products?.filter((entry) => `${id}` === `${entry.id}`);
+        const selectedProduct = productDetails[0];
+        setSelectedProduct(selectedProduct);
+        showDrawer();
+    };
     return (
         <GeneralLayout handleShowCreateItemModal={() => { }} hasCta={false}>
-            <Drawer
-                title="Recent Event"
-                placement="bottom"
-                closable={false}
-                onClose={onClose}
-                open={open}
-                key="topper"
-            >
-                <Descriptions
-                    bordered
-                    column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-                >
-                    <Descriptions.Item label="Stage"><Tag color='green'>Warehousing</Tag></Descriptions.Item>
-                    <Descriptions.Item label="Status"><Tag color='geekblue'>Stocked</Tag></Descriptions.Item>
-                    <Descriptions.Item label="Last Updated">2 hours ago</Descriptions.Item>
-                    <Descriptions.Item label="Updated By">Zurich Jalakov</Descriptions.Item>
-                    <Descriptions.Item label="Item Info">
-                        <Row>
-                            <Col span={4} style={{ fontWeight: "bold" }}>Name:</Col>
-                            <Col span={12}>Mac Boock Pro</Col>
-                        </Row>
-                        <Row>
-                            <Col span={4} style={{ fontWeight: "bold" }}>Description:</Col>
-                            <Col span={12}>Mac Boock Pro</Col>
-                        </Row>
-                        <Row>
-                            <Col span={4} style={{ fontWeight: "bold" }}>Manufacturer:</Col>
-                            <Col span={12}>Mac Boock Pro</Col>
-                        </Row>
-                        <Row>
-                            <Col span={4} style={{ fontWeight: "bold" }}>Supplier:</Col>
-                            <Col span={12}>Supplier</Col>
-                        </Row>
-                        <Row>
-                            <Col span={4} style={{ fontWeight: "bold" }}>Tracking ID:</Col>
-                            <Col span={12}>Mac Boock Pro</Col>
-                        </Row>
-                    </Descriptions.Item>
-                </Descriptions>
-            </Drawer>
+            <StatusDrawer open={open} onClose={onClose}
+                item={selectedProduct}
+                status={{
+                    lastUpdated: "ssss",
+                    stage: "ssss",
+                    status: "ssss",
+                    updatedBy: "ssss"
+                }}
+            />
             {
                 itemsLoading
                     ? <Spin />
@@ -122,7 +106,7 @@ const Products = () => {
                                     actions={[
                                         <IconText icon={CodeSandboxOutlined} text={`${item?.quantity} units`} key="list-vertical-star-o" />,
                                         <Button onClick={() => push(`${item?.href}`)}>View</Button>,
-                                        <Button onClick={() => showDrawer()}>Status</Button>
+                                        <Button onClick={() => itemStatusRequested(item?.id)}>Status</Button>
                                     ]}
                                 >
                                     <List.Item.Meta

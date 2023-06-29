@@ -184,6 +184,7 @@ const Dashboard = () => {
                 setCurrent={setCurrent}
                 handleCancel={handleCancel}
                 refetchItems={refetchItems}
+                setMilestone={setMilestone}
                 refetchEvents={refetchEvents}
                 confirmLoading={confirmLoading}
                 categories={categories?.categories}

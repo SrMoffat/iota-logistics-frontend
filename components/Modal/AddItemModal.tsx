@@ -22,6 +22,7 @@ const AddItemModal = (props) => {
         setCurrent,
         refetchItems,
         handleCancel,
+        setMilestone,
         refetchEvents,
         confirmLoading,
         refetchMilestones
@@ -48,10 +49,10 @@ const AddItemModal = (props) => {
         },
         onSuccess: () => {
             message.success('Supply chain item created successfully.');
-            setCurrent(0)
+            setCurrent(0);
             handleCancel();
             refetchItems();
-            refetchEvents()
+            refetchEvents();
             setItem(undefined);
             refetchMilestones();
             updateItemDetails({
