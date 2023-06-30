@@ -57,10 +57,11 @@ const Products = () => {
             <StatusDrawer open={open} onClose={onClose}
                 item={selectedProduct}
                 status={{
-                    lastUpdated: "ssss",
-                    stage: "ssss",
-                    status: "ssss",
-                    updatedBy: "ssss"
+                    name: '',
+                    id: '',
+                    description: '',
+                    createdAt: '',
+                    updatedAt: ''
                 }}
             />
             {
@@ -68,7 +69,7 @@ const Products = () => {
                     ? <Spin />
                     : <ProductDetails
                         itemStatusRequested={itemStatusRequested}
-                        products={products.reverse()}
+                        products={products ? products.reverse() : products}
                     />
             }
         </GeneralLayout>

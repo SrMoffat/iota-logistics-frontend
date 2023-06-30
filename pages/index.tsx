@@ -4,9 +4,7 @@ import Layout from '../components/Layout/Landing';
 
 export default function Home() {
   return (
-    <Layout home>
-      Home
-    </Layout>
+    <Layout />
   )
 }
 

@@ -79,6 +79,7 @@ const Dashboard = () => {
             }
         },
     })
+
     const mapping = {
         'Categories': {
             value: categories?.categories?.length,
@@ -203,7 +204,7 @@ const Dashboard = () => {
                         ? <Empty description="Select a milestone above to view items" />
                         : !milestoneItems?.length
                             ? <Empty description="No items exists for this milestone" />
-                            : <CustomTable data={itemsData.reverse()} />
+                            : <CustomTable data={itemsData ? itemsData.reverse() : itemsData} />
                 }
             </GeneralLayout>
         </>

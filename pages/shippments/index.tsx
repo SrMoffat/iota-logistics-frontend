@@ -1,12 +1,10 @@
 import React from 'react';
 import { Tag, Space, Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
 
 import GeneralLayout from '../../components/Layout/General';
-import { DataType } from '../../lib/types';
 
 const Shippment = () => {
-    const data: DataType[] = [
+    const data = [
         {
             key: '1',
             name: 'John Brown',
@@ -29,7 +27,7 @@ const Shippment = () => {
             tags: ['cool', 'teacher'],
         },
     ];
-    const columns: ColumnsType<DataType> = [
+    const columns = [
         {
             title: 'Name',
             dataIndex: 'name',

@@ -17,7 +17,7 @@ export async function fetchItemsByMilestone(milestoneId: string | number): Promi
         throw new Error(error)
     }
 };
-export async function createSupplyChainItem(values: ItemDetails): Promise<Object> {
+export async function createSupplyChainItem(values: ItemDetails): Promise<any> {
     try {
         const data = await makeRequestWithBody({
             url: `${BASE_URL}/supply-items`,
@@ -51,7 +51,7 @@ export async function addSupplyChainItemEvent(details: ItemEventsInputs): Promis
         throw new Error(error)
     }
 };
-export async function fetchSupplyChainItemEvents(id: string | number): Promise<Object> {
+export async function fetchSupplyChainItemEvents(id: string | number): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/supply-items/${id}/events`,
@@ -63,7 +63,7 @@ export async function fetchSupplyChainItemEvents(id: string | number): Promise<O
         throw new Error(error)
     }
 };
-export async function fetchSupplyChainItemRecentEvents(id: string): Promise<Object> {
+export async function fetchSupplyChainItemRecentEvents(id: string): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/supply-items/${id}/events`,

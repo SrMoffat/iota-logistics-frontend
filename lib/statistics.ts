@@ -53,7 +53,7 @@ export const handleResponse = (data: Object) => {
         }
     }
 };
-export async function fetchCategories(): Promise<Object> {
+export async function fetchCategories(): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/categories`,
@@ -65,7 +65,7 @@ export async function fetchCategories(): Promise<Object> {
         throw new Error(error)
     }
 };
-export async function fetchCurrencies(): Promise<Object> {
+export async function fetchCurrencies(): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/currencies`,
@@ -77,7 +77,7 @@ export async function fetchCurrencies(): Promise<Object> {
         throw new Error(error)
     }
 };
-export async function fetchEvents(): Promise<Object> {
+export async function fetchEvents(): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/events`,
@@ -89,7 +89,7 @@ export async function fetchEvents(): Promise<Object> {
         throw new Error(error)
     }
 };
-export async function fetchItems(): Promise<Object> {
+export async function fetchItems(): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/items`,
@@ -101,7 +101,7 @@ export async function fetchItems(): Promise<Object> {
         throw new Error(error)
     }
 };
-export async function fetchMilestones(): Promise<Object> {
+export async function fetchMilestones(): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/stages`,
@@ -113,7 +113,7 @@ export async function fetchMilestones(): Promise<Object> {
         throw new Error(error)
     }
 };
-export async function fetchUsers(): Promise<Object> {
+export async function fetchUsers(): Promise<any> {
     try {
         const data = await makeRequest({
             url: `${BASE_URL}/users`,
