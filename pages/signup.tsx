@@ -19,7 +19,7 @@ const SignUp = () => {
                 </Row>
             </Layout.Content>
         </Layout>
-    )
+    ) 
 };
 
 export default SignUp;
