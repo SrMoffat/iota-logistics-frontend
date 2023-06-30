@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
 import { get } from 'lodash';
-import { Card, Empty, Spin, Row, Col, Tag, ColorPicker } from 'antd';
+import { Card, Empty, Spin, Row, Col, Tag, ColorPicker, Button } from 'antd';
 
 import GeneralLayout from '../../components/Layout/General';
 
 import { fetchMilestones } from '../../lib/statistics';
 import { fetchItemsByMilestone } from '../../lib/items';
+import { useRouter } from 'next/router';
 
 const { Meta } = Card;
 
 const Returns = () => {
+    const { push } = useRouter();
     const [loading, setLoading] = useState(false);
     const [returnedStageId, setReturnedStageId] = useState();
     const [milestoneItems, setMilestoneItems] = useState([]);
@@ -55,6 +57,7 @@ const Returns = () => {
                                         actions={[
                                             <Tag color="red">{stage?.name}</Tag>,
                                             <Tag color="orange">{status?.name}</Tag>,
+                                            <Button onClick={() => push(`/products/${data?.id}`)} size="small">View</Button>
                                         ]}
                                     >
                                         <Meta
