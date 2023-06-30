@@ -64,7 +64,7 @@ export interface DataType {
     category: string;
     colour: string;
     quantity: number;
-    description: string; 
+    description: string;
     manufacturer: string;
 }
 export type ItemProviderProps = {
