@@ -1,5 +1,5 @@
 const USER_STORAGE_KEY = process.env.REACT_USER_STORAGE_KEY || 'iota-user';
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:1337/api";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "https://iota-logistics-backend-1d4ea9f13238.herokuapp.com/api";
 const FORM_PARENT_STYLES = {
     border: "0.1px solid rgba(0,0,0,0.1)",
     borderRadius: 15,
